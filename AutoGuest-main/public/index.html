@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoGuest - Acceso</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#f39c12">
+    <style>
+        /* Estilos específicos para la página de acceso/selector */
+        .access-page-wrapper {
+            display: flex;
+            flex-direction: column;
+            /* Pila los elementos verticalmente */
+            justify-content: center;
+            align-items: center;
+            min-height: 90vh;
+            /* Ocupa casi toda la pantalla */
+            text-align: center;
+            padding: 40px 20px;
+            background-color: #1a1a1a;
+            /* Fondo oscuro general */
+        }
+
+        .access-container {
+            background-color: #2c2c2c;
+            /* Fondo de la tarjeta principal */
+            padding: 40px 50px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            width: 100%;
+            max-width: 450px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .access-container .logo-link img {
+            width: 150px;
+            /* Logo más grande en esta página */
+            margin-bottom: 20px;
+        }
+
+        .access-container h1 {
+            color: #ffffff;
+            margin-bottom: 15px;
+            font-size: 2.2em;
+        }
+
+        .access-container p {
+            color: #a0a0a0;
+            font-size: 1.1em;
+            margin-bottom: 40px;
+            max-width: 400px;
+        }
+
+        /* Estilos para los botones de selección de portal */
+        .portal-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+            /* Botones ocupan el ancho del contenedor */
+        }
+
+        .btn-portal-select {
+            padding: 18px 20px;
+            /* Padding generoso para botones grandes */
+            font-size: 1.1em;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background-color: #3f3f3f;
+            /* Fondo oscuro para los botones */
+            border: 1px solid #555;
+            /* Borde sutil */
+            color: #f0f0f0;
+            /* Texto blanco */
+            border-radius: 8px;
+            /* Bordes redondeados */
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+            text-decoration: none;
+            /* Remover subrayado si es un enlace */
+        }
+
+        .btn-portal-select:hover {
+            background-color: #f39c12;
+            /* Color de acento al pasar el ratón */
+            color: #1a1a1a;
+            /* Texto oscuro sobre el acento */
+            border-color: #f39c12;
+            /* Borde a juego */
+        }
+
+        .btn-portal-select i {
+            font-size: 1.4em;
+            /* Iconos más grandes */
+            width: 30px;
+            /* Para asegurar alineación */
+            text-align: center;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 900px) {
+            .access-container {
+                padding: 30px 30px;
+                /* Menos padding en móvil */
+            }
+
+            .access-container h1 {
+                font-size: 1.8em;
+            }
+
+            .access-container p {
+                font-size: 1em;
+            }
+
+            .btn-portal-select {
+                font-size: 1em;
+                /* Tamaño de fuente más pequeño */
+                padding: 15px 15px;
+            }
+
+            .btn-portal-select i {
+                font-size: 1.2em;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="form-page-wrapper">
+        <div class="form-image-column">
+            <div class="logo-link">
+                <a href="home.html">
+                    <img src="imagenes/Logo_Autoguest.png" alt="Logo de AutoGuest">
+                </a>
+            </div>
+            <div class="image-text">
+                <h2>Elige tu camino.</h2>
+                <p>Ya sea que busques un servicio u ofrezcas uno, aquí comienza tu experiencia.</p>
+            </div>
+        </div>
+
+        <div class="form-content-column">
+            <div class="portal-selector-container">
+                <h1>¿Cómo quieres ingresar?</h1>
+                <p>Selecciona el portal que corresponde a tu tipo de cuenta.</p>
+
+                <div class="portal-buttons">
+                    <a href="login_cliente.html" class="btn btn-portal-select">
+                        <i class="fa-solid fa-car"></i>
+                        <span>Soy Cliente</span>
+                    </a>
+
+                    <a href="login_taller.html" class="btn btn-portal-select">
+                        <i class="fa-solid fa-wrench"></i>
+                        <span>Soy un Taller</span>
+                    </a>
+
+                    <a href="login_mecanico.html" class="btn btn-portal-select">
+                        <i class="fa-solid fa-user-gear"></i>
+                        <span>Soy Mecánico</span>
+                    </a>
+                </div>
+
+                <div class="extra-link">
+                    <p>¿Primera vez aquí? <a href="home.html">Vuelve a la página principal</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="http://localhost:3000/js/global_nav.js"></script>
+</body>
+
+</html>

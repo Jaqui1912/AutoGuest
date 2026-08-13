@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle del Taller - AutoGuest</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        body {
+            background-color: #1a1a1a;
+            color: white;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .detail-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+        }
+
+        /* Banner */
+        .hero-banner {
+            height: 350px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 15px;
+            position: relative;
+            display: flex;
+            align-items: flex-end;
+            padding: 30px;
+            overflow: hidden;
+        }
+
+        .hero-overlay {
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0));
+            padding: 20px;
+            width: 100%;
+            border-radius: 0 0 15px 15px;
+        }
+
+        .hero-overlay h1 {
+            margin: 0;
+            font-size: 2.5em;
+            color: #f39c12;
+        }
+
+        .hero-overlay p {
+            margin: 5px 0 0;
+            color: #ccc;
+            font-size: 1.2em;
+        }
+
+        /* Secciones */
+        .section-box {
+            background: #2c2c2c;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .section-title {
+            border-bottom: 1px solid #444;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+            color: #ffffff;
+            font-size: 1.8em;
+        }
+
+        /* Servicios */
+        .service-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-bottom: 1px solid #3f3f3f;
+            transition: background 0.3s;
+        }
+
+        .service-item:hover {
+            background: #333;
+            padding-left: 10px;
+            padding-right: 10px;
+            border-radius: 5px;
+        }
+
+        .service-name {
+            font-weight: 500;
+        }
+
+        .service-price {
+            color: #2ecc71;
+            font-weight: bold;
+        }
+
+        /* Reseñas */
+        .review-card {
+            background: #3a3a3a;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            color: #aaa;
+            font-size: 0.9em;
+        }
+
+        .star-rating i {
+            color: #f39c12;
+        }
+
+        /* Formulario Cita */
+        .booking-card {
+            background: #2c2c2c;
+            padding: 30px;
+            border-radius: 12px;
+            position: sticky;
+            top: 20px;
+            border: 1px solid #444;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            background: #3f3f3f;
+            border: 1px solid #555;
+            color: white;
+            border-radius: 8px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        .btn-block {
+            width: 100%;
+            font-size: 1.1em;
+        }
+
+        /* Botón Catálogo */
+        .btn-catalog {
+            background: transparent;
+            border: 2px solid #f39c12;
+            color: #f39c12;
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 15px;
+            font-weight: bold;
+            transition: 0.3s;
+            font-size: 1em;
+        }
+
+        .btn-catalog:hover {
+            background: #f39c12;
+            color: #1a1a1a;
+        }
+
+        /* Navbar simple */
+        .simple-header {
+            background: #2c2c2c;
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #333;
+        }
+
+        .back-link {
+            color: #ccc;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: color 0.3s;
+        }
+
+        .back-link:hover {
+            color: #f39c12;
+        }
+
+        @media(max-width: 900px) {
+            .detail-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="simple-header">
+        <img src="../imagenes/Logo_Autoguest.png" alt="Logo" width="120">
+        <a href="javascript:history.back()" class="back-link"><i class="fas fa-arrow-left"></i> Volver a Resultados</a>
+    </header>
+
+    <div class="detail-container">
+
+        <div class="main-content">
+
+            <div class="hero-banner" id="bannerTaller">
+                <div class="hero-overlay">
+                    <h1 id="nombreTaller">Cargando Taller...</h1>
+                    <p id="direccionTaller"><i class="fas fa-map-marker-alt"></i> ...</p>
+                </div>
+            </div>
+
+            <div class="section-box">
+                <h2 class="section-title">Sobre Nosotros</h2>
+                <p id="descTaller">Cargando descripción...</p>
+
+                <div id="contactoTaller" style="margin-top: 15px; font-size: 1.1em; color: #ccc;">
+                    <!-- Contact info loaded dynamically -->
+                </div>
+
+                <div id="catalogSection"
+                    style="display:none; border-top: 1px solid #444; padding-top: 20px; margin-top: 20px;">
+                    <p><i class="fas fa-box-open"></i> También vendemos refacciones y productos directamente.</p>
+                    <button class="btn-catalog" onclick="irCatalogo()">Ver Catálogo de Productos</button>
+                </div>
+            </div>
+
+            <div class="section-box">
+                <h2 class="section-title">Nuestros Servicios</h2>
+                <div id="listaServicios">
+                    <p>Cargando lista de servicios...</p>
+                </div>
+            </div>
+
+            <div class="section-box">
+                <h2 class="section-title">Opiniones de Clientes</h2>
+                <div id="listaResenas"></div>
+
+                <hr style="border-color: #444; margin: 25px 0;">
+
+                <h3>Deja tu opinión</h3>
+                <form id="formResena">
+                    <select id="resenaCalificacion" class="form-control">
+                        <option value="5">★★★★★ Excelente</option>
+                        <option value="4">★★★★☆ Bueno</option>
+                        <option value="3">★★★☆☆ Regular</option>
+                        <option value="2">★★☆☆☆ Malo</option>
+                        <option value="1">★☆☆☆☆ Pésimo</option>
+                    </select>
+                    <textarea id="resenaComentario" class="form-control" placeholder="Cuéntanos tu experiencia..."
+                        rows="3" required></textarea>
+                    <button type="submit" class="btn">Publicar Reseña</button>
+                </form>
+            </div>
+
+        </div>
+
+        <div class="sidebar">
+            <div class="booking-card">
+                <h2 class="section-title">Reserva tu Cita</h2>
+                <form id="formCita">
+                    <label>Selecciona tu Vehículo</label>
+                    <select id="vehiculoSelect" class="form-control" required>
+                        <option value="">Cargando tus autos...</option>
+                    </select>
+
+                    <label>Servicio Deseado</label>
+                    <select id="servicioSelect" class="form-control" required>
+                        <option value="">Elige un servicio...</option>
+                    </select>
+
+                    <label>Fecha</label>
+                    <input type="date" id="fechaInput" class="form-control" required>
+
+                    <label>Hora</label>
+                    <input type="time" id="horaInput" class="form-control" required>
+
+                    <button type="submit" class="btn btn-block">Confirmar Cita</button>
+                </form>
+                <div class="booking-card" style="margin-top: 20px; border-top: 5px solid #f39c12;">
+                    <h2 class="section-title" style="font-size: 1.4em;"><i class="fas fa-clock"></i> Horario de Atención
+                    </h2>
+                    <div id="horarioDisplay" style="font-size: 0.9em; color: #ccc;">
+                        <p>Cargando horarios...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:3000';
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            // 1. Obtener ID del taller de la URL (?id=T01)
+            const params = new URLSearchParams(window.location.search);
+            const idTaller = params.get('id');
+
+            if (!idTaller) {
+                alert("Error: No se especificó un taller.");
+                window.location.href = 'pages/cliente/buscar_talleres.html';
+                return;
+            }
+
+            // 2. Cargar Datos del Taller (API)
+            try {
+                const res = await fetch(`${API_URL}/api/talleres/${idTaller}?t=${Date.now()}`);
+
+                if (!res.ok) throw new Error("No se pudo cargar el taller");
+
+                const data = await res.json();
+                console.log("Datos cargados del taller:", data); // Para depuración del usuario
+
+                // Llenar Info
+                document.getElementById('nombreTaller').textContent = data.info.nombre;
+                document.getElementById('direccionTaller').innerHTML = `<i class="fas fa-map-marker-alt"></i> ${data.info.direccion}`;
+
+                const desc = data.info.sobre_nosotros;
+                document.getElementById('descTaller').textContent = (desc && desc.trim() !== '') ? desc : "Somos un taller comprometido con la calidad y la satisfacción del cliente.";
+
+                // Llenar Horario
+                const horarioDiv = document.getElementById('horarioDisplay');
+                if (data.info.horario) {
+                    try {
+                        const sched = JSON.parse(data.info.horario);
+                        let html = '<ul style="list-style: none; padding: 0;">';
+                        const days = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
+                        days.forEach(day => {
+                            const d = sched[day];
+                            if (d) {
+                                html += `<li style="display: flex; justify-content: space-between; margin-bottom: 5px; ${d.closed ? 'color: #e74c3c;' : ''}">
+                                    <span>${day}:</span>
+                                    <span>${d.closed ? 'Cerrado' : d.open + ' - ' + d.close}</span>
+                                </li>`;
+                            }
+                        });
+                        html += '</ul>';
+                        horarioDiv.innerHTML = html;
+                    } catch (e) { horarioDiv.innerHTML = '<p>Horario no disponible</p>'; }
+                } else {
+                    horarioDiv.innerHTML = '<p>Consultar directamente con el taller.</p>';
+                }
+
+                // Imagen
+                const esImagenValida = (url) => {
+                    if (!url || typeof url !== 'string' || url.trim() === "" || url === "undefined" || url === "null") return false;
+                    if (url.startsWith('data:')) {
+                        const partes = url.split(',');
+                        // Si es un data URL, debe ser base64 y tener una longitud mínima razonable (>3000 chars para una foto)
+                        if (partes.length < 2 || !partes[0].includes('base64') || partes[1].trim().length < 3000) return false;
+                    }
+                    return true;
+                };
+
+                let bannerImg = data.info.foto_perfil;
+                if (!esImagenValida(bannerImg)) {
+                    bannerImg = `https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=1200&h=400&fit=crop`;
+                }
+                document.getElementById('bannerTaller').style.backgroundImage = `url('${bannerImg}')`;
+
+                // Contacto y Redes
+                const contactoDiv = document.getElementById('contactoTaller');
+                let contactoHtml = '';
+                if (data.info.telefono_contacto) {
+                    contactoHtml += `<p><i class="fab fa-whatsapp" style="color: #25D366;"></i> WhatsApp: <a href="https://wa.me/${data.info.telefono_contacto}" target="_blank" style="color: #f39c12; text-decoration: none;">${data.info.telefono_contacto}</a></p>`;
+                }
+                if (data.info.redes_sociales) {
+                    contactoHtml += `<p><i class="fas fa-globe" style="color: #4267B2;"></i> Redes: <a href="${data.info.redes_sociales.startsWith('http') ? data.info.redes_sociales : 'https://' + data.info.redes_sociales}" target="_blank" style="color: #f39c12; text-decoration: none;">${data.info.redes_sociales}</a></p>`;
+                }
+                if (contactoHtml !== '') {
+                    contactoDiv.innerHTML = contactoHtml;
+                }
+
+                // Mostrar botón catálogo si tiene productos
+                if (data.tieneProductos) {
+                    document.getElementById('catalogSection').style.display = 'block';
+                }
+
+                // Llenar Servicios
+                const listaServicios = document.getElementById('listaServicios');
+                const selectServicios = document.getElementById('servicioSelect');
+
+                listaServicios.innerHTML = '';
+                selectServicios.innerHTML = '<option value="">Elige un servicio...</option>';
+
+                if (data.servicios && data.servicios.length > 0) {
+                    data.servicios.forEach(ser => {
+                        // Lista visual
+                        listaServicios.innerHTML += `
+                            <div class="service-item">
+                                <span class="service-name">${ser.nombre}</span>
+                                <span class="service-price">$${ser.precio}</span>
+                            </div>`;
+                        // Opción en el select
+                        selectServicios.innerHTML += `<option value="${ser.idItem}">${ser.nombre} - $${ser.precio}</option>`;
+                    });
+                } else {
+                    listaServicios.innerHTML = '<p>Servicios generales bajo cotización.</p>';
+                    selectServicios.innerHTML += '<option value="general">Revisión General (Cotizar)</option>';
+                }
+
+                // Llenar Reseñas
+                cargarResenas(data.resenas);
+
+            } catch (error) {
+                console.error(error);
+                document.getElementById('nombreTaller').textContent = "Error al cargar";
+            }
+
+            // 3. Cargar Vehículos del Usuario (REAL)
+            const vehiculoSelect = document.getElementById('vehiculoSelect');
+
+            try {
+                const resVehiculos = await fetch(`${API_URL}/api/vehiculos`, {
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                        'Content-Type': 'application/json'
+                    },
+                    credentials: 'include' // Obligatorio para enviar la cookie de sesión de Express
+                });
+
+                if (resVehiculos.status === 401) {
+                    // No logueado
+                    vehiculoSelect.innerHTML = '<option value="">Inicia sesión para ver tus autos</option>';
+                } else if (resVehiculos.ok) {
+                    const vehiculos = await resVehiculos.json();
+
+                    if (vehiculos.length === 0) {
+                        vehiculoSelect.innerHTML = '<option value="">No tienes vehículos registrados</option>';
+                        // Mostrar alerta o botón para agregar
+                        if (confirm("No tienes vehículos registrados. ¿Deseas agregar uno ahora?")) {
+                            window.location.href = 'pages/cliente/gestionar_vehiculos.html';
+                        }
+                    } else {
+                        vehiculoSelect.innerHTML = '<option value="">Selecciona tu Vehículo...</option>';
+                        vehiculos.forEach(v => {
+                            vehiculoSelect.innerHTML += `<option value="${v.idVehiculo}">${v.marca} ${v.modelo} (${v.placa})</option>`;
+                        });
+                    }
+                } else {
+                    vehiculoSelect.innerHTML = '<option value="">Error al cargar vehículos</option>';
+                }
+            } catch (error) {
+                console.error("Error cargando vehículos:", error);
+                vehiculoSelect.innerHTML = '<option value="">Error de conexión</option>';
+            }
+
+            // 4. Lógica de Cita
+            document.getElementById('formCita').addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                if (!sessionStorage.getItem('isLoggedIn')) {
+                    alert("Debes iniciar sesión para agendar.");
+                    window.location.href = 'login_cliente.html';
+                    return;
+                }
+
+                const idVehiculo = document.getElementById('vehiculoSelect').value;
+                if (!idVehiculo) {
+                    alert("Por favor, selecciona un vehículo válido o agrega uno nuevo.");
+                    return;
+                }
+
+                const citaData = {
+                    idTaller: idTaller,
+                    idVehiculo: idVehiculo,
+                    fecha: document.getElementById('fechaInput').value,
+                    hora: document.getElementById('horaInput').value,
+                    servicio: document.getElementById('servicioSelect').value
+                };
+
+                try {
+                    const res = await fetch(`${API_URL}/api/citas`, {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                            'Content-Type': 'application/json'
+                        },
+                        credentials: 'include', // Enviar la cookie
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(citaData)
+                    });
+
+                    if (res.ok) {
+                        alert("¡Cita agendada con éxito!");
+                        window.location.href = 'pages/cliente/mis_citas.html';
+                    } else {
+                        const errorData = await res.json();
+
+                        if (res.status === 400 && errorData.citaActiva) {
+                            const ca = errorData.citaActiva;
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Cita Activa Encontrada',
+                                html: `Este vehículo ya tiene un trabajo en curso en <b>${ca.taller}</b>.<br><br>` +
+                                    `Estado: <b>${ca.estado}</b><br>` +
+                                    `Fecha: <b>${new Date(ca.fecha).toLocaleString()}</b><br><br>` +
+                                    `No puedes agendar el mismo auto en dos talleres simultáneamente.`,
+                                confirmButtonText: 'Entendido',
+                                background: '#2c2c2c',
+                                color: '#fff',
+                                confirmButtonColor: '#f39c12'
+                            });
+                        } else {
+                            alert("Error al guardar la cita: " + (errorData.error || errorData.mensaje || "Error desconocido"));
+                        }
+                    }
+                } catch (err) {
+                    alert("Error de conexión al agendar la cita.");
+                }
+            });
+
+            // 5. Lógica de Reseña
+            document.getElementById('formResena').addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                const isLoggedIn = sessionStorage.getItem('isLoggedIn');
+                if (!isLoggedIn) {
+                    alert("Debes iniciar sesión para dejar una reseña.");
+                    window.location.href = 'login_cliente.html';
+                    return;
+                }
+
+                const idUsuario = sessionStorage.getItem('userId');
+                const calificacion = document.getElementById('resenaCalificacion').value;
+                const comentario = document.getElementById('resenaComentario').value;
+
+                if (!idUsuario) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Debes iniciar sesión',
+                        text: 'Necesitas una cuenta registrada para dejar una reseña.',
+                        confirmButtonText: 'Ir al Login',
+                        background: '#2c2c2c',
+                        color: '#fff',
+                        confirmButtonColor: '#f39c12'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = 'login_cliente.html';
+                        }
+                    });
+                    return;
+                }
+
+                if (!calificacion || !comentario) {
+                    alert("Por favor, completa la calificación y el comentario.");
+                    return;
+                }
+
+                try {
+                    const res = await fetch(`${API_URL}/api/talleres/${idTaller}/resenas`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            idUsuario: idUsuario,
+                            calificacion: parseInt(calificacion),
+                            comentario: comentario
+                        })
+                    });
+
+                    if (res.ok) {
+                        alert("¡Gracias por tu opinión! Se ha guardado correctamente.");
+                        location.reload(); // Recargar para ver la nueva reseña
+                    } else {
+                        const err = await res.json();
+                        alert("Error al guardar reseña: " + (err.error || "Inténtalo de nuevo"));
+                    }
+                } catch (error) {
+                    console.error("Error enviando reseña:", error);
+                    alert("Error de conexión al enviar la reseña.");
+                }
+            });
+        });
+
+        function cargarResenas(resenas) {
+            const div = document.getElementById('listaResenas');
+            if (!resenas || resenas.length === 0) {
+                div.innerHTML = '<p style="color:#888">No hay opiniones aún. ¡Sé el primero!</p>';
+                return;
+            }
+            div.innerHTML = '';
+            resenas.forEach(r => {
+                const estrellas = '★'.repeat(r.calificacion) + '☆'.repeat(5 - r.calificacion);
+                const respuestaHtml = r.respuesta_taller ? `
+                    <div class="taller-reply" style="background: #1a1a1a; padding: 15px; border-radius: 8px; border-left: 4px solid #f39c12; margin-top: 15px;">
+                        <div class="taller-reply-title" style="font-weight: bold; color: #f39c12; margin-bottom: 5px; font-size: 0.9em;">
+                            <i class="fas fa-reply"></i> Respuesta del Taller:
+                        </div>
+                        <div class="taller-reply-text" style="color: #ccc; font-size: 0.95em;">
+                            ${r.respuesta_taller}
+                        </div>
+                    </div>
+                ` : '';
+
+                div.innerHTML += `
+                    <div class="review-card">
+                        <div class="review-header">
+                            <strong>${r.clienteNombre || r.nombreCliente || 'Cliente AutoGuest'}</strong>
+                            <span class="star-rating">${estrellas}</span>
+                        </div>
+                        <p>${r.comentario}</p>
+                        <small style="color:#666">${new Date(r.fecha).toLocaleDateString()}</small>
+                        ${respuestaHtml}
+                    </div>
+                `;
+            });
+        }
+
+        function irCatalogo() {
+            const params = new URLSearchParams(window.location.search);
+            const idTaller = params.get('id');
+            if (idTaller) {
+                window.location.href = `pages/cliente/catalogo-om66/Catalogo_Productos.html?idTaller=${idTaller}`;
+            } else {
+                window.location.href = 'pages/cliente/catalogo-om66/Catalogo_Productos.html';
+            }
+        }
+    </script>
+
+    <!-- SweetAlert2 para mejores mensajes -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="http://localhost:3000/js/global_nav.js"></script>
+</body>
+
+</html>

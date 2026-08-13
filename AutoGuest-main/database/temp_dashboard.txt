@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Cliente - AutoGuest</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="../../style.css"> 
+    <style>
+        /* Estilos especÃ­ficos para el dashboard del cliente */
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 25px;
+            background-color: #2c2c2c;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        .dashboard-header .logo {
+             width: 110px;
+        }
+        .dashboard-header .user-greeting {
+            font-size: 1.2em;
+            color: #c0c0c0;
+            font-weight: 500;
+        }
+        .dashboard-header .logout-btn {
+            background-color: transparent;
+            color: #f39c12;
+            border: 1px solid #f39c12;
+            padding: 10px 20px;
+            font-size: 14px;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        .dashboard-header .logout-btn:hover {
+            background-color: #f39c12;
+            color: #1a1a1a;
+        }
+        
+        .dashboard-intro-text {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        .dashboard-intro-text h1 {
+            font-size: 2.8em;
+            color: #ffffff;
+            margin-bottom: 10px;
+        }
+        .dashboard-intro-text p {
+            font-size: 1.1em;
+            color: #c0c0c0;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .dashboard-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Rejilla adaptable */
+            gap: 30px;
+        }
+
+        /* --- ESTILOS MEJORADOS PARA LAS TARJETAS --- */
+        .dashboard-card {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden; /* Clave para que la imagen de fondo no se salga */
+            padding: 30px;
+            text-align: center;
+            color: #ffffff;
+            min-height: 350px; /* Altura mÃ­nima para que la imagen se vea bien */
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end; /* Alinea el contenido hacia abajo */
+            box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+            transition: transform 0.3s ease;
+        }
+        .dashboard-card:hover {
+            transform: translateY(-8px);
+        }
+
+        .dashboard-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-size: cover;
+            background-position: center;
+            /* Filtro oscuro para asegurar que el texto sea legible */
+            background-image: linear-gradient(to top, rgba(0,0,0,0.9) 20%, rgba(0,0,0,0.2) 80%);
+            z-index: 1;
+            transition: background-image 0.4s ease;
+        }
+
+        .card-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .dashboard-card h3 {
+            font-size: 1.8em;
+            margin-bottom: 10px;
+        }
+
+        .dashboard-card p {
+            font-size: 0.95em;
+            color: #e0e0e0;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            flex-grow: 0; /* Evita que el pÃ¡rrafo ocupe espacio extra */
+        }
+
+        .dashboard-card .btn {
+            padding: 12px 25px; 
+            font-size: 15px;
+            width: auto; /* El botÃ³n no ocupa todo el ancho */
+            display: inline-block;
+        }
+
+        /* --- IMÃGENES ESPECÃFICAS PARA CADA TARJETA --- */
+        #card-talleres::before {
+            background-image: linear-gradient(to top, rgba(0,0,0,0.9) 20%, rgba(0,0,0,0.2) 80%), url('../../imagenes/Buscar_taller1.jpg');
+        }
+        #card-vehiculos::before {
+            background-image: linear-gradient(to top, rgba(0,0,0,0.9) 20%, rgba(0,0,0,0.2) 80%), url('../../imagenes/coche_1.jpg');
+        }
+        #card-citas::before {
+            /* Usando una imagen genÃ©rica para citas */
+            background-image: linear-gradient(to top, rgba(0,0,0,0.9) 20%, rgba(0,0,0,0.2) 80%), url('../../imagenes/citas_1.jpg');
+        }
+
+        /* Responsive adjustments for dashboard */
+        @media (max-width: 768px) {
+            .dashboard-header { flex-direction: column; gap: 15px; }
+            .dashboard-intro-text h1 { font-size: 2.2em; }
+            .dashboard-content { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="dashboard-header">
+        <img src="../../imagenes/Logo_Autoguest.png" alt="Logo de AutoGuest" class="logo">
+        <div class="user-greeting">Â¡Hola, [Nombre del Cliente]!</div> 
+        <a href="../../index.html" class="logout-btn">Cerrar SesiÃ³n</a> 
+    </header>
+
+    <main class="dashboard-container">
+        <div class="dashboard-intro-text">
+            <h1>Tu Centro de Control</h1>
+            <p>Explora las opciones disponibles para gestionar tu vehÃ­culo y tu movilidad.</p>
+        </div>
+        
+        <div class="dashboard-content">
+            
+            <div class="dashboard-card" id="card-talleres">
+                <div class="card-content">
+                    <h3>Buscar Talleres</h3>
+                    <p>Encuentra mecÃ¡nicos de confianza y reserva citas.</p>
+                    <a href="buscar_talleres.html" class="btn">Explorar</a> 
+                </div>
+            </div>
+
+            <div class="dashboard-card" id="card-vehiculos">
+                 <div class="card-content">
+                    <h3>Mis VehÃ­culos</h3>
+                    <p>Gestiona la informaciÃ³n de tus vehÃ­culos registrados y consulta su historial.</p>
+                    <a href="gestionar_vehiculos.html" class="btn">Administrar</a> 
+                </div>
+            </div>
+
+            <div class="dashboard-card" id="card-citas">
+                 <div class="card-content">
+                    <h3>Mis PrÃ³ximas Citas</h3>
+                    <p>Consulta tus citas activas y tu historial de servicios completados.</p>
+                    <a href="mis_citas.html" class="btn">Ver Calendario</a> 
+                </div>
+            </div>
+            
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p>Â© 2025 AutoGuest. Todos los derechos reservados.</p>
+            <div class="social-links">
+                <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1. Verificar si el usuario ha iniciado sesiÃ³n
+            if (sessionStorage.getItem('isLoggedIn') !== 'true') {
+                // Si no, redirigir a la pÃ¡gina de login. La ruta es relativa a la ubicaciÃ³n actual.
+                alert('Tu sesiÃ³n ha expirado. Por favor, inicia sesiÃ³n de nuevo.');
+                window.location.href = '../../login_cliente.html';
+                return; // Detener la ejecuciÃ³n del script
+            }
+
+            // 2. Personalizar el saludo de bienvenida
+            const userName = sessionStorage.getItem('userName');
+            if (userName) {
+                document.querySelector('.dashboard-header .user-greeting').textContent = `Â¡Hola, ${userName}!`;
+            }
+
+            // 3. AÃ±adir funcionalidad al botÃ³n de cerrar sesiÃ³n
+            const logoutBtn = document.querySelector('.logout-btn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', async (e) => {
+                    e.preventDefault(); // Prevenir la navegaciÃ³n inmediata
+                    
+                    try {
+                        const response = await fetch('/api/registro/logout', { method: 'POST' });
+                        if (response.ok) {
+                            // Limpiar los datos de la sesiÃ³n del navegador
+                            sessionStorage.clear();
+                            // Redirigir a la pÃ¡gina de inicio
+                            window.location.href = '../../index.html';
+                        } else {
+                            alert('Error al cerrar sesiÃ³n. IntÃ©ntalo de nuevo.');
+                        }
+                    } catch (error) {
+                        console.error('Error de red al cerrar sesiÃ³n:', error);
+                        alert('Error de red al cerrar sesiÃ³n. IntÃ©ntalo de nuevo.');
+                    }
+                });
+            }
+        });
+    </script>
+
+    <div class="dashboard-card" onclick="window.location.href='perfil_cliente.html'" style="cursor:pointer;">
+        <div class="card-icon">
+            <i class="fas fa-user-circle"></i>
+        </div>
+        <div class="card-content">
+            <h3>Mi Perfil</h3>
+            <p>Gestiona tu información personal</p>
+        </div>
+    </div>
+<script src="perfil-link.js"></script>`n</body>
+</html>
+
+

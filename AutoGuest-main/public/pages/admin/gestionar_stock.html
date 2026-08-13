@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Stock - AutoGuest Admin</title>
+    <link rel="stylesheet" href="../cliente/catalogo-om66/css/style.css"> <!-- Reutilizar estilos -->
+    <style>
+        body {
+            background-color: #1a1a1a;
+            color: #f0f0f0;
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #111111;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(243, 156, 18, 0.2);
+        }
+        h1 {
+            text-align: center;
+            color: #f39c12;
+            margin-bottom: 30px;
+        }
+        .product-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        .product-item {
+            background-color: #1a1a1a;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        .product-item img {
+            max-width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        .product-item h3 {
+            color: #f0f0f0;
+            margin: 10px 0 5px;
+        }
+        .product-item p {
+            color: #aaa;
+            font-size: 0.9em;
+            flex-grow: 1;
+        }
+        .stock-control {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+        .stock-control input {
+            width: 60px;
+            padding: 8px;
+            border: 1px solid #f39c12;
+            border-radius: 5px;
+            background-color: #222;
+            color: #f0f0f0;
+            text-align: center;
+            margin-right: 10px;
+        }
+        .stock-control button {
+            background-color: #f39c12;
+            color: #1a1a1a;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        .stock-control button:hover {
+            background-color: #e67e22;
+        }
+        .message {
+            margin-top: 15px;
+            font-size: 0.9em;
+            color: #6fbf40;
+        }
+        .error-message {
+            color: #e74c3c;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Gestión de Stock de Productos</h1>
+        <div class="product-list" id="product-list">
+            <p>Cargando productos...</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const productListDiv = document.getElementById('product-list');
+
+            async function fetchProducts() {
+                try {
+                    const response = await fetch('/api/inventario');
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    const products = await response.json();
+                    renderProducts(products);
+                } catch (error) {
+                    console.error('Error al cargar productos:', error);
+                    productListDiv.innerHTML = '<p class="error-message">Error al cargar los productos. Inténtalo de nuevo.</p>';
+                }
+            }
+
+            function renderProducts(products) {
+                productListDiv.innerHTML = '';
+                if (products.length === 0) {
+                    productListDiv.innerHTML = '<p>No hay productos en el inventario.</p>';
+                    return;
+                }
+
+                products.forEach(product => {
+                    const productItem = document.createElement('div');
+                    productItem.className = 'product-item';
+                    productItem.innerHTML = `
+                        <img src="../cliente/catalogo-om66/${product.imagen}" alt="${product.nombre}">
+                        <h3>${product.nombre}</h3>
+                        <p>${product.descripcion}</p>
+                        <div class="stock-control">
+                            <label for="stock-${product.id_producto}">Stock:</label>
+                            <input type="number" id="stock-${product.id_producto}" value="${product.stock}" min="0">
+                            <button data-id="${product.id_producto}">Actualizar</button>
+                        </div>
+                        <div id="message-${product.id_producto}" class="message"></div>
+                    `;
+                    productListDiv.appendChild(productItem);
+                });
+
+                attachEventListeners();
+            }
+
+            function attachEventListeners() {
+                document.querySelectorAll('.stock-control button').forEach(button => {
+                    button.addEventListener('click', async (event) => {
+                        const id = event.target.dataset.id;
+                        const stockInput = document.getElementById(`stock-${id}`);
+                        const newStock = parseInt(stockInput.value);
+                        const messageDiv = document.getElementById(`message-${id}`);
+
+                        if (isNaN(newStock) || newStock < 0) {
+                            messageDiv.className = 'message error-message';
+                            messageDiv.textContent = 'Stock no válido.';
+                            return;
+                        }
+
+                        messageDiv.textContent = 'Actualizando...';
+                        messageDiv.className = 'message'; // Reset class
+
+                        try {
+                            const response = await fetch(`/api/inventario/${id}/stock`, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({ stock: newStock })
+                            });
+
+                            const data = await response.json();
+
+                            if (response.ok) {
+                                messageDiv.className = 'message';
+                                messageDiv.textContent = data.mensaje;
+                            } else {
+                                messageDiv.className = 'message error-message';
+                                messageDiv.textContent = data.mensaje || 'Error al actualizar stock.';
+                            }
+                        } catch (error) {
+                            console.error('Error de comunicación:', error);
+                            messageDiv.className = 'message error-message';
+                            messageDiv.textContent = 'Error de comunicación con el servidor.';
+                        }
+                    });
+                });
+            }
+
+            fetchProducts();
+        });
+    </script>
+    <script src="http://localhost:3000/js/global_nav.js"></script>
+</body>
+</html>

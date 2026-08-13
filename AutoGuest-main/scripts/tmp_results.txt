@@ -1,0 +1,16 @@
+Table, Column, Type
+administrador, idusuario, character varying
+administrador, idtaller, character varying
+cita, idtaller, character varying
+cliente, idusuario, character varying
+configuracion_taller, idtaller, text
+iteminventario, idtaller, character varying
+mecanico, idtaller, character varying
+mecanico, idusuario, character varying
+notificacion, idusuario, character varying
+resenas, idtaller, character varying
+resenas, idusuario, character varying
+servicio, idtaller, character varying
+taller, idtaller, character varying
+usuario, idusuario, character varying
+venta_fisica, idtaller, text

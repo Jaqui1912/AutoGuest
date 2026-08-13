@@ -1,0 +1,18 @@
+{
+  "name": "AutoGuest",
+  "short_name": "AutoGuest",
+  "description": "Transparencia y Control Automotriz",
+  "start_url": "/home.html",
+  "display": "standalone",
+  "background_color": "#1a1a1a",
+  "theme_color": "#f39c12",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "imagenes/app_icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

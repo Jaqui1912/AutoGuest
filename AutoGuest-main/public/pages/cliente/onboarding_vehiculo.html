@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuración Inicial - AutoGuest</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <!-- Ruta CSS: Ajustada a 2 niveles para llegar a la raíz/style.css -->
+    <link rel="stylesheet" href="../../style.css"> 
+    <style>
+        /* Estilos para el nuevo diseño de onboarding */
+        body {
+            /* Imagen de fondo a pantalla completa */
+            background-image: url('https://images.pexels.com/photos/1545743/pexels-photo-1545743.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed; /* Mantiene el fondo fijo al hacer scroll */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        /* Capa oscura sobre el fondo para mejorar legibilidad */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px); /* Efecto de desenfoque */
+            z-index: -1;
+        }
+        
+        /* Contenedor principal que centra la tarjeta */
+        .onboarding-wrapper {
+            width: 100%;
+            max-width: 550px;
+            background-color: rgba(44, 44, 44, 0.85); /* Fondo de tarjeta semitransparente */
+            backdrop-filter: blur(10px); /* Desenfoque adicional para la tarjeta */
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+
+        .onboarding-header .logo {
+            width: 120px;
+            margin-bottom: 20px;
+        }
+
+        .onboarding-wrapper h1 {
+            font-size: 2.2em;
+            color: #ffffff;
+            margin-bottom: 10px;
+        }
+
+        .onboarding-wrapper p {
+            font-size: 1.1em;
+            color: #c0c0c0;
+            margin-bottom: 30px;
+        }
+
+        .onboarding-form {
+            text-align: left;
+        }
+        
+        .onboarding-actions {
+            margin-top: 20px;
+        }
+
+        .btn-skip {
+            background: none;
+            border: none;
+            color: #a0a0a0;
+            text-decoration: underline;
+            cursor: pointer;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        .btn-skip:hover {
+            color: #f39c12;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="onboarding-wrapper">
+        <div class="onboarding-header">
+            <img src="../../imagenes/Logo_Autoguest.png" alt="Logo de AutoGuest" class="logo">
+        </div>
+
+        <h1>Un último paso</h1> 
+        <p>Añade tu vehículo para que podamos ofrecerte servicios personalizados.</p>
+
+        <form id="addVehicleForm" class="onboarding-form">
+            <div class="form-group">
+                <label for="vehicle-brand">Marca</label>
+                <input type="text" id="vehicle-brand" class="form-control" placeholder="Ej: Toyota" required>
+            </div>
+            <div class="form-group">
+                <label for="vehicle-model">Modelo</label>
+                <input type="text" id="vehicle-model" class="form-control" placeholder="Ej: Corolla" required>
+            </div>
+            <div class="form-group">
+                <label for="vehicle-year">Año</label>
+                <input type="number" id="vehicle-year" class="form-control" placeholder="Ej: 2020" min="1900" max="2025" required>
+            </div>
+            <div class="form-group">
+                <label for="vehicle-plate">Matrícula / Placa</label>
+                <input type="text" id="vehicle-plate" class="form-control" placeholder="Ej: ABC-123" required>
+            </div>
+            <button type="submit" class="btn">Guardar y Continuar</button>
+        </form>
+
+        <div class="onboarding-actions">
+            <button type="button" class="btn-skip" id="skipVehicleSetupBtn">Lo haré más tarde</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- INICIO: Guardián de Autenticación ---
+            if (sessionStorage.getItem('isLoggedIn') !== 'true') {
+                alert('Tu sesión ha expirado. Por favor, inicia sesión de nuevo.');
+                window.location.href = '../../login_cliente.html';
+                return; // Detener la ejecución del script
+            }
+            // --- FIN: Guardián de Autenticación ---
+
+            const addVehicleForm = document.getElementById('addVehicleForm');
+            const skipVehicleSetupBtn = document.getElementById('skipVehicleSetupBtn');
+
+            // Lógica para guardar el vehículo
+            addVehicleForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                alert('¡Vehículo guardado! Redirigiendo a tu panel de control.');
+                window.location.href = 'dashboard_cliente.html'; 
+            });
+
+            // Lógica para omitir el paso
+            skipVehicleSetupBtn.addEventListener('click', () => {
+                alert('Puedes añadir tu vehículo más tarde desde tu panel. Redirigiendo...');
+                window.location.href = 'dashboard_cliente.html'; 
+            });
+        });
+    </script>
+
+    <script src="../../js/global_nav.js"></script>
+</body>
+</html>

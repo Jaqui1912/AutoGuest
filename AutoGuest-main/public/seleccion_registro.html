@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crea tu Cuenta - AutoGuest</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="form-page-wrapper">
+        <!-- Columna de Imagen (Diseño Premium compartido) -->
+        <div class="form-image-column">
+            <div class="logo-link">
+                <a href="home.html">
+                    <img src="imagenes/Logo_Autoguest.png" alt="Logo de AutoGuest">
+                </a>
+            </div>
+            <div class="image-text">
+                <h2>Únete a la evolución.</h2>
+                <p>Elige el tipo de cuenta que mejor se adapte a tus necesidades y comienza hoy mismo.</p>
+            </div>
+        </div>
+
+        <!-- Columna de Contenido (Selector de Selección) -->
+        <div class="form-content-column">
+            <div class="portal-selector-container">
+                <h1>Crea tu Cuenta</h1>
+                <p>Selecciona cómo quieres registrarte en AutoGuest.</p>
+
+                <div class="portal-buttons">
+                    <a href="registro_cliente.html" class="btn btn-portal-select">
+                        <i class="fa-solid fa-car"></i>
+                        <div class="selection-text">
+                            <strong>Soy Conductor</strong>
+                            <span>Quiero gestionar el mantenimiento de mi vehículo.</span>
+                        </div>
+                    </a>
+
+                    <a href="registro_taller.html" class="btn btn-portal-select">
+                        <i class="fa-solid fa-wrench"></i>
+                        <div class="selection-text">
+                            <strong>Soy un Taller</strong>
+                            <span>Quiero digitalizar mis servicios y atraer más clientes.</span>
+                        </div>
+                    </a>
+
+                    <a href="registro_mecanico.html" class="btn btn-portal-select">
+                        <i class="fa-solid fa-user-gear"></i>
+                        <div class="selection-text">
+                            <strong>Soy Mecánico</strong>
+                            <span>Quiero trabajar con talleres modernos y gestionar mi perfil.</span>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="extra-link">
+                    <p>¿Ya tienes una cuenta? <a href="index.html">Inicia Sesión</a></p>
+                    <p style="margin-top: 10px;"><a href="home.html">Volver al Inicio</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reutilizamos los estilos del selector para mantener la consistencia -->
+    <style>
+        .selection-text {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+        }
+
+        .selection-text strong {
+            font-size: 1.1em;
+            color: #ffffff;
+        }
+
+        .selection-text span {
+            font-size: 0.85em;
+            color: #a0a0a0;
+            font-weight: 400;
+        }
+
+        .btn-portal-select:hover .selection-text strong,
+        .btn-portal-select:hover .selection-text span {
+            color: #1a1a1a;
+        }
+    </style>
+
+    <script src="http://localhost:3000/js/global_nav.js"></script>
+</body>
+
+</html>

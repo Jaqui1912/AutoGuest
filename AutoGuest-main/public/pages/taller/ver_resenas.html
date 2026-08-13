@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ver Reseñas - Portal de Taller</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="../../style.css">
+    <style>
+        body {
+            background-color: #202020;
+        }
+
+        .portal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 40px;
+            background-color: #1a1a1a;
+            border-bottom: 1px solid #333;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .portal-header .logo {
+            width: 120px;
+        }
+
+        .back-link {
+            color: #c0c0c0;
+            text-decoration: none;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.3s ease;
+        }
+
+        .back-link:hover {
+            color: #f39c12;
+        }
+
+        .header-right {
+            text-align: right;
+        }
+
+        .header-right h2 {
+            margin: 0;
+            font-size: 1.2em;
+            color: #ffffff;
+        }
+
+        .header-right p {
+            margin: 0;
+            font-size: 0.9em;
+            color: #a0a0a0;
+        }
+
+        .page-container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .page-title {
+            font-size: 2.2em;
+            color: #ffffff;
+            margin: 0;
+        }
+
+        /* --- ESTILOS PARA LOS BOTONES DE FILTRO --- */
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background-color: #3f3f3f;
+            border: 1px solid #555;
+            color: #f0f0f0;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .filter-btn .fa-star {
+            margin-right: 5px;
+            color: #f39c12;
+        }
+
+        .filter-btn:hover {
+            background-color: #555;
+        }
+
+        .filter-btn.active {
+            background-color: #f39c12;
+            color: #1a1a1a;
+            border-color: #f39c12;
+        }
+
+        .summary-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            background-color: #2c2c2c;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .average-rating {
+            text-align: center;
+        }
+
+        .average-rating h3 {
+            font-size: 1.4em;
+            color: #a0a0a0;
+            margin: 0 0 10px 0;
+        }
+
+        .average-rating .score {
+            font-size: 3.5em;
+            color: #f39c12;
+            font-weight: bold;
+        }
+
+        .average-rating .stars i {
+            font-size: 1.2em;
+            color: #f39c12;
+        }
+
+        .rating-breakdown {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .rating-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9em;
+        }
+
+        .rating-bar .label {
+            color: #a0a0a0;
+            width: 60px;
+        }
+
+        .rating-bar .bar-container {
+            flex-grow: 1;
+            background-color: #3f3f3f;
+            border-radius: 5px;
+            height: 10px;
+        }
+
+        .rating-bar .bar {
+            background-color: #f39c12;
+            height: 100%;
+            border-radius: 5px;
+        }
+
+        .reviews-list {
+            display: grid;
+            gap: 20px;
+        }
+
+        .review-card {
+            background-color: #2c2c2c;
+            border-radius: 12px;
+            padding: 25px;
+            border-left: 4px solid #f39c12;
+            transition: opacity 0.3s ease, height 0.3s ease;
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .review-header .client-name {
+            font-size: 1.2em;
+            font-weight: 500;
+            color: #ffffff;
+        }
+
+        .review-header .date {
+            font-size: 0.9em;
+            color: #a0a0a0;
+        }
+
+        .review-card .stars i {
+            color: #f39c12;
+        }
+
+        .review-card .comment {
+            color: #e0e0e0;
+            line-height: 1.6;
+            margin-top: 10px;
+        }
+
+        /* === Sistema de Notificaciones === */
+        .notification-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .notification-trigger {
+            background: none;
+            border: none;
+            color: #f39c12;
+            font-size: 1.6em;
+            cursor: pointer;
+            padding: 8px;
+            position: relative;
+            transition: transform 0.2s;
+        }
+
+        .notification-trigger:hover {
+            transform: scale(1.1);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            background-color: #e74c3c;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 0.6em;
+            font-weight: bold;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            border: 2px solid #1a1a1a;
+        }
+
+        .notification-dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            width: 320px;
+            background-color: #2c2c2c;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid #444;
+            border-radius: 12px;
+            margin-top: 15px;
+            z-index: 1000;
+            overflow: hidden;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        .notification-dropdown.active {
+            display: block;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .notification-header {
+            padding: 12px 15px;
+            background-color: #333;
+            border-bottom: 1px solid #444;
+        }
+
+        .notification-header h3 {
+            margin: 0;
+            font-size: 1em;
+            color: #f39c12;
+        }
+
+        .notification-list {
+            max-height: 350px;
+            overflow-y: auto;
+        }
+
+        .notification-item {
+            padding: 12px 15px;
+            border-bottom: 1px solid #3a3a3a;
+            display: flex;
+            gap: 12px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .notification-item:hover {
+            background-color: #3a3a3a;
+        }
+
+        .notification-item.unread {
+            background-color: rgba(243, 156, 18, 0.05);
+            border-left: 3px solid #f39c12;
+        }
+
+        .notification-icon {
+            font-size: 1.2em;
+            margin-top: 2px;
+        }
+
+        .notification-content {
+            flex: 1;
+        }
+
+        .notification-content strong {
+            display: block;
+            font-size: 0.9em;
+            color: #fff;
+            margin-bottom: 2px;
+        }
+
+        .notification-content p {
+            margin: 0;
+            font-size: 0.8em;
+            color: #aaa;
+            line-height: 1.3;
+        }
+
+        .notification-time {
+            display: block;
+            font-size: 0.7em;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .notification-empty {
+            padding: 30px 15px;
+            text-align: center;
+            color: #777;
+            font-style: italic;
+            font-size: 0.9em;
+        }
+
+        .text-danger { color: #e74c3c; }
+        .text-warning { color: #f1c40f; }
+        .text-success { color: #2ecc71; }
+        .text-info { color: #3498db; }
+        .text-primary { color: #f39c12; }
+    </style>
+</head>
+
+<body>
+    <header class="portal-header">
+        <div class="header-left">
+            <a href="../../portal_taller.html"><img src="../../imagenes/Logo_Autoguest.png" alt="Logo de AutoGuest" class="logo"></a>
+            <a href="../../portal_taller.html" class="back-link"><i class="fas fa-arrow-left"></i> Volver al Panel</a>
+        </div>
+        <div class="header-right" style="display: flex; align-items: center; gap: 20px;">
+            <!-- Sistema de Notificaciones Unificado -->
+            <div class="notification-wrapper">
+                <button class="notification-trigger" id="notificationTrigger" onclick="NotificationSystem.toggleDropdown()">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge" id="notificationBadge">0</span>
+                </button>
+                <div class="notification-dropdown" id="notificationDropdown">
+                    <div class="notification-header">
+                        <h3>Notificaciones</h3>
+                    </div>
+                    <div class="notification-list" id="notificationList">
+                        <div class="notification-empty">Cargando...</div>
+                    </div>
+                </div>
+            </div>
+            <div style="text-align: right;">
+                <h2 id="workshopNameDisplay" style="margin: 0; font-size: 1.1em; color: #fff;">Taller</h2>
+                <p style="margin: 0; font-size: 0.85em; color: #a0a0a0;">Reseñas de Clientes</p>
+            </div>
+        </div>
+    </header>
+
+    <main class="page-container">
+        <div class="page-header">
+            <h1 class="page-title">Reseñas de Clientes</h1>
+        </div>
+
+        <section class="summary-container">
+            <!-- (Contenido del resumen sin cambios) -->
+            <div class="average-rating">
+                <h3>Valoración Media</h3>
+                <p class="score">4.8</p>
+                <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                        class="fas fa-star"></i><i class="fas fa-star-half-alt"></i></div>
+            </div>
+            <div class="rating-breakdown">
+                <div class="rating-bar"><span class="label">5 estrellas</span>
+                    <div class="bar-container">
+                        <div class="bar" style="width: 85%;"></div>
+                    </div>
+                </div>
+                <div class="rating-bar"><span class="label">4 estrellas</span>
+                    <div class="bar-container">
+                        <div class="bar" style="width: 10%;"></div>
+                    </div>
+                </div>
+                <div class="rating-bar"><span class="label">3 estrellas</span>
+                    <div class="bar-container">
+                        <div class="bar" style="width: 5%;"></div>
+                    </div>
+                </div>
+                <div class="rating-bar"><span class="label">2 estrellas</span>
+                    <div class="bar-container">
+                        <div class="bar" style="width: 0%;"></div>
+                    </div>
+                </div>
+                <div class="rating-bar"><span class="label">1 estrella</span>
+                    <div class="bar-container">
+                        <div class="bar" style="width: 0%;"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- === BOTONES DE FILTRO AÑADIDOS AQUÍ === -->
+        <div class="filter-buttons" id="reviewFilters">
+            <button class="filter-btn active" data-filter="all">Todas</button>
+            <button class="filter-btn" data-filter="5"><i class="fas fa-star"></i> 5</button>
+            <button class="filter-btn" data-filter="4"><i class="fas fa-star"></i> 4</button>
+            <button class="filter-btn" data-filter="3"><i class="fas fa-star"></i> 3</button>
+            <button class="filter-btn" data-filter="2"><i class="fas fa-star"></i> 2</button>
+            <button class="filter-btn" data-filter="1"><i class="fas fa-star"></i> 1</button>
+        </div>
+        <hr style="border-color: #3f3f3f; margin: 20px 0;">
+
+        <!-- Listado de Reseñas con data-rating -->
+        <section class="reviews-list" id="resenas-container">
+            <!-- Reseña 1 -->
+            <div class="review-card" data-rating="5">
+                <div class="review-header"><span class="client-name">Ana García</span><span class="date">26 de Dic,
+                        2024</span></div>
+                <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                        class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                <p class="comment">"¡Excelente servicio! Fueron muy rápidos, profesionales y el precio fue justo.
+                    Totalmente recomendado, mi coche funciona mejor que nunca."</p>
+            </div>
+            <!-- Reseña 2 -->
+            <div class="review-card" data-rating="5">
+                <div class="review-header"><span class="client-name">Carlos R.</span><span class="date">26 de Dic,
+                        2024</span></div>
+                <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                        class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                <p class="comment">"Muy contento con el cambio de aceite. Personal amable y proceso muy eficiente.
+                    Volveré sin duda."</p>
+            </div>
+            <!-- Reseña 3 -->
+            <div class="review-card" data-rating="4">
+                <div class="review-header"><span class="client-name">Luisa M.</span><span class="date">16 de Nov,
+                        2024</span></div>
+                <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                        class="fas fa-star"></i><i class="far fa-star"></i></div>
+                <p class="comment">"Buen trabajo con los frenos, pero la espera fue un poco más larga de lo que me
+                    dijeron inicialmente. Por lo demás, todo bien."</p>
+            </div>
+            <!-- Reseña 4 (Nueva, con baja calificación para probar el filtro) -->
+            <div class="review-card" data-rating="3">
+                <div class="review-header"><span class="client-name">Jorge P.</span><span class="date">10 de Nov,
+                        2024</span></div>
+                <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                        class="far fa-star"></i><i class="far fa-star"></i></div>
+                <p class="comment">"El servicio fue correcto, pero el precio final fue más alto de lo presupuestado. Me
+                    gustaría más transparencia la próxima vez."</p>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const filterContainer = document.getElementById('reviewFilters');
+            const reviews = document.querySelectorAll('.review-card');
+
+            filterContainer.addEventListener('click', (e) => {
+                // Asegurarse de que el clic fue en un botón
+                if (e.target.tagName !== 'BUTTON') return;
+
+                // Gestionar el estado activo del botón
+                const filterButtons = filterContainer.querySelectorAll('.filter-btn');
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                e.target.classList.add('active');
+
+                // Obtener el filtro seleccionado
+                const filterValue = e.target.dataset.filter;
+
+                // Aplicar el filtro a las reseñas
+                reviews.forEach(review => {
+                    const reviewRating = review.dataset.rating;
+
+                    if (filterValue === 'all' || filterValue === reviewRating) {
+                        review.style.display = 'block'; // Mostrar reseña
+                    } else {
+                        review.style.display = 'none'; // Ocultar reseña
+                    }
+                });
+            });
+        });
+    </script>
+    <script src="resenas-admin.js"></script>`n
+    <script src="http://localhost:3000/js/global_nav.js"></script>
+    <script src="../../js/notifications.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tallerName = sessionStorage.getItem('tallerName');
+            if (tallerName) {
+                document.getElementById('workshopNameDisplay').textContent = tallerName;
+            }
+        });
+    </script>
+</body>
+
+</html>

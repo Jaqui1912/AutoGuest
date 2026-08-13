@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verificación de Correo - AutoGuest</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <!-- Ruta CSS: Correcta -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="form-page-wrapper">
+        <!-- ===== COLUMNA DE LA IMAGEN (IZQUIERDA) ===== -->
+        <div class="form-image-column">
+            <div class="logo-link">
+                <a href="home.html">
+                    <img src="imagenes/Logo_Autoguest.png" alt="Logo de AutoGuest">
+                </a>
+            </div>
+            <div class="image-text">
+                <h2>Un último paso para mayor seguridad.</h2>
+                <p>Verificar tu correo nos ayuda a proteger tu cuenta y a mantener nuestra comunidad segura para todos.</p>
+            </div>
+        </div>
+
+        <!-- ===== COLUMNA DEL FORMULARIO (DERECHA) ===== -->
+        <div class="form-content-column">
+            <div class="form-container">
+                <h1>Verifica tu Correo</h1>
+                <p>Hemos enviado un código de 4 dígitos a tu correo. Por favor, ingrésalo a continuación (el código es 1234).</p>
+                <form id="verificationForm">
+                    <div class="code-container">
+                        <input type="text" class="code-input" id="code-1" maxlength="1" required>
+                        <input type="text" class="code-input" id="code-2" maxlength="1" required>
+                        <input type="text" class="code-input" id="code-3" maxlength="1" required>
+                        <input type="text" class="code-input" id="code-4" maxlength="1" required>
+                    </div>
+                    <button type="submit" class="btn">Verificar Cuenta</button>
+                </form>
+                <div class="extra-link">
+                    <a href="#">¿No recibiste el código? Reenviar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const codeInputs = document.querySelectorAll('.code-input');
+            const verificationForm = document.getElementById('verificationForm');
+
+            // Mueve el foco automáticamente al siguiente campo de código
+            codeInputs.forEach((input, index) => {
+                input.addEventListener('input', () => {
+                    if (input.value.length === 1 && index < codeInputs.length - 1) {
+                        codeInputs[index + 1].focus();
+                    }
+                });
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Backspace' && input.value.length === 0 && index > 0) {
+                        codeInputs[index - 1].focus();
+                    }
+                });
+            });
+
+            verificationForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                let enteredCode = '';
+                codeInputs.forEach(input => enteredCode += input.value);
+                const correctCode = '1234'; // Código de verificación simulado
+
+                if (enteredCode === correctCode) {
+                    // ===== LÓGICA CLAVE DE REDIRECCIÓN =====
+                    // 1. Lee los parámetros de la URL (ej. "?redirectTo=pages/cliente/onboarding_vehiculo.html")
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const redirectTo = urlParams.get('redirectTo');
+
+                    // 2. Si el parámetro 'redirectTo' existe, redirige a esa página
+                    if (redirectTo) {
+                        alert('¡Verificación exitosa! Vamos a configurar tu perfil.');
+                        window.location.href = redirectTo;
+                    } else {
+                        // 3. Si no hay parámetro, redirige a una página por defecto (como el selector de portal)
+                        alert('Verificación exitosa, pero no se encontró un destino. Redirigiendo a la página principal.');
+                        window.location.href = 'index.html';
+                    }
+                } else {
+                    alert('Código incorrecto. Por favor, inténtalo de nuevo.');
+                    codeInputs.forEach(input => input.value = '');
+                    codeInputs[0].focus();
+                }
+            });
+
+            // Pone el foco en el primer campo de código al cargar la página
+            codeInputs[0].focus();
+        });
+    </script>
+    <script src="http://localhost:3000/js/global_nav.js"></script>
+</body>
+</html>

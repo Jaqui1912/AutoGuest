@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmación de Pago - AutoGuest</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="../../style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #2c2c2c;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            color: #ffffff;
+            text-align: center;
+        }
+
+        .success-icon {
+            font-size: 80px;
+            color: #2ecc71;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            margin-bottom: 10px;
+            color: #f39c12;
+        }
+
+        .ticket-box {
+            background-color: #f9f9f9;
+            color: #333;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            text-align: left;
+            position: relative;
+        }
+
+        .ticket-box h3 {
+            color: #f39c12;
+            text-align: center;
+            margin-bottom: 20px;
+            border-bottom: 1px dashed #ccc;
+            padding-bottom: 10px;
+        }
+
+        .ticket-info p {
+            margin: 5px 0;
+            font-size: 0.95em;
+        }
+
+        table.ticket-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        table.ticket-table th,
+        table.ticket-table td {
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+            text-align: left;
+        }
+
+        .total-row {
+            font-weight: bold;
+            font-size: 1.2em;
+            color: #2c3e50;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: #f39c12;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: #d68910;
+        }
+
+        .btn-secondary {
+            background: #444;
+            color: #fff;
+        }
+
+        .btn-secondary:hover {
+            background: #555;
+        }
+
+        .btn-success {
+            background: #27ae60;
+            color: #fff;
+        }
+
+        .btn-success:hover {
+            background: #219150;
+        }
+
+        @media (max-width: 600px) {
+            .buttons {
+                flex-direction: column;
+            }
+        }
+
+        /* === Sistema de Notificaciones Unificado === */
+        .notification-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .notification-trigger {
+            background: none;
+            border: none;
+            color: #f39c12;
+            font-size: 1.6em;
+            cursor: pointer;
+            padding: 8px;
+            position: relative;
+            transition: transform 0.2s;
+        }
+
+        .notification-trigger:hover {
+            transform: scale(1.1);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            background-color: #e74c3c;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 0.6em;
+            font-weight: bold;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            border: 2px solid #1a1a1a;
+        }
+
+        .notification-dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            width: 320px;
+            background-color: #2c2c2c;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid #444;
+            border-radius: 12px;
+            margin-top: 15px;
+            z-index: 1000;
+            overflow: hidden;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        .notification-dropdown.active {
+            display: block;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .notification-header {
+            padding: 12px 15px;
+            background-color: #333;
+            border-bottom: 1px solid #444;
+        }
+
+        .notification-header h3 {
+            margin: 0;
+            font-size: 1em;
+            color: #f39c12;
+            text-align: left;
+        }
+
+        .notification-list {
+            max-height: 350px;
+            overflow-y: auto;
+        }
+
+        .notification-item {
+            padding: 12px 15px;
+            border-bottom: 1px solid #3a3a3a;
+            display: flex;
+            gap: 12px;
+            cursor: pointer;
+            transition: background 0.2s;
+            text-align: left;
+        }
+
+        .notification-item:hover {
+            background-color: #3a3a3a;
+        }
+
+        .notification-item.unread {
+            background-color: rgba(243, 156, 18, 0.05);
+            border-left: 3px solid #f39c12;
+        }
+
+        .notification-icon {
+            font-size: 1.2em;
+            margin-top: 2px;
+        }
+
+        .notification-content {
+            flex: 1;
+        }
+
+        .notification-content strong {
+            display: block;
+            font-size: 0.9em;
+            color: #fff;
+            margin-bottom: 2px;
+        }
+
+        .notification-content p {
+            margin: 0;
+            font-size: 0.8em;
+            color: #aaa;
+            line-height: 1.3;
+        }
+
+        .notification-time {
+            display: block;
+            font-size: 0.7em;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .notification-empty {
+            padding: 30px 15px;
+            text-align: center;
+            color: #777;
+            font-style: italic;
+            font-size: 0.9em;
+        }
+
+        .text-danger { color: #e74c3c; }
+        .text-warning { color: #f1c40f; }
+        .text-success { color: #2ecc71; }
+        .text-info { color: #3498db; }
+        .text-primary { color: #f39c12; }
+    </style>
+</head>
+
+<body>
+    <header class="dashboard-header" style="display: flex; justify-content: space-between; align-items: center; padding: 15px 40px; background-color: #1a1a1a; border-bottom: 1px solid #333;">
+        <div class="header-left" style="display: flex; align-items: center; gap: 20px;">
+            <a href="historial_cliente.html" id="header-back-btn" style="color: #f39c12; text-decoration: none; font-size: 20px;">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+            <a href="dashboard_cliente.html">
+                <img src="../../imagenes/Logo_Autoguest.png" alt="Logo de AutoGuest" width="110">
+            </a>
+        </div>
+        <div class="header-right" style="display: flex; align-items: center; gap: 20px;">
+            <!-- Sistema de Notificaciones Unificado -->
+            <div class="notification-wrapper">
+                <button class="notification-trigger" id="notificationTrigger" onclick="NotificationSystem.toggleDropdown()">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge" id="notificationBadge">0</span>
+                </button>
+                <div class="notification-dropdown" id="notificationDropdown">
+                    <div class="notification-header">
+                        <h3>Notificaciones</h3>
+                    </div>
+                    <div class="notification-list" id="notificationList">
+                        <div class="notification-empty">Cargando...</div>
+                    </div>
+                </div>
+            </div>
+            <a href="dashboard_cliente.html" id="header-home-btn" style="color: #f39c12; font-size: 24px; text-decoration: none;">
+                <i class="fas fa-home"></i>
+            </a>
+        </div>
+    </header>
+
+    <div class="container" id="ticket-container">
+        <i class="fas fa-check-circle success-icon"></i>
+        <h2>¡Pago Confirmado!</h2>
+        <p>Tu transacción ha sido procesada exitosamente.</p>
+
+        <div class="ticket-box" id="printable-ticket">
+            <h3>Comprobante de Pago AutoGuest</h3>
+            <div class="ticket-info">
+                <p><strong>Nº de Ticket:</strong> <span id="lblIdTicket">Cargando...</span></p>
+                <p><strong>Estado:</strong> <span id="lblEstado">Cargando...</span></p>
+                <p><strong>Tipo de Operación:</strong> <span id="lblTipo">Cargando...</span></p>
+                <p><strong>Establecimiento:</strong> <span id="lblTaller">Cargando...</span></p>
+                <p><strong>Fecha:</strong> <span id="lblFecha">Cargando...</span></p>
+            </div>
+
+            <table class="ticket-table">
+                <thead>
+                    <tr>
+                        <th>Descripción</th>
+                        <th>Cant</th>
+                        <th>Precio</th>
+                        <th>Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody id="ticket-items">
+                    <!-- Items -->
+                </tbody>
+                <tfoot>
+                    <tr class="total-row">
+                        <td colspan="3" style="text-align: right;">Total Pagado:</td>
+                        <td id="lblTotal">$0.00</td>
+                    </tr>
+                </tfoot>
+            </table>
+
+            <div
+                style="text-align: center; margin-top: 20px; font-weight: bold; color: #f39c12; border-top: 1px dashed #ccc; padding-top: 15px;">
+                <p>¡Muchas gracias por su preferencia en AutoGuest!</p>
+            </div>
+        </div>
+
+        <div class="buttons" id="bottom-buttons">
+            <button class="btn btn-success" onclick="downloadPDF()"><i class="fas fa-file-pdf"></i> Imprimir</button>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = ''; 
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const idTicket = urlParams.get('idTicket') || urlParams.get('ticket');
+
+            if (!idTicket) {
+                alert("No se encontró ID de ticket válido");
+                return;
+            }
+
+            const isHistory = urlParams.get('source') === 'history';
+            const headerBackBtn = document.getElementById('header-back-btn');
+            const headerHomeBtn = document.getElementById('header-home-btn');
+            const bottomButtons = document.getElementById('bottom-buttons');
+
+            if (isHistory) {
+                // History mode
+                headerBackBtn.style.display = 'flex';
+                headerHomeBtn.style.display = 'block';
+                bottomButtons.innerHTML = `<button class="btn btn-success" onclick="downloadPDF()"><i class="fas fa-file-pdf"></i> Imprimir</button>`;
+            } else {
+                // Purchase mode
+                const idTallerTicket = urlParams.get('idTaller');
+                let catalogoUrl = "catalogo-om66/Catalogo_Productos.html";
+                if (idTallerTicket) {
+                    catalogoUrl += `?idTaller=${idTallerTicket}`;
+                }
+
+                headerBackBtn.style.display = 'none';
+                headerHomeBtn.style.display = 'none';
+                bottomButtons.innerHTML = `
+                    <a href="${catalogoUrl}" class="btn btn-primary"><i class="fas fa-shopping-cart"></i> Seguir Comprando</a>
+                    <button class="btn btn-success" onclick="downloadPDF()"><i class="fas fa-file-pdf"></i> Imprimir</button>
+                    <a href="dashboard_cliente.html" class="btn btn-secondary"><i class="fas fa-home"></i></a>
+                `;
+            }
+
+            document.getElementById('lblIdTicket').innerText = idTicket;
+
+            try {
+                const res = await fetch(`${API_URL}/api/tickets/detalle/${idTicket}`, {
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                        'Content-Type': 'application/json'
+                    },
+                    credentials: 'include'
+                });
+                if (res.ok) {
+                    const data = await res.json();
+                    document.getElementById('lblEstado').innerText = data.ticket.estado;
+                    document.getElementById('lblTipo').innerText = data.tipo;
+                    document.getElementById('lblTaller').innerText = data.taller || 'No especificado';
+                    document.getElementById('lblFecha').innerText = data.fecha || 'No disponible';
+
+                    const tbody = document.getElementById('ticket-items');
+                    tbody.innerHTML = '';
+
+                    data.items.forEach(item => {
+                        tbody.innerHTML += `
+                            <tr>
+                                <td>${item.descripcion}</td>
+                                <td>${item.cantidad}</td>
+                                <td>$${item.precio.toFixed(2)}</td>
+                                <td>$${item.subtotal.toFixed(2)}</td>
+                            </tr>
+                        `;
+                    });
+
+                    document.getElementById('lblTotal').innerText = `$${data.total.toFixed(2)} ${data.moneda}`;
+                } else {
+                    document.getElementById('ticket-items').innerHTML = `<tr><td colspan="4" style="text-align:center;">No se pudieron cargar los detalles del recibo.</td></tr>`;
+                }
+            } catch (err) {
+                console.error("Error detallando ticket", err);
+            }
+        });
+
+        function downloadPDF() {
+            var element = document.getElementById('printable-ticket');
+            var opt = {
+                margin: 1,
+                filename: 'Comprobante_Pago_' + document.getElementById('lblIdTicket').innerText + '.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+
+            // Promise-based API for generating PDF
+            html2pdf().set(opt).from(element).save();
+        }
+    </script>
+    <script src="../../js/notifications.js"></script>
+</body>
+
+</html>

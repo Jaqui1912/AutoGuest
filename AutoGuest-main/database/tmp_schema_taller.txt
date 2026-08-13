@@ -1,0 +1,10 @@
+=== SCHEMA: taller ===
+idtaller: character varying
+nombre: character varying
+direccion: text
+foto_perfil: text
+link_maps: text
+telefono_contacto: character varying
+redes_sociales: text
+horario: text
+sobre_nosotros: text

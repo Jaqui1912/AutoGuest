@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventario - Portal de Taller</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="../../style.css">
+    <style>
+        body {
+            background-color: #202020;
+            color: #fff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .portal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 40px;
+            background-color: #1a1a1a;
+            border-bottom: 1px solid #333;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo {
+            width: 120px;
+        }
+
+        .back-link {
+            color: #ccc;
+            text-decoration: none;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .back-link:hover {
+            color: #f39c12;
+        }
+
+        .page-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #444;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+        }
+
+        .page-title {
+            font-size: 2.2em;
+            margin: 0;
+        }
+
+        .btn-add {
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1em;
+            transition: background 0.3s;
+        }
+
+        .btn-add:hover {
+            background-color: #27ae60;
+        }
+
+        .inventory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .product-card {
+            background-color: #2c2c2c;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .product-img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            background-color: #1a1a1a;
+        }
+
+        .product-info {
+            padding: 20px;
+        }
+
+        .product-title {
+            margin: 0 0 10px 0;
+            font-size: 1.2em;
+            color: #f39c12;
+        }
+
+        .product-price {
+            font-size: 1.4em;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .product-stock {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .stock-good {
+            background-color: #2ecc71;
+            color: #1a1a1a;
+        }
+
+        .stock-low {
+            background-color: #e67e22;
+            color: #1a1a1a;
+        }
+
+        .stock-out {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .product-actions {
+            display: flex;
+            gap: 10px;
+            border-top: 1px solid #444;
+            padding-top: 15px;
+        }
+
+        .btn-edit {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            flex: 1;
+            transition: background 0.3s;
+        }
+
+        .btn-edit:hover {
+            background-color: #2980b9;
+        }
+
+        .btn-delete {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            flex: 1;
+            transition: background 0.3s;
+        }
+
+        .btn-delete:hover {
+            background-color: #c0392b;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: #2c2c2c;
+            padding: 30px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close-modal:hover {
+            color: #f39c12;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #ccc;
+            margin-bottom: 8px;
+        }
+
+        .dark-input {
+            width: 100%;
+            padding: 10px;
+            background-color: #1a1a1a;
+            border: 1px solid #444;
+            color: white;
+            border-radius: 6px;
+            font-family: inherit;
+        }
+
+        .action-btn {
+            background-color: #f39c12;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+        }
+
+        .action-btn:hover {
+            background-color: #e67e22;
+        }
+
+        .img-preview {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 6px;
+            border: 2px dashed #555;
+            margin-top: 10px;
+            display: none;
+        }
+
+        /* === Sistema de Notificaciones === */
+        .notification-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .notification-trigger {
+            background: none;
+            border: none;
+            color: #f39c12;
+            font-size: 1.6em;
+            cursor: pointer;
+            padding: 8px;
+            position: relative;
+            transition: transform 0.2s;
+        }
+
+        .notification-trigger:hover {
+            transform: scale(1.1);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            background-color: #e74c3c;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 0.6em;
+            font-weight: bold;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            border: 2px solid #2c2c2c;
+        }
+
+        .notification-dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            width: 320px;
+            background-color: #2c2c2c;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid #444;
+            border-radius: 12px;
+            margin-top: 15px;
+            z-index: 1000;
+            overflow: hidden;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        .notification-dropdown.active {
+            display: block;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .notification-header {
+            padding: 12px 15px;
+            background-color: #333;
+            border-bottom: 1px solid #444;
+        }
+
+        .notification-header h3 {
+            margin: 0;
+            font-size: 1em;
+            color: #f39c12;
+        }
+
+        .notification-list {
+            max-height: 350px;
+            overflow-y: auto;
+        }
+
+        .notification-item {
+            padding: 12px 15px;
+            border-bottom: 1px solid #3a3a3a;
+            display: flex;
+            gap: 12px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .notification-item:hover {
+            background-color: #3a3a3a;
+        }
+
+        .notification-item.unread {
+            background-color: rgba(243, 156, 18, 0.05);
+            border-left: 3px solid #f39c12;
+        }
+
+        .notification-icon {
+            font-size: 1.2em;
+            margin-top: 2px;
+        }
+
+        .notification-content {
+            flex: 1;
+        }
+
+        .notification-content strong {
+            display: block;
+            font-size: 0.9em;
+            color: #fff;
+            margin-bottom: 2px;
+        }
+
+        .notification-content p {
+            margin: 0;
+            font-size: 0.8em;
+            color: #aaa;
+            line-height: 1.3;
+        }
+
+        .notification-time {
+            display: block;
+            font-size: 0.7em;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .notification-empty {
+            padding: 30px 15px;
+            text-align: center;
+            color: #777;
+            font-style: italic;
+            font-size: 0.9em;
+        }
+
+        .text-danger { color: #e74c3c; }
+        .text-warning { color: #f1c40f; }
+        .text-success { color: #2ecc71; }
+        .text-info { color: #3498db; }
+        .text-primary { color: #f39c12; }
+    </style>
+</head>
+
+<body>
+    <header class="portal-header">
+        <div class="header-left">
+            <a href="../../portal_taller.html"><img src="../../imagenes/Logo_Autoguest.png" alt="AutoGuest" class="logo"></a>
+            <a href="../../portal_taller.html" class="back-link"><i class="fas fa-arrow-left"></i> Volver al Panel</a>
+        </div>
+        <div class="header-right" style="display: flex; align-items: center; gap: 20px;">
+            <!-- Sistema de Notificaciones Unificado -->
+            <div class="notification-wrapper">
+                <button class="notification-trigger" id="notificationTrigger" onclick="NotificationSystem.toggleDropdown()">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge" id="notificationBadge">0</span>
+                </button>
+                <div class="notification-dropdown" id="notificationDropdown">
+                    <div class="notification-header">
+                        <h3>Notificaciones</h3>
+                    </div>
+                    <div class="notification-list" id="notificationList">
+                        <div class="notification-empty">Cargando...</div>
+                    </div>
+                </div>
+            </div>
+            <div style="text-align:right;">
+                <h2 id="workshopName" style="margin:0; font-size:1.2em; color:#fff;">Taller</h2>
+                <p style="margin:0; font-size:0.9em; color:#a0a0a0;">Inventario</p>
+            </div>
+        </div>
+    </header>
+
+    <main class="page-container">
+        <div class="page-header">
+            <h1 class="page-title">Gestión de Inventario</h1>
+            <button class="btn-add" id="btnOpenModal"><i class="fas fa-plus"></i> Nuevo Producto</button>
+        </div>
+
+        <div class="inventory-grid" id="inventory-container">
+            <p style="color: #aaa;">Cargando inventario...</p>
+        </div>
+    </main>
+
+    <!-- Modal Form -->
+    <div id="productModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeModal">&times;</span>
+            <h2 id="modalTitle" style="color: #f39c12; margin-top: 0; margin-bottom: 20px;">Agregar Producto</h2>
+            <form id="productForm">
+                <input type="hidden" id="productId">
+                <div class="form-group">
+                    <label>Nombre del Producto:</label>
+                    <input type="text" id="nombre" class="dark-input" required>
+                </div>
+                <div style="display: flex; gap: 15px;">
+                    <div class="form-group" style="flex:1;">
+                        <label>Precio ($):</label>
+                        <input type="number" step="0.01" id="precio" class="dark-input" required>
+                    </div>
+                    <div class="form-group" style="flex:1;">
+                        <label>Stock (Unidades):</label>
+                        <input type="number" id="stock" class="dark-input" required>
+                    </div>
+                </div>
+                <div class="form-group" style="display:flex; align-items:center; gap: 10px;">
+                    <input type="checkbox" id="esParaVenta" checked style="width:20px; height:20px;">
+                    <label style="margin:0;">Disponible en Catálogo Clientel (Venta Online)</label>
+                </div>
+                <div class="form-group">
+                    <label>Imagen del Producto:</label>
+                    <input type="file" id="imagenFile" accept="image/*" class="dark-input">
+                    <img id="imagenPreview" class="img-preview" src="">
+                </div>
+                <button type="submit" class="action-btn" id="btnSave"><i class="fas fa-save"></i> Guardar
+                    Producto</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let allItems = [];
+        let currentBase64 = null;
+
+        // Helper: fetch autenticado con JWT
+        function authFetch(url, options = {}) {
+            const token = sessionStorage.getItem('token');
+            const headers = { 'Content-Type': 'application/json', ...(options.headers || {}) };
+            if (token && token !== 'null' && token !== 'undefined') {
+                headers['Authorization'] = `Bearer ${token}`;
+            }
+            return fetch(url, { ...options, headers });
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Verificar sesión activa
+            const isLoggedIn = sessionStorage.getItem('isLoggedIn');
+            const userRole = sessionStorage.getItem('userRole');
+            if (!isLoggedIn || userRole !== 'taller') {
+                alert('Acceso denegado. Debes iniciar sesión como Taller.');
+                window.location.href = '../../login_taller.html';
+                return;
+            }
+
+            // Nombre del taller
+            const tallerName = sessionStorage.getItem('tallerName');
+            const workshopEl = document.getElementById('workshopName');
+            if (tallerName && tallerName !== 'undefined') {
+                if (workshopEl) workshopEl.textContent = tallerName;
+            } else {
+                // Cargar desde API como respaldo
+                try {
+                    const r = await fetch('/api/taller/perfil');
+                    if (r.ok) { const d = await r.json(); if (d.nombre && workshopEl) workshopEl.textContent = d.nombre; }
+                } catch(e) {}
+            }
+
+            cargarInventario();
+
+            // Modal logic
+            const modal = document.getElementById('productModal');
+            document.getElementById('btnOpenModal').addEventListener('click', () => {
+                document.getElementById('productForm').reset();
+                document.getElementById('productId').value = '';
+                document.getElementById('modalTitle').textContent = 'Agregar Producto';
+                currentBase64 = null;
+                const prev = document.getElementById('imagenPreview');
+                prev.src = ''; prev.style.display = 'none';
+                modal.classList.add('active');
+            });
+            document.getElementById('closeModal').addEventListener('click', () => modal.classList.remove('active'));
+            window.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('active') });
+
+            // Image Preview & Compression
+            document.getElementById('imagenFile').addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (evt) {
+                        const img = new Image();
+                        img.onload = function () {
+                            // Crear un canvas para comprimir
+                            const canvas = document.createElement('canvas');
+                            let width = img.width;
+                            let height = img.height;
+
+                            // Redimensionar si es muy grande (max 1024px)
+                            const MAX_WIDTH = 1024;
+                            if (width > MAX_WIDTH) {
+                                height = Math.round((height * MAX_WIDTH) / width);
+                                width = MAX_WIDTH;
+                            }
+
+                            canvas.width = width;
+                            canvas.height = height;
+                            const ctx = canvas.getContext('2d');
+                            ctx.drawImage(img, 0, 0, width, height);
+
+                            // Comprimir a JPEG (calidad 0.8) para reducir tamaño drásticamente
+                            currentBase64 = canvas.toDataURL('image/jpeg', 0.8);
+
+                            const prev = document.getElementById('imagenPreview');
+                            prev.src = currentBase64;
+                            prev.style.display = 'block';
+                        };
+                        img.src = evt.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // Form Submit
+            document.getElementById('productForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const id = document.getElementById('productId').value;
+                const body = {
+                    nombre: document.getElementById('nombre').value,
+                    precio: parseFloat(document.getElementById('precio').value),
+                    stock: parseInt(document.getElementById('stock').value, 10),
+                    esParaVenta: document.getElementById('esParaVenta').checked,
+                    imagen: currentBase64
+                };
+
+                const url = id ? `/api/inventario/${id}` : '/api/inventario';
+                const method = id ? 'PUT' : 'POST';
+
+                try {
+                    const res = await authFetch(url, {
+                        method,
+                        body: JSON.stringify(body)
+                    });
+                    if (res.ok) {
+                        modal.classList.remove('active');
+                        cargarInventario();
+                    } else {
+                        const err = await res.json().catch(() => ({}));
+                        alert(err.error || 'Error al guardar el producto');
+                    }
+                } catch (e) { console.error(e); alert('Error de conexión'); }
+            });
+        });
+
+        // Helper para resolver rutas de imagen
+        function resolveImageUrl(path) {
+            if (!path) return '../../imagenes/default_product.png';
+            if (path.startsWith('data:') || path.startsWith('http') || path.startsWith('/')) return path;
+            if (path.startsWith('img/')) return '../../pages/cliente/catalogo-om66/' + path;
+            return '../../imagenes/' + path;
+        }
+
+        async function cargarInventario() {
+            const container = document.getElementById('inventory-container');
+            container.innerHTML = '<p style="color:#aaa; grid-column:1/-1; text-align:center;"><i class="fas fa-spinner fa-spin"></i> Cargando inventario...</p>';
+            try {
+                const res = await authFetch('/api/inventario/taller');
+                if (res.status === 401) {
+                    container.innerHTML = '<p style="color:#e74c3c; grid-column:1/-1; text-align:center;"><i class="fas fa-lock"></i> Sesión expirada. <a href="../../login_taller.html" style="color:#f39c12;">Inicia sesión nuevamente</a></p>';
+                    return;
+                }
+                if (!res.ok) throw new Error(await res.text());
+                allItems = await res.json();
+
+                if (allItems.length === 0) {
+                    container.innerHTML = '<p style="color:#aaa; grid-column:1/-1; text-align:center;"><i class="fas fa-box-open" style="font-size:2em; display:block; margin-bottom:10px;"></i>No hay productos en inventario aún.</p>';
+                    return;
+                }
+
+                container.innerHTML = allItems.map(item => {
+                    let stockClass = 'stock-good';
+                    if (item.stock === 0) stockClass = 'stock-out';
+                    else if (item.stock <= 5) stockClass = 'stock-low';
+
+                    const imgSrc = resolveImageUrl(item.imagen);
+
+                    return `
+                        <div class="product-card">
+                            <img src="${imgSrc}" class="product-img" alt="${item.nombre}" onerror="this.src='../../imagenes/default_taller.png'">
+                            <div class="product-info">
+                                <h3 class="product-title">${item.nombre}</h3>
+                                <div class="product-price">$${parseFloat(item.precio || 0).toFixed(2)}</div>
+                                <div class="product-stock ${stockClass}">Stock: ${item.stock}</div>
+                                <div style="font-size:0.8em; color:#aaa; margin-bottom:10px;">
+                                    Catálogo Web: ${item.esParaVenta ? '<span style="color:#2ecc71;">Sí</span>' : '<span style="color:#e74c3c;">No</span>'}
+                                </div>
+                                <div class="product-actions">
+                                    <button class="btn-edit" onclick="editarItem('${item.idItem}')"><i class="fas fa-edit"></i> Editar</button>
+                                    <button class="btn-delete" onclick="eliminarItem('${item.idItem}')"><i class="fas fa-trash"></i> Eliminar</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            } catch (e) {
+                container.innerHTML = '<p style="color:red; grid-column:1/-1;">Error al cargar inventario.</p>';
+            }
+        }
+
+        window.editarItem = function (id) {
+            const item = allItems.find(i => i.idItem === id);
+            if (!item) return;
+            document.getElementById('productId').value = item.idItem;
+            document.getElementById('nombre').value = item.nombre;
+            document.getElementById('precio').value = item.precio;
+            document.getElementById('stock').value = item.stock;
+            document.getElementById('esParaVenta').checked = item.esParaVenta === 1;
+
+            currentBase64 = item.imagen;
+            const prev = document.getElementById('imagenPreview');
+            if (item.imagen) {
+                prev.src = resolveImageUrl(item.imagen);
+                prev.style.display = 'block';
+            } else {
+                prev.src = '';
+                prev.style.display = 'none';
+            }
+
+            document.getElementById('modalTitle').textContent = 'Editar Producto';
+            document.getElementById('productModal').classList.add('active');
+        }
+
+        window.eliminarItem = async function (id) {
+            if (!confirm('¿Estás seguro de eliminar este producto?')) return;
+            try {
+                const res = await authFetch(`/api/inventario/${id}`, { method: 'DELETE' });
+                if (res.ok) cargarInventario();
+                else alert('Error al eliminar');
+            } catch (e) { alert('Error de conexión'); }
+        }
+    </script>
+    <script src="../../js/notifications.js"></script>
+</body>
+
+</html>

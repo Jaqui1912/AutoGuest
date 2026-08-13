@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acceso Mecánicos - AutoGuest</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="form-page-wrapper">
+        <div class="form-image-column">
+            <div class="logo-link">
+                <a href="home.html">
+                    <img src="imagenes/Logo_Autoguest.png" alt="Logo de AutoGuest">
+                </a>
+            </div>
+            <div class="image-text">
+                <h2>Panel de Técnicos.</h2>
+                <p>Gestiona tus diagnósticos y reparaciones de forma eficiente y profesional.</p>
+            </div>
+        </div>
+
+        <div class="form-content-column">
+            <div class="form-container">
+                <h1>Acceso Mecánicos</h1>
+                <p>Ingresa tus credenciales para ver tus citas asignadas.</p>
+
+                <form id="loginMecanicoForm">
+                    <div class="form-group">
+                        <label for="email">Email del Mecánico</label>
+                        <input type="email" id="email" class="form-control" placeholder="tu@taller.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Contraseña</label>
+                        <input type="password" id="password" class="form-control" placeholder="••••••" required>
+                    </div>
+                    <button type="submit" class="btn">Entrar al Taller</button>
+                </form>
+
+                <div class="extra-link">
+                    <p>¿Eres nuevo? <a href="registro_mecanico.html">Regístrate aquí</a></p>
+                    <p style="margin-top: 10px;">
+                        <a href="index.html" style="font-size: 0.9em;">&larr; Volver al inicio</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('loginMecanicoForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const btn = document.querySelector('button[type="submit"]');
+            const textoOriginal = btn.innerText;
+
+            // Feedback visual de carga
+            btn.innerText = 'Verificando...';
+            btn.disabled = true;
+
+            try {
+                // Petición al endpoint de mecánicos
+                const response = await fetch('/api/mecanico/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Guardar sesión (compatibilidad con portal_mecanico y chat)
+                    localStorage.setItem('usuarioNombre', data.userName);
+                    localStorage.setItem('usuarioRol', 'mecanico');
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('userName', data.userName);
+                    localStorage.setItem('userRole', 'mecanico');
+                    localStorage.setItem('userId', data.userId || '');
+                    sessionStorage.setItem('userName', data.userName);
+                    sessionStorage.setItem('userId', data.userId || '');
+                    sessionStorage.setItem('userRole', 'mecanico');
+                    sessionStorage.setItem('isLoggedIn', 'true');
+
+                    // Redirigir al portal de mecánicos
+                    window.location.href = 'portal_mecanico.html';
+                } else {
+                    alert(data.mensaje || 'Credenciales incorrectas');
+                    btn.innerText = textoOriginal;
+                    btn.disabled = false;
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error de conexión con el servidor');
+                btn.innerText = textoOriginal;
+                btn.disabled = false;
+            }
+        });
+    </script>
+    <script src="http://localhost:3000/js/global_nav.js"></script>
+</body>
+
+</html>

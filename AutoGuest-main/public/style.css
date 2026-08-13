@@ -1,0 +1,954 @@
+/* --- IMPORTACIÓN DE FUENTE Y ESTILOS GLOBALES --- */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #1a1a1a;
+    color: #f0f0f0;
+    margin: 0;
+    box-sizing: border-box;
+    overflow-x: hidden;
+}
+
+main {
+    flex-grow: 1;
+}
+
+/* --- ESTILOS GENERALES (Botones, Footer, etc.) --- */
+.btn {
+    background-color: #f39c12;
+    color: #1a1a1a;
+    padding: 15px 25px;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.btn:hover {
+    background-color: #e67e22;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(243, 156, 18, 0.3);
+}
+
+.btn-secondary {
+    background-color: transparent;
+    color: #f39c12;
+    border: 2px solid #f39c12;
+}
+
+.btn-secondary:hover {
+    background-color: #f39c12;
+    color: #1a1a1a;
+}
+
+.btn-outline-white {
+    background-color: transparent;
+    color: #ffffff;
+    border: 2px solid #ffffff;
+}
+
+.btn-outline-white:hover {
+    background-color: #ffffff;
+    color: #1a1a1a;
+}
+
+/* --- ESTILOS PARA GOOGLE AUTH --- */
+.google-auth-bottom {
+    margin-top: 30px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#google_btn_official {
+    margin-top: 15px;
+    width: 100%;
+}
+
+.google-btn-container {
+    margin: 20px 0;
+    width: 100%;
+}
+
+.google-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    background-color: #ffffff;
+    color: #1a1a1a;
+    border: 1px solid #dadce0;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.google-btn:hover {
+    background-color: #f8f9fa;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.google-btn img {
+    width: 20px;
+}
+
+/* El or-separator ahora va arriba del botón de Google */
+.or-separator {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 10px 0;
+    color: #888;
+    width: 100%;
+}
+
+.or-separator::before,
+.or-separator::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #444;
+}
+
+.or-separator:not(:empty)::before {
+    margin-right: .5em;
+}
+
+.or-separator:not(:empty)::after {
+    margin-left: .5em;
+}
+
+footer {
+    width: 100%;
+    background-color: #111111;
+    padding: 30px 20px;
+    margin-top: auto;
+    border-top: 1px solid #2c2c2c;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.footer-content p {
+    color: #a0a0a0;
+    margin: 0 0 15px 0;
+    font-size: 14px;
+}
+
+.social-links a {
+    color: #a0a0a0;
+    margin: 0 15px;
+    font-size: 20px;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.social-links a:hover {
+    color: #f39c12;
+}
+
+/*
+=========================================================
+--- ESTILOS PARA LA PÁGINA DE INICIO (HOME.HTML) ---
+=========================================================
+*/
+
+/* --- Encabezado --- */
+.landing-header {
+    background-color: #1a1a1a;
+    padding: 8px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #2c2c2c;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.logo-header {
+    width: 110px;
+    height: auto;
+}
+
+.header-buttons {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.btn-header {
+    padding: 8px 16px;
+    font-size: 14px;
+}
+
+/* --- Hero Section --- */
+.hero-section {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 100px 20px;
+    min-height: 85vh;
+    box-sizing: border-box;
+    background-image: url('https://images.pexels.com/photos/1545743/pexels-photo-1545743.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+    background-size: cover;
+    background-position: center;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 1;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+}
+
+.hero-content h1 {
+    font-size: 3.8em;
+    color: #ffffff;
+    margin-bottom: 20px;
+    line-height: 1.2;
+}
+
+.hero-content h1 span {
+    color: #f39c12;
+}
+
+.hero-content p {
+    font-size: 1.2em;
+    color: #e0e0e0;
+    max-width: 700px;
+    margin: 0 auto 40px auto;
+}
+
+.btn-hero {
+    font-size: 18px;
+    padding: 16px 30px;
+    min-width: 180px;
+}
+
+.hero-buttons {
+    margin-top: 40px;
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.scroll-indicator {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    color: #f39c12;
+    font-size: 24px;
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+
+    0%,
+    20%,
+    50%,
+    80%,
+    100% {
+        transform: translate(-50%, 0);
+    }
+
+    40% {
+        transform: translate(-50%, -15px);
+    }
+
+    60% {
+        transform: translate(-50%, -8px);
+    }
+}
+
+/* --- Sección Zig-Zag --- */
+.zigzag-section {
+    padding: 80px 20px;
+    background-color: #1a1a1a;
+    color: #f0f0f0;
+}
+
+.zigzag-container {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.zigzag-block {
+    display: flex;
+    align-items: center;
+    gap: 60px;
+    margin-bottom: 80px;
+}
+
+.zigzag-block.reverse {
+    flex-direction: row-reverse;
+}
+
+.zigzag-image {
+    flex: 1;
+    min-width: 45%;
+    position: relative;
+}
+
+.zigzag-image img {
+    width: 100%;
+    border-radius: 12px;
+    display: block;
+    transition: transform 0.4s ease;
+}
+
+.zigzag-image:hover img {
+    transform: scale(1.03);
+}
+
+.zigzag-content {
+    flex: 1.2;
+}
+
+.zigzag-content h2 {
+    font-size: 2.8em;
+    color: #ffffff;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.zigzag-content h2::after {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 4px;
+    background-color: #f39c12;
+    margin-top: 15px;
+    border-radius: 2px;
+}
+
+.zigzag-content p {
+    color: #c0c0c0;
+    line-height: 1.7;
+    font-size: 1.1em;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.zigzag-content ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 30px;
+}
+
+.zigzag-content ul li {
+    margin-bottom: 12px;
+    font-size: 1.1rem;
+    display: grid;
+    grid-template-columns: 24px 1fr;
+    align-items: start;
+    gap: 12px;
+}
+
+.zigzag-content ul li i {
+    color: #f39c12;
+    width: 20px;
+    text-align: center;
+}
+
+.zigzag-content .btn-secondary {
+    width: auto;
+    padding: 14px 30px;
+}
+
+/* --- New Landing Sections --- */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 40px;
+}
+
+.section-padding {
+    padding: 120px 20px;
+    position: relative;
+}
+
+.problem-section {
+    background-color: #252525;
+    color: #f0f0f0;
+    text-align: center;
+    border-top: 4px solid #f39c12;
+}
+
+.problem-grid,
+.culture-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+    text-align: left;
+}
+
+.problem-section h2 {
+    color: #ffffff;
+    font-size: 3rem;
+    margin-bottom: 25px;
+}
+
+.problem-section p {
+    color: #c0c0c0;
+    font-size: 1.25rem;
+    line-height: 1.8;
+}
+
+.section-image img,
+.culture-image img {
+    width: 100%;
+    max-width: 550px;
+    /* Limits size on laptop screens */
+    display: block;
+    margin: 0 auto;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+/* --- Section Navigation Arrows --- */
+.scroll-next,
+.scroll-prev {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    color: inherit;
+    font-size: 2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.1);
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.scroll-next {
+    bottom: 30px;
+}
+
+.scroll-prev {
+    top: 30px;
+}
+
+.scroll-next:hover,
+.scroll-prev:hover {
+    background-color: #1a1a1a;
+    color: #f39c12;
+    transform: translateX(-50%) translateY(-5px);
+}
+
+.zigzag-section .scroll-next,
+.zigzag-section .scroll-prev {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #f39c12;
+}
+
+.zigzag-section .scroll-next:hover,
+.zigzag-section .scroll-prev:hover {
+    background-color: #f39c12;
+    color: #1a1a1a;
+}
+
+.how-it-works-section {
+    background-color: #1f1f1f;
+    color: #f0f0f0;
+    text-align: center;
+    border-top: 4px solid #f39c12;
+}
+
+.how-it-works-section h2 {
+    font-size: 2.8rem;
+    margin-bottom: 60px;
+    color: #ffffff;
+}
+
+.steps-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 40px;
+}
+
+.how-it-works-section .scroll-next,
+.how-it-works-section .scroll-prev {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #f39c12;
+}
+
+.how-it-works-section .scroll-next:hover,
+.how-it-works-section .scroll-prev:hover {
+    background-color: #f39c12;
+    color: #1a1a1a;
+}
+
+.step-card {
+    background-color: #1a1a1a;
+    padding: 40px 30px;
+    border-radius: 15px;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+    border: 1px solid transparent;
+}
+
+.step-card:hover {
+    transform: translateY(-10px);
+    border-color: #ffffff;
+}
+
+.step-icon {
+    font-size: 3rem;
+    color: #f39c12;
+    margin-bottom: 25px;
+}
+
+.step-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    color: #ffffff;
+}
+
+.step-card p {
+    color: #cccccc;
+    line-height: 1.6;
+}
+
+.culture-section {
+    background-color: #252525;
+    color: #f0f0f0;
+    text-align: center;
+    border-top: 4px solid #f39c12;
+}
+
+.culture-section .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.culture-section h2 {
+    font-size: 3rem;
+    margin-bottom: 30px;
+    color: #ffffff;
+}
+
+.culture-section p {
+    font-size: 1.3rem;
+    line-height: 1.8;
+    max-width: 900px;
+    margin: 0 auto 40px auto;
+    color: #a0a0a0;
+}
+
+.culture-section .scroll-prev {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #f39c12;
+}
+
+.culture-section .scroll-next {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #f39c12;
+}
+
+.culture-section .scroll-prev:hover,
+.culture-section .scroll-next:hover {
+    background-color: #f39c12;
+    color: #1a1a1a;
+}
+
+/*
+=========================================================
+--- DISEÑO DE PÁGINAS DE FORMULARIO Y SELECTOR DE PORTAL ---
+=========================================================
+*/
+.form-page-wrapper {
+    display: flex;
+    min-height: 100vh;
+}
+
+.form-image-column {
+    flex-basis: 55%;
+    /* ===== CAMBIO APLICADO AQUÍ ===== */
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.pexels.com/photos/1707820/pexels-photo-1707820.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 40px;
+    box-sizing: border-box;
+}
+
+.form-image-column .logo-link img {
+    width: 130px;
+}
+
+.form-image-column .image-text {
+    color: #ffffff;
+}
+
+.form-image-column .image-text h2 {
+    font-size: 2.5em;
+    line-height: 1.3;
+    margin-bottom: 15px;
+}
+
+.form-image-column .image-text p {
+    font-size: 1.1em;
+    color: #e0e0e0;
+    max-width: 450px;
+}
+
+.form-content-column {
+    flex-basis: 45%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    box-sizing: border-box;
+    background-color: #1a1a1a;
+}
+
+.form-container,
+.portal-selector-container {
+    background-color: #2c2c2c;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    width: 100%;
+    max-width: 450px;
+    text-align: center;
+}
+
+.form-container h1,
+.portal-selector-container h1 {
+    color: #ffffff;
+    margin-bottom: 10px;
+}
+
+.form-container p,
+.portal-selector-container p {
+    color: #a0a0a0;
+    margin-bottom: 30px;
+}
+
+.portal-selector-container p {
+    margin-bottom: 40px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #c0c0c0;
+    font-size: 14px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px;
+    background-color: #3f3f3f;
+    border: 1px solid #555;
+    border-radius: 8px;
+    color: #f0f0f0;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+.extra-link {
+    margin-top: 25px;
+    font-size: 14px;
+}
+
+.extra-link a {
+    color: #f39c12;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.code-container {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 40px 0;
+}
+
+.code-input {
+    width: 60px;
+    height: 70px;
+    font-size: 32px;
+    font-weight: 700;
+    text-align: center;
+    background-color: #3f3f3f;
+    border: 1px solid #555;
+    border-radius: 8px;
+    color: #f0f0f0;
+}
+
+/* Estilos para el Selector de Portal (index.html) */
+.portal-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.btn-portal-select {
+    padding: 20px;
+    font-size: 1.2em;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background-color: #3f3f3f;
+    border: 1px solid #555;
+    color: #f0f0f0;
+}
+
+.btn-portal-select:hover {
+    background-color: #f39c12;
+    color: #1a1a1a;
+    border-color: #f39c12;
+}
+
+.btn-portal-select i {
+    font-size: 1.5em;
+    width: 30px;
+    text-align: center;
+}
+
+/* === Menú de Ajustes / Configuración (Global) === */
+.settings-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.settings-btn {
+    background: none;
+    border: none;
+    color: #f39c12;
+    font-size: 1.8em;
+    cursor: pointer;
+    transition: transform 0.2s;
+    padding: 5px;
+}
+
+.settings-btn:hover {
+    transform: scale(1.1);
+}
+
+.settings-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background-color: #2c2c2c;
+    min-width: 180px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #444;
+    margin-top: 10px;
+}
+
+.settings-content button,
+.settings-content a {
+    color: white;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: none;
+    border: none;
+    width: 100%;
+    text-align: left;
+    font-size: 0.95em;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.2s;
+}
+
+.settings-content button:hover,
+.settings-content a:hover {
+    background-color: #3d3d3d;
+    color: #f39c12;
+}
+
+.settings-content.active {
+    display: block;
+    animation: fadeInDown 0.2s ease-out;
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Ajuste para móviles: centrar el menú si el contenedor es estrecho */
+@media (max-width: 768px) {
+    .settings-content {
+        right: auto;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}
+
+/*
+==============================================
+--- RESPONSIVIDAD MÓVIL (UNIFICADA) ---
+==============================================
+*/
+@media (max-width: 900px) {
+
+    /* --- Landing Page Móvil --- */
+    .landing-header {
+        padding: 15px 20px;
+    }
+
+    .logo-header {
+        width: 100px;
+    }
+
+    .btn-header {
+        font-size: 13px;
+        padding: 6px 12px;
+    }
+
+    .header-buttons {
+        gap: 8px;
+    }
+
+    .hero-section {
+        min-height: 80vh;
+        padding: 80px 20px;
+    }
+
+    .hero-content h1 {
+        font-size: 2.2em;
+    }
+
+    .hero-content p {
+        font-size: 1em;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+        width: 100%;
+        max-width: 320px;
+        margin: 40px auto 0 auto;
+    }
+
+    .btn-hero {
+        width: 100%;
+    }
+
+    .section-padding {
+        padding: 60px 20px;
+    }
+
+    .problem-section h2,
+    .how-it-works-section h2,
+    .culture-section h2 {
+        font-size: 2rem;
+    }
+
+    .zigzag-section {
+        padding: 50px 20px;
+    }
+
+    .zigzag-block,
+    .zigzag-block.reverse {
+        flex-direction: column;
+        gap: 30px;
+        text-align: center;
+        margin-bottom: 50px;
+    }
+
+    .zigzag-content h2 {
+        font-size: 2em;
+    }
+
+    .zigzag-content h2::after {
+        margin: 15px auto 0 auto;
+    }
+
+    .zigzag-content ul li {
+        justify-content: center;
+    }
+
+    .zigzag-content .btn-secondary {
+        width: 100%;
+        max-width: 300px;
+    }
+
+    .steps-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* --- Páginas de Formulario y Selector de Portal Móvil --- */
+    .form-page-wrapper {
+        flex-direction: column;
+    }
+
+    .form-image-column {
+        display: none;
+    }
+
+    .form-content-column {
+        min-height: 100vh;
+        background-color: #1a1a1a;
+        padding: 20px;
+    }
+
+    .form-container,
+    .portal-selector-container {
+        box-shadow: none;
+    }
+
+    .code-container {
+        gap: 10px;
+    }
+}

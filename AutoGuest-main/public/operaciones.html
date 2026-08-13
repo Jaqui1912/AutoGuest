@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal de Gestión Taller Automotriz</title>
+    
+    <link rel="stylesheet" href="../../style copy.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+
+<body>
+
+    <header class="portal-header">
+        <img src="../../imagenes/Logo_Autoguest.png" alt="Logo de AutoGuest" class="logo">
+        <div class="header-info">
+            <h2>Portal de Gestión Central</h2>
+            <p>Enfoque: Servicios y Piezas Nuevas</p>
+        </div>
+        <a href="../../index.html" class="logout-btn" id="logout-btn">
+            <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+        </a>
+    </header>
+
+    <nav class="main-nav-admin">
+        <a href="#servicios" class="nav-item-admin"><i class="fas fa-wrench"></i> Gestión de Servicios</a>
+        <a href="#inventario" class="nav-item-admin"><i class="fas fa-boxes"></i> Venta de Inventario (Nuevo)</a>
+        <a href="#clientes" class="nav-item-admin"><i class="fas fa-users"></i> Gestión de Clientes</a>
+        <a href="#citas" class="nav-item-admin"><i class="fas fa-calendar-alt"></i> Citas y OT</a>
+    </nav>
+
+    <main class="main-content-admin">
+        <h1 class="portal-title">Gestión de Servicios e Inventario Central</h1>
+        <p>Este portal es la interfaz principal para administrar operaciones y recursos.</p>
+
+        <section id="servicios" class="admin-section form-card">
+            <h2><i class="fas fa-cogs"></i> Gestión de Servicios del Taller</h2>
+            <p>Administración de servicios técnicos (ej. Diagnóstico, Mantenimiento Preventivo, Reparación de Motor). Aquí se definen los costos, duración estimada y los requerimientos de piezas para cada trabajo.</p>
+
+            <div class="form-group-inline">
+                <button class="btn"><i class="fas fa-plus-circle"></i> Definir Nuevo Servicio</button>
+                <button class="btn btn-secondary"><i class="fas fa-list-alt"></i> Ver Lista de Precios</button>
+            </div>
+            <h3>Resumen de Servicios:</h3>
+            <table class="data-table">
+                <thead>
+                    <tr><th>Servicio</th><th>Costo Base</th><th>Tiempo Estimado</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Cambio de Aceite Estándar</td><td>$45.00</td><td>45 min</td></tr>
+                    <tr><td>Afinación Mayor</td><td>$120.00</td><td>3 hrs</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="inventario" class="admin-section form-card">
+            <h2><i class="fas fa-box-open"></i> Venta de Inventario (Piezas y Productos Nuevos)</h2>
+            <p>Esta sección gestiona únicamente el stock de **piezas y productos nuevos** para la venta directa o para el soporte de servicios.</p>
+            
+            <form id="inventario-form">
+                <div class="form-group">
+                    <label for="search">Buscar Pieza Nueva:</label>
+                    <input type="text" id="search" class="form-control" placeholder="Filtro de aceite, Pastillas de freno, etc.">
+                </div>
+                <div class="form-group-inline">
+                    <button type="button" class="btn"><i class="fas fa-search"></i> Buscar</button>
+                    <button type="button" class="btn btn-secondary"><i class="fas fa-plus"></i> Añadir Pieza Nueva</button>
+                </div>
+            </form>
+            <p style="margin-top: 15px; color: #e74c3c;">**Aviso:** El inventario de **Mercancía Usada** está excluido de este portal.</p>
+        </section>
+
+        <section id="clientes" class="admin-section">
+            <h2><i class="fas fa-user-friends"></i> Gestión de Clientes y Vehículos</h2>
+            <p>Acceso a la base de datos de clientes, historial de mantenimiento y detalles de los vehículos asociados.</p>
+        </section>
+        
+        <section id="citas" class="admin-section">
+            <h2><i class="fas fa-calendar-check"></i> Citas y Órdenes de Trabajo</h2>
+            <p>Administración del flujo de trabajo: agendamiento, creación de Órdenes de Trabajo (OT) y seguimiento del estado del vehículo.</p>
+        </section>
+
+        <div class="admin-section form-card" style="background-color: #fcf8e3; border-color: #faebcc; color: #8a6d3b;">
+            <p><strong>Confirmación:</strong> Se ha omitido intencionalmente la sección de **Mercancía Usada** y cualquier referencia al **Perfil del Taller / Quiénes Somos**, como fue solicitado.</p>
+        </div>
+    </main>
+
+    <footer class="portal-footer">
+        <p>Sistema de Gestión Taller Automotriz.</p>
+    </footer>
+
+    <script src="http://localhost:3000/js/global_nav.js"></script>
+</body>
+</html>

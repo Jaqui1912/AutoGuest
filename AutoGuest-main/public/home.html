@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoGuest - Transparencia y Control Automotriz</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#f39c12">
+    <script>
+        // REDIRECT BYPASS: Si la app ya está instalada, saltamos la landing page
+        if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
+            window.location.href = 'index.html';
+        }
+    </script>
+</head>
+
+<body>
+
+    <header class="landing-header">
+        <a href="home.html"><img src="imagenes/Logo_Autoguest.png" alt="Logo de AutoGuest" class="logo-header"></a>
+        <div class="header-buttons">
+            <a href="index.html" class="btn btn-header btn-secondary">Iniciar Sesión</a>
+            <a href="seleccion_registro.html" class="btn btn-header">Registrarse</a>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero-section" id="hero">
+            <div class="hero-content">
+                <h1>Transparencia total para tu auto, <br><span>control total para tu taller.</span></h1>
+                <p>AutoGuest es la plataforma digital que conecta a conductores responsables con talleres mecánicos
+                    modernos. Dile adiós a los diagnósticos confusos.</p>
+
+                <div class="hero-buttons">
+                    <a href="registro_cliente.html" class="btn btn-hero">Soy Conductor</a>
+                    <a href="registro_taller.html" class="btn btn-hero btn-secondary">Soy Taller</a>
+                    <a href="registro_mecanico.html" class="btn btn-hero btn-outline-white">Soy Mecánico</a>
+                </div>
+                <!-- Botón de Instalación PWA -->
+                <div style="margin-top: 20px;">
+                    <button id="pwa-install-btn" class="btn btn-hero" style="background-color: #27ae60; color: white; display: none; border: none; cursor: pointer;">
+                        <i class="fa-solid fa-download"></i> Instalar APK / App
+                    </button>
+                </div>
+            </div>
+            <a href="#problema" class="scroll-indicator">
+                <i class="fa-solid fa-chevron-down"></i>
+            </a>
+            <a href="#problema" class="scroll-next">
+                <i class="fa-solid fa-chevron-down"></i>
+            </a>
+        </section>
+
+        <section class="problem-section section-padding" id="problema">
+            <div class="container">
+                <div class="problem-grid">
+                    <div class="problem-text">
+                        <h2>¿Cansado de la "Caja Negra" del servicio automotriz?</h2>
+                        <p>Sabemos que dejar tu auto en el taller genera desconfianza y que administrar un taller con
+                            notas de papel genera pérdidas. AutoGuest elimina la fricción creando un canal de
+                            comunicación directo y basado en evidencia visual.</p>
+                    </div>
+                    <div class="section-image">
+                        <img src="imagenes/transparencia.png" alt="Taller con dashboard digital de transparencia">
+                    </div>
+                </div>
+            </div>
+            <a href="#hero" class="scroll-prev">
+                <i class="fa-solid fa-chevron-up"></i>
+            </a>
+            <a href="#zigzag" class="scroll-next">
+                <i class="fa-solid fa-chevron-down"></i>
+            </a>
+        </section>
+
+        <section class="zigzag-section section-padding" id="zigzag">
+            <div class="zigzag-container">
+
+                <div class="zigzag-block">
+                    <div class="zigzag-image">
+                        <img src="imagenes/Cliente_1.jpg" alt="Persona usando un smartphone con un coche de fondo">
+                    </div>
+                    <div class="zigzag-content">
+                        <h2>Tu auto, en tu bolsillo</h2>
+                        <p>Toma el control de tu vehículo con total transparencia. Dile adiós a las dudas:</p>
+                        <ul>
+                            <li><i class="fa-solid fa-camera"></i> <span><strong> Evidencia Visual:</strong> Aprueba
+                                    presupuestos viendo fotos reales del daño.</span></li>
+                            <li><i class="fa-solid fa-store"></i> <span><strong> Tienda Integrada:</strong> Compra
+                                    insumos
+                                    fácilmente desde la plataforma.</span></li>
+                            <li><i class="fa-solid fa-file-medical"></i> <span><strong> Historial Digital:</strong>
+                                    Bitácora
+                                    digital de todos tus mantenimientos.</span></li>
+                        </ul>
+                        <a href="registro_cliente.html" class="btn btn-secondary">Crear Cuenta Gratis</a>
+                    </div>
+                </div>
+
+                <div class="zigzag-block reverse">
+                    <div class="zigzag-image">
+                        <img src="imagenes/fto_mecanico.jpg" alt="Mecánico trabajando en un taller moderno">
+                    </div>
+                    <div class="zigzag-content">
+                        <h2>Digitaliza tus ganancias</h2>
+                        <p>Moderniza tu taller, fideliza a tus clientes y evita malentendidos:</p>
+                        <ul>
+                            <li><i class="fa-solid fa-stopwatch"></i> <span><strong> Adiós Tiempos Muertos:</strong>
+                                    Aprobaciones a un clic desde el celular del cliente.</span></li>
+                            <li><i class="fa-solid fa-boxes-stacked"></i> <span><strong> Inventario Automático:</strong>
+                                    Vende
+                                    insumos 24/7 y controla tu stock.</span></li>
+                            <li><i class="fa-solid fa-bolt"></i> <span><strong> Gestión Ágil:</strong> Administra citas
+                                    y
+                                    trabajos express sin perder el control.</span></li>
+                        </ul>
+                        <a href="registro_taller.html" class="btn btn-secondary">Registrar mi Taller</a>
+                    </div>
+                </div>
+
+            </div>
+            <a href="#problema" class="scroll-prev">
+                <i class="fa-solid fa-chevron-up"></i>
+            </a>
+            <a href="#como-funciona" class="scroll-next">
+                <i class="fa-solid fa-chevron-down"></i>
+            </a>
+        </section>
+
+        <section class="how-it-works-section section-padding" id="como-funciona">
+            <div class="container">
+                <h2>¿Cómo funciona AutoGuest?</h2>
+                <div class="steps-grid">
+
+                    <div class="step-card">
+                        <i class="fa-solid fa-calendar-check step-icon"></i>
+                        <h3>1. Agenda o Llega</h3>
+                        <p>El cliente reserva desde la app o el taller crea un ingreso rápido para servicios inmediatos.
+                        </p>
+                    </div>
+
+                    <div class="step-card">
+                        <i class="fa-solid fa-mobile-screen-button step-icon"></i>
+                        <h3>2. Diagnóstico Visual</h3>
+                        <p>El mecánico documenta el problema con fotos reales y envía la cotización directo al cliente.
+                        </p>
+                    </div>
+
+                    <div class="step-card">
+                        <i class="fa-solid fa-handshake step-icon"></i>
+                        <h3>3. Aprueba y Listo</h3>
+                        <p>El cliente aprueba con un clic, recibe notificaciones del proceso y guarda todo en su
+                            historial.</p>
+                    </div>
+
+                </div>
+            </div>
+            <a href="#zigzag" class="scroll-prev">
+                <i class="fa-solid fa-chevron-up"></i>
+            </a>
+            <a href="#cultura" class="scroll-next">
+                <i class="fa-solid fa-chevron-down"></i>
+            </a>
+        </section>
+
+        <section class="culture-section section-padding" id="cultura">
+            <div class="container">
+                <div class="culture-grid">
+                    <div class="culture-text">
+                        <h2>Impulsando la evolución automotriz</h2>
+                        <p>Nacimos para democratizar la información mecánica y devolverle la confianza al conductor.
+                            AutoGuest no es solo una agenda, es una herramienta diseñada para transformar la cultura
+                            automotriz local, ayudando a las PyMEs a modernizarse y al usuario a proteger su patrimonio
+                            con total transparencia.</p>
+                    </div>
+                    <div class="culture-image">
+                        <img src="imagenes/evolucion.png" alt="Coche futurista en taller inteligente"
+                            style="width: 100%; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.2);">
+                    </div>
+                </div>
+            </div>
+            <a href="#como-funciona" class="scroll-prev">
+                <i class="fa-solid fa-chevron-up"></i>
+            </a>
+            <a href="#hero" class="scroll-next" title="Volver al inicio">
+                <i class="fa-solid fa-arrow-up"></i>
+            </a>
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content"
+                style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 40px; text-align: left;">
+
+                <div class="footer-info" style="flex: 1; min-width: 250px;">
+                    <img src="imagenes/Logo_Autoguest.png" alt="Logo de AutoGuest"
+                        style="max-width: 120px; margin-bottom: 20px; filter: brightness(0) invert(1);">
+                    <p>Desarrollado con pasión para transformar el servicio automotriz.</p>
+                    <p style="font-size: 0.8rem; margin-top: 20px; opacity: 0.6;">© 2026 AutoGuest. Todos los derechos
+                        reservados.</p>
+                </div>
+
+                <div class="footer-links"
+                    style="flex: 1; min-width: 200px; display: flex; flex-direction: column; gap: 15px;">
+                    <h4 style="color: #fff; margin-bottom: 10px;">Enlaces</h4>
+                    <a href="index.html" style="color: #aaa; text-decoration: none; transition: color 0.3s;">Iniciar
+                        Sesión</a>
+                    <a href="registro_taller.html"
+                        style="color: #aaa; text-decoration: none; transition: color 0.3s;">Registrar Taller</a>
+                    <a href="registro_mecanico.html"
+                        style="color: #aaa; text-decoration: none; transition: color 0.3s;">Registrar Mecánico</a>
+                </div>
+
+                <div class="social-links" style="flex: 1; min-width: 150px; text-align: right;">
+                    <h4 style="color: #fff; margin-bottom: 20px;">Redes Sociales</h4>
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                </div>
+
+            </div>
+        </div>
+    </footer>
+
+    <script src="http://localhost:3000/js/global_nav.js"></script>
+    <script>
+        // Smooth scrolling for navigation arrows
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+    <script>
+        // Lógica de Instalación PWA
+        let deferredPrompt;
+        const installBtn = document.getElementById('pwa-install-btn');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            // Prevenir que el navegador muestre el prompt automático
+            e.preventDefault();
+            deferredPrompt = e;
+            // Mostrar nuestro propio botón de instalación
+            installBtn.style.display = 'inline-block';
+        });
+
+        installBtn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    console.log('App instalada');
+                    installBtn.style.display = 'none';
+                }
+                deferredPrompt = null;
+            }
+        });
+
+        // Registrar Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(reg => console.log('Service Worker registrado'))
+                    .catch(err => console.error('Error al registrar Service Worker', err));
+            });
+        }
+    </script>
+</body>
+
+</html>

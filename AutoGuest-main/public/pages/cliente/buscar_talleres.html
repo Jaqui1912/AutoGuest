@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscar Talleres - AutoGuest</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="../../../style.css">
+    <style>
+        /* Estilos específicos para la página de búsqueda */
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 40px;
+            background-color: #2c2c2c;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .dashboard-header .logo {
+            width: 110px;
+            display: block;
+        }
+
+        .back-to-dashboard {
+            color: #c0c0c0;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.3s ease;
+        }
+
+        .back-to-dashboard:hover {
+            color: #f39c12;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-right .user-greeting {
+            font-size: 1.1em;
+            color: #c0c0c0;
+        }
+
+        .header-right .logout-btn {
+            background-color: transparent;
+            color: #f39c12;
+            border: 1px solid #f39c12;
+            padding: 10px 20px;
+            font-size: 14px;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .header-right .logout-btn:hover {
+            background-color: #f39c12;
+            color: #1a1a1a;
+        }
+
+        /* === Sistema de Notificaciones Unificado === */
+        .notification-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .notification-trigger {
+            background: none;
+            border: none;
+            color: #f39c12;
+            font-size: 1.6em;
+            cursor: pointer;
+            padding: 8px;
+            position: relative;
+            transition: transform 0.2s;
+        }
+
+        .notification-trigger:hover {
+            transform: scale(1.1);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            background-color: #e74c3c;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 0.6em;
+            font-weight: bold;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            border: 2px solid #2c2c2c;
+        }
+
+        .notification-dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            width: 320px;
+            background-color: #2c2c2c;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid #444;
+            border-radius: 12px;
+            margin-top: 15px;
+            z-index: 1000;
+            overflow: hidden;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        .notification-dropdown.active {
+            display: block;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .notification-header {
+            padding: 12px 15px;
+            background-color: #333;
+            border-bottom: 1px solid #444;
+        }
+
+        .notification-header h3 {
+            margin: 0;
+            font-size: 1em;
+            color: #f39c12;
+            text-align: left;
+        }
+
+        .notification-list {
+            max-height: 350px;
+            overflow-y: auto;
+        }
+
+        .notification-item {
+            padding: 12px 15px;
+            border-bottom: 1px solid #3a3a3a;
+            display: flex;
+            gap: 12px;
+            cursor: pointer;
+            transition: background 0.2s;
+            text-align: left;
+        }
+
+        .notification-item:hover {
+            background-color: #3a3a3a;
+        }
+
+        .notification-item.unread {
+            background-color: rgba(243, 156, 18, 0.05);
+            border-left: 3px solid #f39c12;
+        }
+
+        .notification-icon {
+            font-size: 1.2em;
+            margin-top: 2px;
+        }
+
+        .notification-content {
+            flex: 1;
+        }
+
+        .notification-content strong {
+            display: block;
+            font-size: 0.9em;
+            color: #fff;
+            margin-bottom: 2px;
+        }
+
+        .notification-content p {
+            margin: 0;
+            font-size: 0.8em;
+            color: #aaa;
+            line-height: 1.3;
+        }
+
+        .notification-time {
+            display: block;
+            font-size: 0.7em;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .notification-empty {
+            padding: 30px 15px;
+            text-align: center;
+            color: #777;
+            font-style: italic;
+            font-size: 0.9em;
+        }
+
+        .text-danger { color: #e74c3c; }
+        .text-warning { color: #f1c40f; }
+        .text-success { color: #2ecc71; }
+        .text-info { color: #3498db; }
+        .text-primary { color: #f39c12; }
+
+        .search-page-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .search-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .search-header h1 {
+            font-size: 2.5em;
+            color: #ffffff;
+            margin-bottom: 10px;
+        }
+
+        .search-header p {
+            font-size: 1.1em;
+            color: #c0c0c0;
+        }
+
+        .search-bar-section {
+            margin-bottom: 50px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .search-input-group {
+            display: flex;
+            width: 100%;
+            max-width: 600px;
+            gap: 10px;
+        }
+
+        .search-input {
+            flex-grow: 1;
+            padding: 15px;
+            background-color: #2c2c2c;
+            border: 1px solid #555;
+            border-radius: 8px;
+            color: #f0f0f0;
+            font-size: 16px;
+        }
+
+        .search-button {
+            padding: 12px 25px;
+            font-size: 16px;
+            width: auto;
+            background-color: #f39c12;
+            color: #1a1a1a;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        .search-button:hover {
+            background-color: #e67e22;
+        }
+
+        .search-results-section h2 {
+            color: #ffffff;
+            font-size: 1.8em;
+            margin-bottom: 30px;
+            text-align: center;
+            border-bottom: 1px solid #555;
+            padding-bottom: 15px;
+        }
+
+        .search-results {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+
+        .search-result-card {
+            background-color: #2c2c2c;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .search-result-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .card-image {
+            width: 100%;
+            height: 180px;
+            overflow: hidden;
+            background-color: #444;
+            /* Color de fondo mientras carga */
+        }
+
+        .card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .card-content {
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .card-content h3 {
+            font-size: 1.5em;
+            color: #ffffff;
+            margin: 0 0 10px 0;
+        }
+
+        .card-content p {
+            font-size: 0.95em;
+            color: #c0c0c0;
+            line-height: 1.6;
+            margin: 0 0 20px 0;
+            flex-grow: 1;
+        }
+
+        .card-info-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            font-size: 0.9em;
+            color: #e0e0e0;
+        }
+
+        .card-info-row i {
+            color: #f39c12;
+            margin-right: 8px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .card-actions {
+            margin-top: auto;
+        }
+
+        .card-actions .btn {
+            width: 100%;
+            background-color: #f39c12;
+            color: #1a1a1a;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .card-actions .btn:hover {
+            background-color: #e67e22;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header id="main-header"></header>
+
+    <main class="search-page-container">
+        <div class="search-header">
+            <h1>Encuentra tu Taller Ideal</h1>
+            <p>Busca por ubicación o el nombre del taller.</p>
+        </div>
+
+        <div class="search-bar-section">
+            <div class="search-input-group">
+                <input type="text" id="searchInput" class="search-input" placeholder="Ej: Mecánica Express...">
+                <button class="btn search-button" id="searchButton">Buscar</button>
+            </div>
+        </div>
+
+        <div class="search-results-section">
+            <h2>Resultados Sugeridos</h2>
+            <div class="search-results" id="searchResults">
+            </div>
+        </div>
+    </main>
+    <script>
+        // Esta variable debe ser global para que el filtro funcione
+        let listaTalleres = [];
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            // 1. Verificar Sesión
+            if (sessionStorage.getItem('isLoggedIn') !== 'true') {
+                window.location.href = '../../../login_cliente.html';
+                return;
+            }
+
+            // 2. Saludo
+            const userName = sessionStorage.getItem('userName');
+            if (userName) {
+                let ug2 = document.querySelector('.user-greeting'); if(ug2) { ug2.textContent = `¡Hola, ${userName}!`; }
+            }
+
+            // 3. Logout
+            const logoutBtn = document.querySelector('.logout-btn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', async (e) => {
+                    e.preventDefault();
+                    try { await fetch('/api/registro/logout', { method: 'POST' }); } catch (err) { }
+                    sessionStorage.clear();
+                    window.location.href = '../../../index.html';
+                });
+            }
+
+            // 4. Cargar Talleres
+            await cargarTalleres();
+
+            // 5. Buscador con búsqueda rápida (Live Search)
+            const inputBusqueda = document.getElementById('searchInput');
+            const btnBuscar = document.getElementById('searchButton');
+
+            // Función de debounce para no saturar la búsqueda
+            function debounce(func, wait) {
+                let timeout;
+                return function executedFunction(...args) {
+                    const later = () => {
+                        clearTimeout(timeout);
+                        func(...args);
+                    };
+                    clearTimeout(timeout);
+                    timeout = setTimeout(later, wait);
+                };
+            }
+
+            const realizarBusqueda = () => {
+                const texto = inputBusqueda.value.toLowerCase().trim();
+                console.log("Buscando:", texto);
+                const filtrados = listaTalleres.filter(t =>
+                    (t.nombre && t.nombre.toLowerCase().includes(texto)) ||
+                    (t.direccion && t.direccion.toLowerCase().includes(texto))
+                );
+                dibujarTalleres(filtrados);
+            };
+
+            const busquedaRapida = debounce(realizarBusqueda, 300);
+
+            if (inputBusqueda) {
+                inputBusqueda.addEventListener('input', busquedaRapida);
+                inputBusqueda.addEventListener('keyup', (e) => {
+                    if (e.key === 'Enter') realizarBusqueda();
+                });
+            }
+
+            if (btnBuscar) {
+                btnBuscar.addEventListener('click', realizarBusqueda);
+            }
+        });
+
+        // --- FUNCIONES GLOBALES (FUERA DEL DOMContentLoaded) ---
+
+        async function cargarTalleres() {
+            const contenedor = document.getElementById('searchResults');
+            if (!contenedor) return;
+
+            try {
+                contenedor.innerHTML = '<p style="color:white; width:100%; text-align:center;">Cargando talleres...</p>';
+                const response = await fetch('/api/talleres');
+                if (!response.ok) throw new Error('Error de conexión');
+
+                listaTalleres = await response.json();
+                dibujarTalleres(listaTalleres);
+            } catch (error) {
+                console.error(error);
+                contenedor.innerHTML = '<p style="color: white; width:100%; text-align:center;">Error al cargar talleres.</p>';
+            }
+        }
+
+        function dibujarTalleres(datos) {
+            const contenedor = document.getElementById('searchResults');
+            if (!contenedor) return;
+
+            contenedor.innerHTML = '';
+
+            if (datos.length === 0) {
+                contenedor.innerHTML = '<p style="color: white; width:100%; text-align:center;">No se encontraron talleres.</p>';
+                return;
+            }
+
+            datos.forEach((taller, index) => {
+                const imagenesWorkshop = [
+                    'https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=400&h=250&fit=crop',
+                    'https://images.unsplash.com/photo-1625047509168-a7026f36de04?w=400&h=250&fit=crop',
+                    'https://images.unsplash.com/photo-1632823469850-2752c1b0d9e0?w=400&h=250&fit=crop',
+                    'https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?w=400&h=250&fit=crop',
+                    'https://images.unsplash.com/photo-1487754180451-c456f719a1fc?w=400&h=250&fit=crop',
+                ];
+
+                const esImagenValida = (url) => {
+                    if (!url || typeof url !== 'string' || url.trim() === "" || url === "undefined" || url === "null") return false;
+                    if (url.startsWith('data:')) {
+                        const partes = url.split(',');
+                        // Si es un data URL, debe ser base64 y tener una longitud mínima razonable (>3000 chars para una foto)
+                        if (partes.length < 2 || !partes[0].includes('base64') || partes[1].trim().length < 3000) return false;
+                    }
+                    return true;
+                };
+
+                const imagenDefault = imagenesWorkshop[index % imagenesWorkshop.length];
+                let imagen = esImagenValida(taller.foto_perfil) ? taller.foto_perfil : imagenDefault;
+
+                const card = `
+                    <div class="search-result-card">
+                        <div class="card-image" style="background-color: #333; position: relative; height: 180px; overflow: hidden;">
+                            <img src="${imagen}" 
+                                 alt="${taller.nombre}" 
+                                 onerror="this.onerror=null; this.src='${imagenDefault}';" 
+                                 style="width:100%; height:100%; object-fit:cover; display: block;">
+                        </div>
+                        <div class="card-content">
+                            <h3>${taller.nombre}</h3>
+                            <p>${taller.direccion || 'Sin dirección registrada'}</p>
+                            <div class="card-info-row"><i class="fas fa-star" style="color: #f39c12;"></i> 5.0</div>
+                            <div class="card-actions">
+                                <button class="btn" onclick="verDetalle('${taller.idTaller}')">Ver Perfil</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                contenedor.innerHTML += card;
+            });
+        }
+
+        // ESTA FUNCIÓN DEBE ESTAR AQUÍ, AFUERA DE TODO
+        function verDetalle(id) {
+            console.log("Navegando a taller:", id);
+            // Ajusta los "../" según dónde esté tu archivo detalle_taller.html
+            window.location.href = `../../../detalle_taller.html?id=${id}`;
+        }
+    </script>
+
+
+
+
+
+
+
+    <script src="../../../js/notifications.js"></script>
+    <script src="../../js/global_nav.js"></script>
+</body>
+
+</html>

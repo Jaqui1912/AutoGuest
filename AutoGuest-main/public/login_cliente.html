@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acceso de Clientes - AutoGuest</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <!-- Ruta CSS: Correcta -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="form-page-wrapper">
+        <!-- ===== COLUMNA DE LA IMAGEN (IZQUIERDA) - Ahora con el nuevo fondo del CSS ===== -->
+        <div class="form-image-column">
+            <div class="logo-link">
+                <a href="home.html">
+                    <img src="imagenes/Logo_Autoguest.png" alt="Logo de AutoGuest">
+                </a>
+            </div>
+            <div class="image-text">
+                <h2>Bienvenido de nuevo.</h2>
+                <p>Tu próxima gran aventura o tu lugar seguro de estacionamiento te esperan. Accede para continuar.</p>
+            </div>
+        </div>
+
+        <!-- ===== COLUMNA DEL FORMULARIO (DERECHA) ===== -->
+        <div class="form-content-column">
+            <div class="form-container">
+                <h1>Acceso de Clientes</h1>
+                <p>Inicia sesión para gestionar tus vehículos y reservas.</p>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="email">Tu Email</label>
+                        <input type="email" id="email" class="form-control" placeholder="tu@email.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Contraseña</label>
+                        <input type="password" id="password" class="form-control" placeholder="Contraseña" required>
+                    </div>
+                    <button type="submit" class="btn">Entrar</button>
+                </form>
+                <div class="extra-link">
+                    <p>¿Aún no tienes cuenta? <a href="registro_cliente.html">Crea una ahora</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                const response = await fetch('http://localhost:3000/api/registro/login', {
+                    method: 'POST',
+                    credentials: 'include', // REQUERIDO para guardar y enviar la cookie
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    // Guardar el estado de la sesión y el nombre del usuario en el navegador
+                    sessionStorage.setItem('isLoggedIn', 'true');
+                    sessionStorage.setItem('userName', data.userName);
+                    sessionStorage.setItem('userId', data.userId);
+                    localStorage.setItem('userName', data.userName);
+                    localStorage.setItem('userId', data.userId);
+                    localStorage.setItem('token', data.token); // Requerido para peticiones API
+                    localStorage.setItem('userRole', 'cliente');
+
+                    alert(data.mensaje || '¡Inicio de sesión exitoso!');
+                    // Redirigir a la página que indica el servidor
+                    window.location.href = data.redirectTo;
+                } else {
+                    alert('Error: ' + (data.mensaje || 'Credenciales incorrectas.'));
+                }
+
+            } catch (error) {
+                console.error('Error de conexión:', error);
+                // El error de JSON inválido suele ocurrir aquí cuando hay un 404
+                alert('No se pudo conectar con el servidor o las credenciales son incorrectas.');
+            }
+        });
+    </script>
+    <script src="http://localhost:3000/js/global_nav.js"></script>
+</body>
+
+</html>

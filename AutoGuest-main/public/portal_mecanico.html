@@ -1,0 +1,1820 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal de Mecánico - AutoGuest</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* === ESTILOS COPIADOS DEL PORTAL DE TALLER (Para garantizar identidad visual) === */
+        body {
+            background-color: #202020;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            color: white;
+        }
+
+        /* Cabecera idéntica */
+        .portal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 40px;
+            background-color: #1a1a1a;
+            border-bottom: 1px solid #333;
+        }
+
+        .portal-header .logo {
+            width: 120px;
+        }
+
+        .portal-header .header-info {
+            text-align: right;
+        }
+
+        .portal-header .header-info h2 {
+            margin: 0;
+            font-size: 1.2em;
+            color: #ffffff;
+        }
+
+        .portal-header .header-info p {
+            margin: 0;
+            font-size: 0.9em;
+            color: #a0a0a0;
+        }
+
+        .logout-btn {
+            background: none;
+            border: 1px solid #f39c12;
+            color: #f39c12;
+            padding: 8px 16px;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .logout-btn:hover {
+            background-color: #f39c12;
+            color: #1a1a1a;
+        }
+
+        /* Settings Dropdown */
+        .settings-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .settings-btn {
+            background: none;
+            border: none;
+            color: #f39c12;
+            font-size: 1.5em;
+            cursor: pointer;
+            padding: 8px;
+            transition: transform 0.3s;
+        }
+
+        .settings-btn:hover {
+            transform: rotate(90deg);
+        }
+
+        .settings-dropdown {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: calc(100% + 15px);
+            background: rgba(26, 26, 26, 0.98);
+            backdrop-filter: blur(12px);
+            min-width: 200px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+            z-index: 2500;
+            border-radius: 14px;
+            overflow: hidden;
+            border: 1px solid rgba(243, 156, 18, 0.4);
+            animation: dropdownFade 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes dropdownFade {
+            from { opacity: 0; transform: translateY(-15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .settings-dropdown a {
+            color: #ffffff;
+            padding: 16px 22px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            transition: all 0.25s ease;
+            font-size: 1.05em;
+            font-weight: 500;
+        }
+
+        .settings-dropdown a i {
+            width: 24px;
+            color: #f39c12;
+            font-size: 1.25em;
+            text-align: center;
+        }
+
+        .settings-dropdown a:last-child {
+            border-bottom: none;
+            color: #ff4d4d;
+        }
+
+        .settings-dropdown a:last-child i {
+            color: #ff4d4d;
+        }
+
+        .settings-dropdown a:hover {
+            background-color: rgba(243, 156, 18, 0.12);
+            color: #f39c12;
+            padding-left: 28px;
+        }
+
+        .settings-dropdown a:last-child:hover {
+            background-color: rgba(255, 77, 77, 0.12);
+            color: #ff7675;
+        }
+
+        .settings-container.active .settings-dropdown {
+            display: block;
+        }
+
+        .settings-container {
+            position: relative;
+        }
+
+        /* Contenedor */
+        .portal-container {
+            max-width: 1300px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .main-title {
+            font-size: 2.5em;
+            color: #ffffff;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #444;
+            padding-bottom: 15px;
+        }
+
+        /* === ESTILOS ESPECÍFICOS DEL MECÁNICO (Adaptados al tema oscuro) === */
+
+        .jobs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            /* Tarjetas responsivas */
+            gap: 20px;
+        }
+
+        /* Usamos el mismo estilo de fondo que tus .kpi-card */
+        .job-card {
+            background-color: #2c2c2c;
+            border-radius: 12px;
+            padding: 25px;
+            border-left: 5px solid #f39c12;
+            /* Detalle naranja */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .job-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .job-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #444;
+            padding-bottom: 10px;
+        }
+
+        .job-header h3 {
+            margin: 0;
+            color: #f39c12;
+            font-size: 1.5em;
+        }
+
+        .job-details p {
+            margin: 8px 0;
+            color: #d0d0d0;
+            font-size: 1em;
+        }
+
+        .job-details i {
+            width: 25px;
+            color: #f39c12;
+            text-align: center;
+        }
+
+        /* Botones y Formularios Oscuros */
+        .action-btn {
+            background-color: #f39c12;
+            color: #1a1a1a;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            width: 100%;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: background 0.3s;
+        }
+
+        .action-btn:hover {
+            background-color: #e67e22;
+        }
+
+        /* Formulario desplegable oscuro */
+        .quote-form {
+            display: none;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px dashed #555;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .form-group {
+            margin-bottom: 10px;
+        }
+
+        .form-label {
+            display: block;
+            color: #a0a0a0;
+            font-size: 0.85em;
+            margin-bottom: 5px;
+        }
+
+        /* Inputs oscuros para que no brillen */
+        .dark-input {
+            width: 100%;
+            background-color: #333;
+            border: 1px solid #555;
+            color: white;
+            padding: 8px;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .dark-input:focus {
+            outline: none;
+            border-color: #f39c12;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+
+        .status-pending {
+            background-color: #444;
+            color: #f39c12;
+            border: 1px solid #f39c12;
+        }
+
+        .status-completed {
+            background-color: #2ecc71;
+            color: #1a1a1a;
+        }
+
+        /* === ESTILOS DEL CHAT (MECÁNICO) === */
+        .chat-trigger-btn {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: #fff;
+            border: none;
+            padding: 9px 16px;
+            border-radius: 6px;
+            width: 100%;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background 0.3s, transform 0.15s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 0.9em;
+        }
+
+        .chat-trigger-btn:hover {
+            background: linear-gradient(135deg, #2980b9, #1a6c9e);
+            transform: translateY(-1px);
+        }
+
+        .chat-unread-badge {
+            background: #e74c3c;
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 0.7em;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        /* Modal overlay del chat */
+        .chat-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(4px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .chat-modal-overlay.active {
+            display: flex;
+        }
+
+        .chat-modal-box {
+            background: #1e1e1e;
+            border-radius: 16px;
+            width: 95%;
+            max-width: 480px;
+            height: 85vh;
+            max-height: 660px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+        }
+
+        .chat-modal-header {
+            padding: 16px 20px;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-modal-header h3 {
+            margin: 0;
+            color: #fff;
+            font-size: 1em;
+            font-weight: 700;
+        }
+
+        .chat-modal-header p {
+            margin: 2px 0 0;
+            color: #b8d9f0;
+            font-size: 0.8em;
+        }
+
+        .chat-close-btn {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 22px;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .chat-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            background: #141414;
+        }
+
+        .chat-body::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .chat-body::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .chat-body::-webkit-scrollbar-thumb {
+            background: #444;
+            border-radius: 2px;
+        }
+
+        .chat-date-sep {
+            text-align: center;
+            font-size: 0.74em;
+            color: #666;
+            margin: 4px 0;
+        }
+
+        .msg-wrap {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .msg-wrap.me {
+            align-items: flex-end;
+        }
+
+        .msg-wrap.them {
+            align-items: flex-start;
+        }
+
+        .msg-sender {
+            font-size: 0.72em;
+            color: #888;
+            margin-bottom: 3px;
+            padding: 0 4px;
+        }
+
+        .msg-bubble {
+            max-width: 76%;
+            padding: 9px 13px;
+            border-radius: 17px;
+            font-size: 0.91em;
+            line-height: 1.44;
+        }
+
+        .msg-bubble.me {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: #fff;
+            border-bottom-right-radius: 4px;
+        }
+
+        .msg-bubble.them {
+            background: #2c2c2c;
+            color: #e0e0e0;
+            border-bottom-left-radius: 4px;
+        }
+
+        .msg-bubble img.chat-img {
+            max-width: 210px;
+            max-height: 210px;
+            border-radius: 10px;
+            display: block;
+            cursor: zoom-in;
+            object-fit: cover;
+        }
+
+        .msg-time {
+            font-size: 0.67em;
+            color: #666;
+            margin-top: 3px;
+            padding: 0 4px;
+        }
+
+        .chat-empty-state {
+            text-align: center;
+            color: #555;
+            padding: 30px 20px;
+        }
+
+        .chat-empty-state i {
+            font-size: 2.5em;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .chat-loading-state {
+            text-align: center;
+            color: #666;
+            padding: 20px;
+        }
+
+        /* Input area del chat */
+        .chat-input-wrapper {
+            padding: 12px 14px;
+            border-top: 1px solid #2a2a2a;
+            background: #1e1e1e;
+        }
+
+        .chat-img-preview {
+            display: none;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 10px;
+            background: #2a2a2a;
+            border-radius: 10px;
+            margin-bottom: 8px;
+        }
+
+        .chat-img-preview.show {
+            display: flex;
+        }
+
+        .chat-img-preview img {
+            width: 56px;
+            height: 56px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .chat-img-preview-info {
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .chat-img-preview-info p {
+            margin: 0;
+            font-size: 0.8em;
+            color: #ccc;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .chat-img-preview-info span {
+            font-size: 0.72em;
+            color: #888;
+        }
+
+        .remove-preview {
+            background: none;
+            border: none;
+            color: #e74c3c;
+            cursor: pointer;
+            font-size: 1.1em;
+        }
+
+        .chat-input-row {
+            display: flex;
+            gap: 8px;
+            align-items: flex-end;
+        }
+
+        .chat-icon-btn2 {
+            background: none;
+            border: none;
+            color: #888;
+            font-size: 1.2em;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: color 0.2s, background 0.2s;
+            flex-shrink: 0;
+        }
+
+        .chat-icon-btn2:hover {
+            color: #3498db;
+            background: #2a2a2a;
+        }
+
+        .chat-textarea {
+            flex: 1;
+            padding: 10px 14px;
+            background: #2a2a2a;
+            border: 1px solid #3a3a3a;
+            border-radius: 22px;
+            color: #f0f0f0;
+            font-size: 0.9em;
+            resize: none;
+            max-height: 100px;
+            outline: none;
+            transition: border-color 0.2s;
+            font-family: inherit;
+        }
+
+        .chat-textarea:focus {
+            border-color: #3498db;
+        }
+
+        .chat-send-btn {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            border: none;
+            color: #fff;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            font-size: 1em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: transform 0.15s, box-shadow 0.15s;
+        }
+
+        .chat-send-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.4);
+        }
+
+        .chat-send-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Lightbox */
+        .lightbox-overlay {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.93);
+            justify-content: center;
+            align-items: center;
+            cursor: zoom-out;
+        }
+
+        .lightbox-overlay.show {
+            display: flex;
+        }
+
+        .lightbox-overlay img {
+            max-width: 90vw;
+            max-height: 90vh;
+            border-radius: 8px;
+        }
+
+        /* === Sistema de Notificaciones === */
+        .notification-wrapper {
+            position: relative;
+            display: inline-block;
+            margin-right: 15px;
+        }
+
+        .notification-trigger {
+            background: none;
+            border: none;
+            color: #f39c12;
+            font-size: 1.4em;
+            cursor: pointer;
+            padding: 8px;
+            position: relative;
+            transition: transform 0.2s;
+        }
+
+        .notification-trigger:hover {
+            transform: scale(1.1);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            background-color: #e74c3c;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 0.6em;
+            font-weight: bold;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            border: 2px solid #1a1a1a;
+        }
+
+        .notification-dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            width: 320px;
+            background-color: #2c2c2c;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid #444;
+            border-radius: 12px;
+            margin-top: 10px;
+            z-index: 1000;
+            overflow: hidden;
+            text-align: left;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        .notification-dropdown.active {
+            display: block;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .notification-header {
+            padding: 12px 15px;
+            background-color: #333;
+            border-bottom: 1px solid #444;
+        }
+
+        .notification-header h3 {
+            margin: 0;
+            font-size: 1em;
+            color: #f39c12;
+        }
+
+        .notification-list {
+            max-height: 350px;
+            overflow-y: auto;
+        }
+
+        .notification-item {
+            padding: 12px 15px;
+            border-bottom: 1px solid #3a3a3a;
+            display: flex;
+            gap: 12px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .notification-item:hover {
+            background-color: #3a3a3a;
+        }
+
+        .notification-item.unread {
+            background-color: rgba(243, 156, 18, 0.05);
+            border-left: 3px solid #f39c12;
+        }
+
+        .notification-icon {
+            font-size: 1.2em;
+            margin-top: 2px;
+        }
+
+        .notification-content {
+            flex: 1;
+        }
+
+        .notification-content strong {
+            display: block;
+            font-size: 0.9em;
+            color: #fff;
+            margin-bottom: 2px;
+        }
+
+        .notification-content p {
+            margin: 0;
+            font-size: 0.8em;
+            color: #aaa;
+            line-height: 1.3;
+        }
+
+        .notification-time {
+            display: block;
+            font-size: 0.7em;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .notification-empty {
+            padding: 30px 15px;
+            text-align: center;
+            color: #777;
+            font-style: italic;
+            font-size: 0.9em;
+        }
+
+        .text-danger {
+            color: #e74c3c;
+        }
+
+        .text-warning {
+            color: #f1c40f;
+        }
+
+        .text-success {
+            color: #2ecc71;
+        }
+
+        .text-info {
+            color: #3498db;
+        }
+
+        .text-primary {
+            color: #f39c12;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <header class="portal-header">
+        <a href="#">
+            <img src="imagenes/Logo_Autoguest.png" alt="Logo de AutoGuest" class="logo">
+        </a>
+        <div class="header-info" style="display: flex; align-items: center; gap: 20px;">
+            <!-- Sistema de Notificaciones Unificado -->
+            <div class="notification-wrapper">
+                <button class="notification-trigger" id="notificationTrigger"
+                    onclick="NotificationSystem.toggleDropdown()">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge" id="notificationBadge">0</span>
+                </button>
+                <div class="notification-dropdown" id="notificationDropdown">
+                    <div class="notification-header">
+                        <h3>Notificaciones</h3>
+                    </div>
+                    <div class="notification-list" id="notificationList">
+                        <div class="notification-empty">Cargando...</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align: right;">
+                <h2 id="mechanicName">Panel de Mecánico</h2>
+                <p>Gestión de Servicios</p>
+            </div>
+
+            <!-- Ajustes Dropdown -->
+            <div class="settings-container" id="settingsMenu">
+                <button class="settings-btn" id="settingsTrigger">
+                    <i class="fas fa-cog"></i>
+                </button>
+                <div class="settings-dropdown" id="settingsDropdown">
+                    <div class="dropdown-header-profile" style="padding: 15px 20px; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.02);">
+                        <div style="position: relative;">
+                            <img id="userAvatar" src="https://ui-avatars.com/api/?name=Mecanico&background=f39c12&color=fff" style="width: 42px; height: 42px; border-radius: 50%; object-fit: cover; border: 2px solid #f39c12;">
+                            <div style="position: absolute; bottom: 2px; right: 2px; width: 10px; height: 10px; background: #2ecc71; border-radius: 50%; border: 2px solid #1a1a1a;"></div>
+                        </div>
+                        <div>
+                            <div id="mecanicoNombreDropdown" style="font-weight: 700; color: white; font-size: 0.95em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 120px;">Hugo Sánchez</div>
+                            <div style="font-size: 0.75em; color: #f39c12; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Mecánico</div>
+                        </div>
+                    </div>
+                    <a href="pages/mecanico/perfil_mecanico.html"><i class="fas fa-user-circle"></i> Mi Perfil</a>
+                    <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="portal-container">
+        <div
+            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 1px solid #444; padding-bottom: 15px;">
+            <h1 style="margin:0; font-size: 2.5em; color: white;">Trabajos Asignados</h1>
+            <button class="action-btn" style="width: auto; margin:0;" onclick="openNewJobModal()">
+                <i class="fas fa-plus-circle"></i> Nuevo Trabajo Express
+            </button>
+        </div>
+
+        <!-- Filtros de Trabajos -->
+        <div class="filters-container" style="background: #2c2c2c; padding: 15px; border-radius: 8px; margin-bottom: 20px; display: flex; gap: 15px; flex-wrap: wrap; align-items: center;">
+            <div class="form-group" style="margin: 0;">
+                <label style="color: #f39c12; font-size: 0.9em; margin-bottom: 5px; display: block;"><i class="fas fa-calendar-day"></i> Filtrar por Día</label>
+                <input type="date" id="filterDate" class="dark-input" style="padding: 8px;" onchange="renderCitas()">
+            </div>
+            <div class="form-group" style="margin: 0; min-width: 200px;">
+                <label style="color: #f39c12; font-size: 0.9em; margin-bottom: 5px; display: block;"><i class="fas fa-tasks"></i> Estado del Trabajo</label>
+                <select id="filterStatus" class="dark-input" style="padding: 8px;" onchange="renderCitas()">
+                    <option value="ALL">Todos los Estados</option>
+                    <option value="Pendiente">Pendientes / Para Diagnóstico</option>
+                    <option value="Cotizado">En espera de aprobación</option>
+                    <option value="En Proceso">En Proceso</option>
+                    <option value="Completado">Finalizados / Completados</option>
+                    <option value="Cancelada">Cancelados</option>
+                </select>
+            </div>
+            <div style="flex-grow: 1; text-align: right; align-self: flex-end;">
+                <button class="action-btn" style="width: auto; margin: 0; background: #555;" onclick="clearFilters()">
+                    <i class="fas fa-times-circle"></i> Limpiar Filtros
+                </button>
+            </div>
+        </div>
+
+        <div id="listaTrabajos" class="jobs-grid">
+            <p style="color: #a0a0a0; grid-column: 1/-1; text-align: center;">
+                <i class="fas fa-spinner fa-spin"></i> Cargando citas...
+            </p>
+        </div>
+    </main>
+
+    <!-- MODAL NUEVO TRABAJO -->
+    <div id="new-job-modal" class="modal"
+        style="display:none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.8);">
+        <div class="modal-content"
+            style="background-color: #2c2c2c; margin: 5% auto; padding: 20px; border: 1px solid #888; width: 90%; max-width: 500px; border-radius: 10px; color: white;">
+            <span style="color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer;"
+                onclick="closeNewJobModal()">&times;</span>
+            <h2 style="color: #f39c12; margin-top: 0;">Nuevo Trabajo Express</h2>
+            <p style="color: #ccc; font-size: 0.9em;">Registra un cliente y vehículo rápidamente.</p>
+
+            <form id="express-form">
+                <h3 style="border-bottom: 1px solid #444; padding-bottom: 5px; margin-top: 20px;">Cliente</h3>
+                <div class="form-group">
+                    <label class="form-label">Nombre Completo:</label>
+                    <input type="text" class="dark-input" id="new-nombre" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Teléfono (10 dígitos):</label>
+                    <input type="tel" class="dark-input" id="new-telefono" pattern="[0-9]{10}" required>
+                </div>
+
+                <h3 style="border-bottom: 1px solid #444; padding-bottom: 5px; margin-top: 20px;">Vehículo</h3>
+                <div class="form-group">
+                    <label class="form-label">Placa:</label>
+                    <input type="text" class="dark-input" id="new-placa" required style="text-transform: uppercase;">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Marca:</label>
+                    <input type="text" class="dark-input" id="new-marca" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Modelo:</label>
+                    <input type="text" class="dark-input" id="new-modelo" required>
+                </div>
+
+                <button type="submit" class="action-btn" style="margin-top: 20px; background-color: #f39c12;">Crear
+                    Trabajo</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let availableServices = [];
+        let allCitasLocal = [];
+
+        function clearFilters() {
+            document.getElementById('filterDate').value = '';
+            document.getElementById('filterStatus').value = 'ALL';
+            renderCitas();
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const userName = sessionStorage.getItem('userName');
+            if (userName) document.getElementById('mechanicName').textContent = "Mecánico: " + userName;
+
+            document.getElementById('logoutBtn').addEventListener('click', (e) => {
+                e.preventDefault();
+                sessionStorage.clear();
+                window.location.href = 'index.html';
+            });
+
+            // Cargar datos reales
+            await loadServices();
+            await cargarCitas();
+
+            // Evento Formulario Express
+            document.getElementById('express-form').addEventListener('submit', handleExpressSubmit);
+        });
+
+        // 1. Obtener servicios del taller para llenar el select
+        async function loadServices() {
+            try {
+                const res = await fetch('/api/taller/servicios');
+                if (res.ok) {
+                    const data = await res.json();
+                    availableServices = data.servicios || [];
+                }
+            } catch (e) { console.error("Error cargando servicios", e); }
+        }
+
+        // 2. Cargar Citas Asignadas
+        async function cargarCitas() {
+            // Reset selection state on reload to avoid ghost data
+            // (Note: defined in global scope above, but good to clear here if we reload)
+            // But be careful, if user is editing one and we auto-reload... 
+            // For now, let's assume manual reload or specific action triggers this.
+
+            const container = document.getElementById('listaTrabajos');
+            container.innerHTML = '<p style="color: #a0a0a0; grid-column: 1/-1; text-align: center;"><i class="fas fa-spinner fa-spin"></i> Cargando citas...</p>';
+
+            try {
+                const res = await fetch('/api/mecanico/mis-citas');
+
+                if (res.status === 401) {
+                    // Silent fail or redirect? Better to warn if user is expecting data.
+                    // But maybe just redirect.
+                    console.warn("Sesión expirada");
+                    // window.location.href = 'index.html'; // Optional: auto redirect on load
+                    return;
+                }
+
+                if (!res.ok) throw new Error('Error al obtener citas');
+
+                allCitasLocal = await res.json();
+                renderCitas();
+
+            } catch (e) {
+                container.innerHTML = `<p style="color: #e74c3c; grid-column: 1/-1; text-align: center;">Error: ${e.message}</p>`;
+                console.error(e);
+            }
+        }
+
+        function renderCitas() {
+            const container = document.getElementById('listaTrabajos');
+            container.innerHTML = '';
+
+            const dateFilter = document.getElementById('filterDate').value;
+            const statusFilter = document.getElementById('filterStatus').value;
+
+            let filteredCitas = allCitasLocal.filter(cita => {
+                let matchDate = true;
+                let matchStatus = true;
+
+                if (dateFilter) {
+                    const citaDate = new Date(cita.fechaHora).toISOString().split('T')[0];
+                    if (citaDate !== dateFilter) matchDate = false;
+                }
+
+                if (statusFilter !== 'ALL') {
+                    if (statusFilter === 'Cancelada' && (cita.estado === 'Cancelado' || cita.estado === 'Rechazado' || cita.estado === 'Cancelada')) {
+                        matchStatus = true; // Agrupar cancelados
+                    } else if (cita.estado !== statusFilter) {
+                        matchStatus = false;
+                    }
+                }
+
+                return matchDate && matchStatus;
+            });
+
+            if (filteredCitas.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #aaa; grid-column: 1/-1;">No tienes trabajos que coincidan con los filtros.</p>';
+                return;
+            }
+
+            filteredCitas.forEach(cita => {
+                const card = document.createElement('div');
+                card.className = 'job-card';
+
+                    let actionArea = '';
+
+                    // CASO 1: Cita Disponible (Sin Mecánico)
+                    if (!cita.idMecanico) {
+                        actionArea = `
+                            <div style="background-color: #333; padding: 10px; border-radius: 6px; text-align: center; margin-bottom: 10px;">
+                                <strong style="color: #f39c12;">DISPONIBLE</strong>
+                            </div>
+                            <button class="action-btn" onclick="tomarCita('${cita.idCita}')" style="background-color: #3498db;">
+                                <i class="fas fa-hand-paper"></i> Tomar Trabajo
+                            </button>
+                        `;
+                    }
+                    // CASO 2: Cita Asignada a Mí - En Proceso (YA APROBADA)
+                    else if (cita.estado === 'En Proceso') {
+                        actionArea = `
+                            <div style="background-color: #34495e; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+                                <p style="margin:0; color:#bdc3c7; font-size:0.9em;">Trabajo Autorizado</p>
+                            </div>
+                            <button class="action-btn" onclick="finalizarCita('${cita.idCita}')" style="background-color: #2ecc71;">
+                                <i class="fas fa-check-flag"></i> Finalizar Trabajo
+                            </button>
+                        `;
+                    }
+                    // CASO 2.5: Cita finalizada esperando cliente
+                    else if (cita.estado === 'Esperando Confirmacion Cliente') {
+                        actionArea = `
+                            <div style="background-color: #e67e22; padding: 15px; border-radius: 6px; text-align: center; margin-bottom: 10px; animation: pulse 2s infinite;">
+                                <i class="fas fa-clock" style="font-size: 1.5em; display: block; margin-bottom: 5px;"></i>
+                                <strong style="color: #fff;">Esperando Confirmación del Cliente</strong>
+                                <p style="margin: 5px 0 0 0; font-size: 0.8em;">El cliente debe confirmar la entrega del vehículo.</p>
+                            </div>
+                        `;
+                    }
+                    // CASO 3: Cita Asignada a Mí - COTIZADO (ESPERANDO APROBACIÓN)
+                    else if (cita.estado === 'Cotizado') {
+                        actionArea = `
+                            <div style="background-color: #e67e22; padding: 15px; border-radius: 6px; text-align: center; margin-bottom: 10px; animation: pulse 2s infinite;">
+                                <i class="fas fa-clock" style="font-size: 1.5em; display: block; margin-bottom: 5px;"></i>
+                                <strong style="color: #fff;">Esperando Aprobación</strong>
+                                <p style="margin: 5px 0 0 0; font-size: 0.8em;">El cliente debe aprobar la cotización.</p>
+                            </div>
+                        `;
+                    }
+                    // CASO 4: Cita Cancelada o Rechazada
+                    else if (cita.estado === 'Cancelado' || cita.estado === 'Rechazado') {
+                        actionArea = `
+                            <div style="background-color: #c0392b; padding: 15px; border-radius: 6px; text-align: center; margin-bottom: 10px;">
+                                <i class="fas fa-ban" style="font-size: 1.5em; display: block; margin-bottom: 5px;"></i>
+                                <strong style="color: #fff;">${cita.estado === 'Rechazado' ? 'Cotización Rechazada' : 'Cita Cancelada'}</strong>
+                                <p style="margin: 5px 0 0 0; font-size: 0.8em;">Este trabajo ya no está disponible.</p>
+                            </div>
+                        `;
+                    }
+                    // CASO 5: Cita Asignada a Mí - Pendiente (Necesita Diagnóstico) 
+                    else if (cita.estado === 'Pendiente') {
+                        // Construir opciones del select
+                        let options = '<option value="">-- Seleccionar Servicio (Opcional) --</option>';
+                        availableServices.forEach(s => {
+                            options += `<option value="${s.idServicio}" data-price="${s.precio}" data-desc="${s.descripcion}">${s.nombre} - $${s.precio}</option>`;
+                        });
+
+                        actionArea = `
+                            <button class="action-btn" onclick="toggleForm('${cita.idCita}')">
+                                <i class="fas fa-wrench"></i> Diagnosticar / Cotizar
+                            </button>
+                            <div id="form-${cita.idCita}" class="quote-form">
+                                <div class="form-group">
+                                    <label class="form-label">Agregar Servicio:</label>
+                                    <select class="dark-input" id="service-select-${cita.idCita}">
+                                        <option value="">-- Seleccionar Servicio --</option>
+                                        ${options}
+                                    </select>
+                                    <button class="action-btn" style="margin-top: 10px; background-color: #3498db;" onclick="addServiceToCotizacion('${cita.idCita}')">
+                                        <i class="fas fa-plus"></i> Agregar Servicio
+                                    </button>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Servicios Seleccionados:</label>
+                                    <div id="services-list-${cita.idCita}" style="background-color: #333; padding: 10px; border-radius: 4px; min-height: 60px; margin-bottom: 10px;">
+                                        <p style="color: #888; margin: 0; text-align: center;">No hay servicios agregados</p>
+                                    </div>
+                                    <div style="text-align: right; padding: 10px; background-color: #444; border-radius: 4px; margin-bottom: 10px;">
+                                        <strong style="color: #f39c12; font-size: 1.2em;">Total: $<span id="total-${cita.idCita}">0.00</span></strong>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Notas adicionales (opcional):</label>
+                                    <textarea class="dark-input" id="notes-${cita.idCita}" placeholder="Observaciones generales..." rows="2"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" style="color: #e74c3c;"><i class="fas fa-camera"></i> Evidencia fotográfica (Obligatoria):</label>
+                                    <input type="file" id="evidencia-${cita.idCita}" accept="image/*" class="dark-input" required style="padding: 10px;">
+                                </div>
+                                <button class="action-btn" style="background-color: #27ae60; color:white;" onclick="enviarCotizacion('${cita.idCita}')">
+                                    <i class="fas fa-paper-plane"></i> Enviar Cotización
+                                </button>
+                            </div>
+                        `;
+                    } else {
+                        actionArea = `
+                            <div style="margin-top:15px; text-align:center; color:#2ecc71;">
+                                <i class="fas fa-check-circle"></i> ${cita.estado}
+                            </div>
+                        `;
+                    }
+
+                    // Formatear fecha
+                    const fecha = new Date(cita.fechaHora).toLocaleString();
+
+                    card.innerHTML = `
+                        <div class="job-header">
+                            <h3>${cita.marca} ${cita.modelo || ''}</h3>
+                            <span class="status-badge ${cita.estado === 'Pendiente' ? 'status-pending' : 'status-completed'}">
+                                ${cita.estado}
+                            </span>
+                        </div>
+                        <div class="job-details">
+                            <p><i class="fas fa-hashtag"></i> Placa: <strong>${cita.placa}</strong></p>
+                            <p><i class="fas fa-user"></i> Cliente: ${cita.clienteNombre || 'N/A'}</p>
+                            <p><i class="fas fa-tools"></i> <strong>Servicio:</strong> ${cita.servicioNombre || cita.servicio_solicitado || 'General'}</p>
+                            <p><i class="fas fa-clock"></i> Cita: ${fecha}</p>
+                        </div>
+                        ${actionArea}
+                        <button class="chat-trigger-btn" onclick="abrirChatCita('${cita.idCita}', '${cita.clienteNombre}', '${cita.estado}')">
+                            <i class="fas fa-comments"></i> ${cita.estado === 'Completado' ? 'Visualizar Chat' : 'Chat con Cliente'}
+                            <span class="chat-unread-badge" id="badge-${cita.idCita}" style="display:none"></span>
+                        </button>
+                    `;
+                    container.appendChild(card);
+                    // Verificar mensajes no leídos
+                    verificarNoLeidos(cita.idCita);
+                });
+        }
+
+        // --- FUNCIONES UI ---
+
+        window.openNewJobModal = () => document.getElementById('new-job-modal').style.display = 'block';
+        window.closeNewJobModal = () => document.getElementById('new-job-modal').style.display = 'none';
+
+        // Cerrar modal con click afuera
+        window.onclick = (event) => {
+            const modal = document.getElementById('new-job-modal');
+            if (event.target == modal) modal.style.display = "none";
+        };
+
+        window.toggleForm = (idCita) => {
+            const form = document.getElementById(`form-${idCita}`);
+            if (form.style.display === 'block') {
+                form.style.display = 'none';
+            } else {
+                form.style.display = 'block';
+                // Auto-agregar el servicio solicitado si no está ya en la lista
+                // Buscamos la cita en el DOM para obtener el servicio original (o podemos buscar en el array original si lo guardamos globalmente)
+                // Para simplificar, si el mecánico apenas abre el formulario y no hay nada, intentamos agregar el "default".
+                // Pero necesitamos saber cuál es el default. Vamos a pasarle el ID del servicio a toggleForm.
+            }
+        }
+
+        // Store selected services for each active form (keyed by citation ID)
+        const selectedServices = {};
+
+        window.addServiceToCotizacion = (idCita) => {
+            const select = document.getElementById(`service-select-${idCita}`);
+            const serviceId = select.value;
+
+            if (!serviceId) return alert("Por favor selecciona un servicio");
+
+            const option = select.options[select.selectedIndex];
+            const precio = parseFloat(option.getAttribute('data-price'));
+            const nombre = option.text.split(' - $')[0];
+            const descripcion = option.getAttribute('data-desc') || nombre;
+
+            // Initialize array if not exists
+            if (!selectedServices[idCita]) {
+                selectedServices[idCita] = [];
+            }
+
+            // check if already added
+            /*
+            if (selectedServices[idCita].some(s => s.id === serviceId)) {
+                return alert("Este servicio ya ha sido agregado");
+            }
+            */
+            // Allow duplicates? Maybe. But usually not for same repair. Let's allow for now as user requested "multiple services".
+
+            selectedServices[idCita].push({
+                id: serviceId,
+                nombre: nombre,
+                precio: precio,
+                descripcion: descripcion
+            });
+
+            renderServicesList(idCita);
+            select.value = ""; // Reset select
+        };
+
+        window.removeService = (idCita, index) => {
+            if (selectedServices[idCita]) {
+                selectedServices[idCita].splice(index, 1);
+                renderServicesList(idCita);
+            }
+        };
+
+        window.updatePrice = (idCita, index, newPrice) => {
+            if (selectedServices[idCita]) {
+                selectedServices[idCita][index].precio = parseFloat(newPrice) || 0;
+                // Recalcular total sin re-renderizar todo para no perder el foco si es posible?
+                // Mejor re-renderizar porque es más seguro, pero el foco se pierde.
+                // Usemos una actualización parcial del total.
+                let total = 0;
+                selectedServices[idCita].forEach(s => total += s.precio);
+                document.getElementById(`total-${idCita}`).textContent = total.toFixed(2);
+            }
+        };
+
+        function renderServicesList(idCita) {
+            const listContainer = document.getElementById(`services-list-${idCita}`);
+            const totalSpan = document.getElementById(`total-${idCita}`);
+            const services = selectedServices[idCita] || [];
+
+            if (services.length === 0) {
+                listContainer.innerHTML = '<p style="color: #888; margin: 0; text-align: center;">No hay servicios agregados</p>';
+                totalSpan.textContent = "0.00";
+                return;
+            }
+
+            let html = '';
+            let total = 0;
+
+            services.forEach((s, index) => {
+                total += s.precio;
+                html += `
+                    <div style="display: flex; justify-content: space-between; align-items: center; background-color: #2c2c2c; padding: 10px; margin-bottom: 8px; border-radius: 6px; border: 1px solid #444; gap: 10px;">
+                        <div style="flex: 1;">
+                            <span style="color: #f39c12; font-weight: bold; display: block;">${s.nombre}</span>
+                            <span style="color: #888; font-size: 0.8em;">Original: $${s.precioOriginal || s.precio}</span>
+                        </div>
+                        <div style="width: 100px;">
+                            <input type="number" step="0.01" class="dark-input" value="${s.precio}" 
+                                   onchange="updatePrice('${idCita}', ${index}, this.value)" 
+                                   style="padding: 5px; font-size: 0.9em; text-align: right; width: 100%;"
+                                   placeholder="Precio">
+                        </div>
+                        <button onclick="removeService('${idCita}', ${index})" style="background: none; border: none; color: #e74c3c; cursor: pointer; padding: 5px;">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+            });
+
+            listContainer.innerHTML = html;
+            totalSpan.textContent = total.toFixed(2);
+        }
+
+        window.enviarCotizacion = async (idCita) => {
+            const services = selectedServices[idCita] || [];
+
+            if (services.length === 0) {
+                return alert("Debes agregar al menos un servicio para cotizar.");
+            }
+
+            const notas = document.getElementById(`notes-${idCita}`).value;
+            const evidenciaInput = document.getElementById(`evidencia-${idCita}`);
+
+            if (!evidenciaInput.files || evidenciaInput.files.length === 0) {
+                return alert("Es obligatorio adjuntar una evidencia fotográfica para enviar la cotización.");
+            }
+
+            const file = evidenciaInput.files[0];
+            if (!file.type.startsWith('image/')) {
+                return alert("El archivo adjunto debe ser una imagen.");
+            }
+            if (file.size > 5 * 1024 * 1024) {
+                return alert("La imagen es demasiado grande. Máximo 5MB.");
+            }
+
+            // Extract IDs and customized prices
+            const serviciosData = services.map(s => ({
+                idServicio: s.id,
+                precio: s.precio
+            }));
+
+            const reader = new FileReader();
+            
+            reader.onload = async (e) => {
+                const evidenciaBase64 = e.target.result;
+
+                try {
+                    const res = await fetch('/api/mecanico/cotizar', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            idCita,
+                            servicios: serviciosData,
+                            notas: notas,
+                            evidenciaBase64: evidenciaBase64
+                        })
+                    });
+
+                    const data = await res.json();
+
+                    if (data.success) {
+                        alert("Cotización enviada exitosamente");
+                        // Clear local state
+                        delete selectedServices[idCita];
+                        cargarCitas(); // Reload
+                    } else {
+                        alert("Error: " + (data.error || data.mensaje));
+                    }
+                } catch (err) {
+                    console.error(err);
+                    alert("Error de red al enviar cotización");
+                }
+            };
+
+            reader.onerror = () => {
+                alert("Error al leer el archivo de evidencia.");
+            };
+
+            reader.readAsDataURL(file);
+        }
+
+        async function handleExpressSubmit(e) {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            const originalText = btn.innerText;
+            btn.innerText = "Procesando...";
+            btn.disabled = true;
+
+            const data = {
+                nombreCliente: document.getElementById('new-nombre').value,
+                telefonoCliente: document.getElementById('new-telefono').value,
+                placa: document.getElementById('new-placa').value,
+                marca: document.getElementById('new-marca').value,
+                modelo: document.getElementById('new-modelo').value,
+            };
+
+            try {
+                const res = await fetch('/api/mecanico/crear-orden-express', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                const result = await res.json();
+
+                if (result.success) {
+                    alert("Trabajo creado exitosamente.");
+                    closeNewJobModal();
+                    document.getElementById('express-form').reset();
+                    cargarCitas();
+                } else {
+                    alert("Error: " + (result.error || result.mensaje));
+                }
+            } catch (err) {
+                console.error(err);
+                alert("Error de conexión");
+            } finally {
+                btn.innerText = originalText;
+                btn.disabled = false;
+            }
+        }
+
+        // --- NUEVAS FUNCIONES PARA EL FLUJO ---
+        window.tomarCita = async (idCita) => {
+            if (!confirm('¿Quieres tomar este trabajo?')) return;
+            try {
+                const res = await fetch(`/api/mecanico/tomar-cita/${idCita}`, { method: 'POST' });
+                const result = await res.json();
+                if (result.success) {
+                    alert(result.message);
+                    cargarCitas();
+                } else {
+                    alert(result.error);
+                }
+            } catch (e) { console.error(e); alert('Error de conexión'); }
+        };
+
+        window.finalizarCita = async (idCita) => {
+            if (!confirm('¿El vehículo está listo para entregar? Esto notificará al cliente.')) return;
+            try {
+                const res = await fetch(`/api/mecanico/finalizar-cita/${idCita}`, { method: 'POST' });
+                const result = await res.json();
+                if (result.success) {
+                    alert(result.message);
+                    cargarCitas();
+                } else {
+                    alert(result.error);
+                }
+            } catch (e) { console.error(e); alert('Error de conexión'); }
+        };
+
+        // ========================================================
+        // === SISTEMA DE CHAT DEL MECÁNICO ===
+        // ========================================================
+        let chatActivoIdCita = null;
+        let chatPolling = null;
+        let selectedImg = null;
+
+        // Verificar mensajes no leídos de una cita
+        async function verificarNoLeidos(idCita) {
+            try {
+                const res = await fetch(`/api/chat/${idCita}/no-leidos`);
+                if (!res.ok) return;
+                const data = await res.json();
+                const badge = document.getElementById(`badge-${idCita}`);
+                if (badge) {
+                    if (data.noLeidos > 0) {
+                        badge.textContent = data.noLeidos;
+                        badge.style.display = 'inline-flex';
+                    } else {
+                        badge.style.display = 'none';
+                    }
+                }
+            } catch (e) { /* silencioso */ }
+        }
+
+        // Abrir el chat de una cita específica
+        window.abrirChatCita = function (idCita, clienteNombre, estadoCita = 'En Proceso') {
+            chatActivoIdCita = idCita;
+            document.getElementById('chatNombreCliente').textContent = clienteNombre;
+            document.getElementById('chatSubtitulo').textContent = `Cita: ${idCita}`;
+            document.getElementById('chatModalOverlay').classList.add('active');
+
+            // --- Lógica de Solo Lectura ---
+            const isReadonly = estadoCita === 'Completado';
+            const textarea = document.getElementById('chatTextarea');
+            const sendBtn = document.getElementById('chatSendBtn');
+            const attachBtn = document.getElementById('chatAttachBtn');
+
+            if (isReadonly) {
+                textarea.disabled = true;
+                textarea.placeholder = "Chat finalizado (Solo lectura)";
+                sendBtn.style.display = 'none';
+                attachBtn.style.display = 'none';
+            } else {
+                textarea.disabled = false;
+                textarea.placeholder = "Escribe un mensaje...";
+                sendBtn.style.display = 'flex';
+                attachBtn.style.display = 'block';
+            }
+
+            cargarMensajes(false);
+            if (chatPolling) clearInterval(chatPolling);
+            chatPolling = setInterval(() => cargarMensajes(true), 5000);
+            // Ocultar badge al abrir
+            const badge = document.getElementById(`badge-${idCita}`);
+            if (badge) badge.style.display = 'none';
+        };
+
+        function cerrarChat() {
+            document.getElementById('chatModalOverlay').classList.remove('active');
+            if (chatPolling) { clearInterval(chatPolling); chatPolling = null; }
+            chatActivoIdCita = null;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Botón cerrar chat
+            document.getElementById('chatCloseBtn').addEventListener('click', cerrarChat);
+            document.getElementById('chatModalOverlay').addEventListener('click', (e) => {
+                if (e.target === document.getElementById('chatModalOverlay')) cerrarChat();
+            });
+
+            // Adjuntar imagen
+            document.getElementById('chatAttachBtn').addEventListener('click', () => {
+                document.getElementById('chatFileInput').click();
+            });
+
+            document.getElementById('chatFileInput').addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                if (!file.type.startsWith('image/')) { alert('Solo imágenes.'); return; }
+                if (file.size > 5 * 1024 * 1024) { alert('Imagen demasiado grande. Máx 5MB.'); return; }
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    selectedImg = { base64: ev.target.result, nombre: file.name, size: (file.size / 1024).toFixed(0) + ' KB' };
+                    document.getElementById('chatImgPreview').src = ev.target.result;
+                    document.getElementById('chatImgNombre').textContent = file.name;
+                    document.getElementById('chatImgSize').textContent = selectedImg.size;
+                    document.getElementById('chatImgPreviewContainer').classList.add('show');
+                    document.getElementById('chatTextarea').placeholder = 'Añade un mensaje (opcional)...';
+                };
+                reader.readAsDataURL(file);
+            });
+
+            document.getElementById('chatRemoveImg').addEventListener('click', limpiarImagen);
+
+            // Enviar
+            document.getElementById('chatSendBtn').addEventListener('click', enviarMensajeChat);
+            document.getElementById('chatTextarea').addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); enviarMensajeChat(); }
+            });
+            document.getElementById('chatTextarea').addEventListener('input', function () {
+                this.style.height = 'auto';
+                this.style.height = Math.min(this.scrollHeight, 100) + 'px';
+            });
+
+            // Lightbox
+            document.getElementById('chatLightbox').addEventListener('click', () => {
+                document.getElementById('chatLightbox').classList.remove('show');
+            });
+
+            // --- Toggle Menú Ajustes ---
+            const settingsTrigger = document.getElementById('settingsTrigger');
+            const settingsContainer = document.getElementById('settingsMenu');
+
+            if (settingsTrigger && settingsContainer) {
+                settingsTrigger.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    settingsContainer.classList.toggle('active');
+                    console.log('Settings toggled');
+                });
+            }
+
+            // Cerrar al hacer clic fuera
+            document.addEventListener('click', (e) => {
+                if (settingsContainer && settingsContainer.classList.contains('active') && !settingsContainer.contains(e.target)) {
+                    settingsContainer.classList.remove('active');
+                }
+            });
+
+            // --- Funcionalidad del Botón de Cerrar Sesión ---
+            const logoutBtn = document.getElementById('logoutBtn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', async (e) => {
+                    e.preventDefault();
+                    if (!confirm('¿Estás seguro de que quieres cerrar sesión?')) return;
+                    
+                    try {
+                        const response = await fetch('/api/registro/logout', { method: 'POST' });
+                        // Limpiar toda la información de la sesión
+                        sessionStorage.clear();
+                        localStorage.clear();
+                        window.location.href = 'index.html';
+                    } catch (error) {
+                        console.error('Error al cerrar sesión:', error);
+                        sessionStorage.clear();
+                        localStorage.clear();
+                        window.location.href = 'index.html';
+                    }
+                });
+            }
+
+            // --- Cargar Foto de Perfil y Datos ---
+            async function cargarDatosPerfil() {
+                try {
+                    const res = await fetch('/api/mecanico/perfil');
+                    if (res.ok) {
+                        const data = await res.json();
+                        
+                        // Actualizar Imagen
+                        if (data.foto_perfil) {
+                            const avatar = document.getElementById('userAvatar');
+                            if (avatar) avatar.src = data.foto_perfil;
+                        } else if (data.nombre) {
+                            const avatar = document.getElementById('userAvatar');
+                            if (avatar) avatar.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(data.nombre)}&background=f39c12&color=fff`;
+                        }
+
+                        // Actualizar Nombres
+                        if (data.nombre) {
+                            const nameHeader = document.getElementById('mecanicoNombre');
+                            const nameDropdown = document.getElementById('mecanicoNombreDropdown');
+                            if (nameHeader) nameHeader.textContent = data.nombre;
+                            if (nameDropdown) nameDropdown.textContent = data.nombre;
+                            sessionStorage.setItem('userName', data.nombre);
+                        }
+                    }
+                } catch (e) {
+                    console.error("Error al cargar datos de perfil", e);
+                }
+            }
+            cargarDatosPerfil();
+        });
+
+        function limpiarImagen() {
+            selectedImg = null;
+            document.getElementById('chatFileInput').value = '';
+            document.getElementById('chatImgPreviewContainer').classList.remove('show');
+            document.getElementById('chatTextarea').placeholder = 'Escribe un mensaje...';
+        }
+
+        async function cargarMensajes(silent = false) {
+            if (!chatActivoIdCita) return;
+            const bodyEl = document.getElementById('chatBodyMessages');
+            if (!silent) {
+                bodyEl.innerHTML = '<div class="chat-loading-state"><i class="fas fa-spinner fa-spin"></i><br>Cargando...</div>';
+            }
+            try {
+                const res = await fetch(`/api/chat/${chatActivoIdCita}`);
+                if (!res.ok) {
+                    if (!silent) bodyEl.innerHTML = '<div class="chat-empty-state"><i class="fas fa-exclamation-circle"></i><br>Error al cargar el chat.</div>';
+                    return;
+                }
+                const mensajes = await res.json();
+                renderizarMensajes(mensajes);
+            } catch (e) {
+                if (!silent) bodyEl.innerHTML = '<div class="chat-empty-state"><i class="fas fa-wifi"></i><br>Sin conexión.</div>';
+            }
+        }
+
+        function renderizarMensajes(mensajes) {
+            const bodyEl = document.getElementById('chatBodyMessages');
+            const myId = sessionStorage.getItem('userId');
+            const wasAtBottom = bodyEl.scrollHeight - bodyEl.scrollTop <= bodyEl.clientHeight + 60;
+
+            if (mensajes.length === 0) {
+                bodyEl.innerHTML = '<div class="chat-empty-state"><i class="fas fa-comments"></i><br>Sin mensajes aún.<br><small>Escribe el primero</small></div>';
+                return;
+            }
+
+            let html = '';
+            let lastDate = '';
+
+            mensajes.forEach(msg => {
+                const isMio = msg.remitenteId === myId;
+                const cssMe = isMio ? 'me' : 'them';
+                
+                // Fix for date offset: avoid shifting if it's already intended for this locale
+                const rawDate = msg.fechaEnvio || msg.fecha_envio;
+                const fechaObj = new Date(rawDate);
+                
+                // If it's the 17th but should be the 16th, it's likely a UTC vs Local mismatch
+                // We'll use a safer formatting that handles the date part specifically
+                const options = { weekday: 'long', day: 'numeric', month: 'long' };
+                const fechaStr = fechaObj.toLocaleDateString('es-MX', options);
+                
+                if (fechaStr !== lastDate) {
+                    html += `<div class="chat-date-sep">${fechaStr}</div>`;
+                    lastDate = fechaStr;
+                }
+                const hora = fechaObj.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
+                let contenidoHtml;
+                if (msg.tipoContenido === 'imagen') {
+                    contenidoHtml = `<img class="chat-img" src="${msg.contenido}" alt="${msg.nombreArchivo || 'Imagen'}" onclick="abrirLightboxChat('${msg.contenido}')">`;
+                } else {
+                    contenidoHtml = escapeHtmlChat(msg.contenido);
+                }
+                html += `
+                    <div class="msg-wrap ${cssMe}">
+                        ${!isMio ? `<span class="msg-sender">${escapeHtmlChat(msg.remitenteNombre)}</span>` : ''}
+                        <div class="msg-bubble ${cssMe}">${contenidoHtml}</div>
+                        <span class="msg-time">${hora}</span>
+                    </div>
+                `;
+            });
+
+            bodyEl.innerHTML = html;
+            if (wasAtBottom || !chatPolling) bodyEl.scrollTop = bodyEl.scrollHeight;
+        }
+
+        async function enviarMensajeChat() {
+            if (!chatActivoIdCita) return;
+            const texto = document.getElementById('chatTextarea').value.trim();
+            const tieneImg = selectedImg !== null;
+            if (!texto && !tieneImg) return;
+
+            const sendBtn = document.getElementById('chatSendBtn');
+            sendBtn.disabled = true;
+
+            try {
+                if (tieneImg) {
+                    const res = await fetch(`/api/chat/${chatActivoIdCita}`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ contenido: selectedImg.base64, tipoContenido: 'imagen', nombreArchivo: selectedImg.nombre })
+                    });
+                    if (!res.ok) { const e = await res.json(); alert('Error imagen: ' + e.error); }
+                    limpiarImagen();
+                }
+                if (texto) {
+                    const res = await fetch(`/api/chat/${chatActivoIdCita}`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ contenido: texto, tipoContenido: 'texto' })
+                    });
+                    if (!res.ok) { const e = await res.json(); alert('Error texto: ' + e.error); }
+                }
+                document.getElementById('chatTextarea').value = '';
+                document.getElementById('chatTextarea').style.height = 'auto';
+                await cargarMensajes(true);
+                document.getElementById('chatBodyMessages').scrollTop = document.getElementById('chatBodyMessages').scrollHeight;
+            } catch (e) {
+                alert('Error de conexión al enviar.');
+            } finally {
+                sendBtn.disabled = false;
+            }
+        }
+
+        window.abrirLightboxChat = function (src) {
+            document.getElementById('chatLightboxImg').src = src;
+            document.getElementById('chatLightbox').classList.add('show');
+        };
+
+        function escapeHtmlChat(text) {
+            const div = document.createElement('div');
+            div.appendChild(document.createTextNode(text));
+            return div.innerHTML;
+        }
+    </script>
+
+    <!-- MODAL DEL CHAT -->
+    <div class="chat-modal-overlay" id="chatModalOverlay">
+        <div class="chat-modal-box">
+            <!-- Header -->
+            <div class="chat-modal-header">
+                <div>
+                    <h3 id="chatNombreCliente">Cliente</h3>
+                    <p id="chatSubtitulo"></p>
+                </div>
+                <button class="chat-close-btn" id="chatCloseBtn" title="Cerrar">&times;</button>
+            </div>
+
+            <!-- Cuerpo de mensajes -->
+            <div class="chat-body" id="chatBodyMessages">
+                <div class="chat-loading-state">
+                    <i class="fas fa-spinner fa-spin"></i><br>Cargando...
+                </div>
+            </div>
+
+            <!-- Input -->
+            <div class="chat-input-wrapper">
+                <!-- Preview imagen -->
+                <div class="chat-img-preview" id="chatImgPreviewContainer">
+                    <img id="chatImgPreview" src="" alt="Preview">
+                    <div class="chat-img-preview-info">
+                        <p id="chatImgNombre">imagen.jpg</p>
+                        <span id="chatImgSize"></span>
+                    </div>
+                    <button class="remove-preview" id="chatRemoveImg" title="Quitar">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <!-- Fila input -->
+                <div class="chat-input-row">
+                    <button class="chat-icon-btn2" id="chatAttachBtn" title="Adjuntar imagen">
+                        <i class="fas fa-image"></i>
+                    </button>
+                    <input type="file" id="chatFileInput" accept="image/*" style="display:none">
+                    <textarea id="chatTextarea" class="chat-textarea" placeholder="Escribe un mensaje..."
+                        rows="1"></textarea>
+                    <button class="chat-send-btn" id="chatSendBtn" title="Enviar">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lightbox -->
+    <div class="lightbox-overlay" id="chatLightbox">
+        <img id="chatLightboxImg" src="" alt="Imagen ampliada">
+    </div>
+
+    <script src="js/notifications.js"></script>
+    <script src="js/global_nav.js"></script>
+</body>
+
+</html>

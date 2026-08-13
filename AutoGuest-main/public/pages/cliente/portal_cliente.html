@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selecciona tu Portal - AutoGuest</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Reutilizamos los estilos de form-page-wrapper, access-container, etc. que ya están en style.css */
+        /* Asegúrate que style.css contenga los estilos para: */
+        /* .form-page-wrapper, .access-container, .logo-link img, .image-text, .portal-buttons, .btn-portal-select, .btn-portal-select i */
+        /* y los media queries */
+    </style>
+</head>
+
+<body>
+
+    <div class="form-page-wrapper">
+        <div class="form-image-column">
+            <div class="logo-link">
+                <a href="home.html">
+                    <img src="imagenes/Logo_Autoguest.png" alt="Logo de AutoGuest">
+                </a>
+            </div>
+            <div class="image-text">
+                <h2>Elige tu camino.</h2>
+                <p>Ya sea que busques un servicio u ofrezcas uno, aquí comienza tu experiencia.</p>
+            </div>
+        </div>
+
+        <div class="form-content-column">
+            <div class="portal-selector-container">
+                <h1>¿Cómo quieres ingresar?</h1>
+                <p>Selecciona el portal que corresponde a tu tipo de cuenta.</p>
+
+                <div class="portal-buttons">
+                    <a href="dashboard_cliente.html" class="btn btn-portal-select">
+                        <i class="fa-solid fa-car"></i>
+                        <span>Soy Cliente</span>
+                    </a>
+
+                    <a href="portal_taller.html" class="btn btn-portal-select">
+                        <i class="fa-solid fa-wrench"></i>
+                        <span>Soy un Taller</span>
+                    </a>
+                </div>
+
+                <div class="extra-link">
+                    <p>¿Primera vez aquí? <a href="home.html">Vuelve a la página principal</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="../../js/global_nav.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,1898 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle de la Cita - AutoGuest</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="../../style.css">
+    <script src="../../js/notifications.js"></script>
+    <script src="../../js/global_nav.js"></script>
+    <script src="https://sdk.mercadopago.com/js/v2"></script>
+    <script
+        src="https://www.paypal.com/sdk/js?client-id=AV3YWOgsecWq7gVh6mebi4LkOetFi1ULwCt0GWcO3AjuvGe86rFVzvEUj3wqcsfJ24480P5_7xanUTZG&currency=MXN"></script>
+    <style>
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 40px;
+            background-color: #2c2c2c;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .dashboard-header .logo {
+            width: 110px;
+            display: block;
+        }
+
+        .back-to-appointments {
+            color: #c0c0c0;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.3s ease;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 8px 15px;
+            border-radius: 50px;
+        }
+
+        .back-to-appointments:hover {
+            color: #f39c12;
+            background: rgba(243, 156, 18, 0.1);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        /* === Sistema de Notificaciones Unificado === */
+        .notification-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .notification-trigger {
+            background: none;
+            border: none;
+            color: #f39c12;
+            font-size: 1.6em;
+            cursor: pointer;
+            padding: 8px;
+            position: relative;
+            transition: transform 0.2s;
+        }
+
+        .notification-trigger:hover {
+            transform: scale(1.1);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            background-color: #e74c3c;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 0.6em;
+            font-weight: bold;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            border: 2px solid #2c2c2c;
+        }
+
+        .notification-dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            width: 320px;
+            background-color: #2c2c2c;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid #444;
+            border-radius: 12px;
+            margin-top: 15px;
+            z-index: 1000;
+            overflow: hidden;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        .notification-dropdown.active {
+            display: block;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .notification-header {
+            padding: 12px 15px;
+            background-color: #333;
+            border-bottom: 1px solid #444;
+        }
+
+        .notification-header h3 {
+            margin: 0;
+            font-size: 1em;
+            color: #f39c12;
+            text-align: left;
+        }
+
+        .notification-list {
+            max-height: 350px;
+            overflow-y: auto;
+        }
+
+        .notification-item {
+            padding: 12px 15px;
+            border-bottom: 1px solid #3a3a3a;
+            display: flex;
+            gap: 12px;
+            cursor: pointer;
+            transition: background 0.2s;
+            text-align: left;
+        }
+
+        .notification-item:hover {
+            background-color: #3a3a3a;
+        }
+
+        .notification-item.unread {
+            background-color: rgba(243, 156, 18, 0.05);
+            border-left: 3px solid #f39c12;
+        }
+
+        .notification-icon {
+            font-size: 1.2em;
+            margin-top: 2px;
+        }
+
+        .notification-content {
+            flex: 1;
+        }
+
+        .notification-content strong {
+            display: block;
+            font-size: 0.9em;
+            color: #fff;
+            margin-bottom: 2px;
+        }
+
+        .notification-content p {
+            margin: 0;
+            font-size: 0.8em;
+            color: #aaa;
+            line-height: 1.3;
+        }
+
+        .notification-time {
+            display: block;
+            font-size: 0.7em;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .notification-empty {
+            padding: 30px 15px;
+            text-align: center;
+            color: #777;
+            font-style: italic;
+            font-size: 0.9em;
+        }
+
+        .text-danger { color: #e74c3c; }
+        .text-warning { color: #f1c40f; }
+        .text-success { color: #2ecc71; }
+        .text-info { color: #3498db; }
+        .text-primary { color: #f39c12; }
+
+        .page-container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .detalle-container {
+            background-color: #2c2c2c;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .cita-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #444;
+        }
+
+        .cita-title h1 {
+            font-size: 2.2em;
+            color: #ffffff;
+            margin: 0 0 10px 0;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 0.85em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-Pendiente {
+            color: #f39c12;
+            background: rgba(243, 156, 18, 0.1);
+            border: 1px solid rgba(243, 156, 18, 0.3);
+        }
+
+        .status-En-Proceso {
+            color: #3498db;
+            background: rgba(52, 152, 219, 0.1);
+            border: 1px solid rgba(52, 152, 219, 0.3);
+        }
+
+        .status-Completado {
+            color: #2ecc71;
+            background: rgba(46, 204, 113, 0.1);
+            border: 1px solid rgba(46, 204, 113, 0.3);
+        }
+
+        .status-Cancelado {
+            color: #e74c3c;
+            background: rgba(231, 76, 60, 0.1);
+            border: 1px solid rgba(231, 76, 60, 0.3);
+        }
+
+        .status-Cotizado {
+            color: #9b59b6;
+            background: rgba(155, 89, 182, 0.1);
+            border: 1px solid rgba(155, 89, 182, 0.3);
+        }
+
+        .status-Esperando-Confirmacion-Cliente {
+            color: #e67e22;
+            background: rgba(230, 126, 34, 0.1);
+            border: 1px solid rgba(230, 126, 34, 0.3);
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .info-group {
+            background-color: #333;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .info-group h3 {
+            color: #f39c12;
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-item {
+            margin-bottom: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .info-label {
+            color: #888;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .info-value {
+            color: #fff;
+            font-size: 1.1em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .description-box {
+            background-color: #333;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            border-left: 4px solid #f39c12;
+        }
+
+        .description-box h3 {
+            color: #f39c12;
+            margin-bottom: 15px;
+        }
+
+        .description-text {
+            color: #ddd;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+
+        .actions-container {
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #444;
+        }
+
+        /* ===== ESTILOS DEL MODAL DE COTIZACIÓN ===== */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background-color: #2c2c2c;
+            width: 90%;
+            max-width: 600px;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            transform: translateY(-20px);
+            transition: transform 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #444;
+        }
+
+        .modal-header h2 {
+            color: #f39c12;
+            margin: 0;
+        }
+
+        .close-modal-btn {
+            background: none;
+            border: none;
+            color: #888;
+            font-size: 1.5em;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .close-modal-btn:hover {
+            color: #e74c3c;
+        }
+
+        .quote-total {
+            font-size: 2em;
+            color: #2ecc71;
+            text-align: center;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        .quote-description {
+            background: #222;
+            padding: 15px;
+            border-radius: 8px;
+            color: #ddd;
+            margin-bottom: 25px;
+            min-height: 100px;
+            white-space: pre-wrap;
+        }
+
+        .payment-methods {
+            display: none;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .payment-methods.active {
+            display: flex;
+        }
+
+        #paypal-button-container {
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        .btn-mp {
+            background-color: #009ee3;
+            color: white;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            font-weight: bold;
+            padding: 12px;
+            border-radius: 5px;
+        }
+
+        .btn-mp:hover {
+            background-color: #0080c0;
+        }
+
+
+        /* ===== ESTILOS DEL CHAT ===== */
+        .chat-btn-container {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .chat-btn {
+            background-color: #3498db;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 50px;
+            border: none;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .chat-btn:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+        }
+
+        .chat-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .chat-modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .chat-modal-content {
+            background-color: #1a1a1a;
+            width: 90%;
+            max-width: 500px;
+            height: 80vh;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+        }
+
+        .chat-modal-overlay.active .chat-modal-content {
+            transform: translateY(0);
+        }
+
+        .chat-header {
+            background-color: #2c2c2c;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #333;
+        }
+
+        .chat-header h3 {
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #3498db;
+        }
+
+        .chat-messages {
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            background-color: #111;
+        }
+
+        .chat-message {
+            max-width: 80%;
+            padding: 10px 15px;
+            border-radius: 12px;
+            position: relative;
+            word-wrap: break-word;
+        }
+
+        .chat-message.cliente {
+            align-self: flex-end;
+            background-color: #3498db;
+            color: white;
+            border-bottom-right-radius: 2px;
+        }
+
+        .chat-message.mecanico {
+            align-self: flex-start;
+            background-color: #2c2c2c;
+            color: #e0e0e0;
+            border-bottom-left-radius: 2px;
+            border: 1px solid #333;
+        }
+
+        .chat-message-image {
+            max-width: 100%;
+            border-radius: 8px;
+            margin-bottom: 5px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .chat-message-image:hover {
+            transform: scale(1.02);
+        }
+
+        .chat-time {
+            font-size: 0.7em;
+            opacity: 0.7;
+            display: block;
+            text-align: right;
+            margin-top: 5px;
+        }
+
+        /* Área de previsualización de imagen (NUEVO) */
+        .chat-image-preview-container {
+            display: none;
+            background-color: #222;
+            padding: 10px 20px;
+            border-top: 1px solid #333;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .chat-image-preview-container.active {
+            display: flex;
+        }
+
+        .chat-image-preview {
+            max-height: 80px;
+            max-width: 80px;
+            border-radius: 6px;
+            object-fit: contain;
+            background-color: #000;
+        }
+
+        .chat-image-preview-info {
+            flex-grow: 1;
+            font-size: 0.8em;
+            color: #aaa;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .chat-image-remove-btn {
+            background: none;
+            border: none;
+            color: #e74c3c;
+            cursor: pointer;
+            font-size: 1.2em;
+            padding: 5px;
+            border-radius: 50%;
+            transition: background 0.2s;
+        }
+
+        .chat-image-remove-btn:hover {
+            background-color: rgba(231, 76, 60, 0.1);
+        }
+
+        .chat-input-area {
+            background-color: #2c2c2c;
+            padding: 15px;
+            display: flex;
+            gap: 10px;
+            align-items: flex-end;
+        }
+
+        .chat-input-wrapper {
+            flex-grow: 1;
+            position: relative;
+        }
+
+        .chat-input {
+            width: 100%;
+            padding: 12px 40px 12px 15px;
+            /* Espacio para el botón de adjuntar */
+            border-radius: 20px;
+            border: 1px solid #444;
+            background-color: #333;
+            color: white;
+            resize: none;
+            min-height: 45px;
+            max-height: 120px;
+            font-family: inherit;
+        }
+
+        .chat-input:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .chat-attach-btn {
+            position: absolute;
+            right: 10px;
+            bottom: 10px;
+            background: none;
+            border: none;
+            color: #aaa;
+            cursor: pointer;
+            font-size: 1.2em;
+            transition: color 0.2s;
+            padding: 5px;
+        }
+
+        .chat-attach-btn:hover {
+            color: #3498db;
+        }
+
+        /* Ocultar el input file real */
+        #chat-file-input {
+            display: none;
+        }
+
+        .chat-send-btn {
+            background-color: #f39c12;
+            color: white;
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: background 0.3s;
+            flex-shrink: 0;
+        }
+
+        .chat-send-btn:hover {
+            background-color: #e67e22;
+        }
+
+        /* Estilos para el Lightbox de imágenes */
+        .lightbox-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 3000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .lightbox-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .lightbox-image {
+            max-width: 90%;
+            max-height: 90vh;
+            border-radius: 5px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 2em;
+            cursor: pointer;
+            background: none;
+            border: none;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+            transition: color 0.2s;
+        }
+
+        .lightbox-close:hover {
+            color: #f39c12;
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        const API_URL = ''; 
+    </script>
+    <header id="main-header"></header>
+
+    <main class="page-container">
+        <div class="detalle-container" id="loading-container">
+            <div style="text-align: center; color: #888; padding: 40px;">
+                <i class="fas fa-spinner fa-spin fa-3x" style="margin-bottom: 15px;"></i>
+                <h2>Cargando detalles de la cita...</h2>
+            </div>
+        </div>
+
+        <div class="detalle-container" id="content-container" style="display: none;">
+            <div class="cita-header">
+                <div class="cita-title">
+                    <h1><i class="fas fa-car"></i> <span id="vehiculo-nombre"></span></h1>
+                    <span id="estado-badge" class="status-badge"></span>
+                </div>
+                <!-- Aquí se agregará el botón para descargar el ticket (si está completado) -->
+                <div id="ticket-action" style="display: none;">
+                    <a href="#" id="btnDownloadTicket" class="btn btn-primary">
+                        <i class="fas fa-download"></i> Descargar Comprobante
+                    </a>
+                </div>
+            </div>
+
+            <div class="info-grid">
+                <div class="info-group">
+                    <h3><i class="fas fa-info-circle"></i> Información General</h3>
+                    <div class="info-item">
+                        <span class="info-label">Fecha y Hora</span>
+                        <span class="info-value" id="cita-fecha"><i class="fas fa-calendar-alt"></i> -</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Placas del Vehículo</span>
+                        <span class="info-value" id="cita-placas">-</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">ID de Cita</span>
+                        <span class="info-value" style="font-family: monospace; color: #aaa;" id="cita-id">-</span>
+                    </div>
+                </div>
+
+                <div class="info-group">
+                    <h3><i class="fas fa-store"></i> Taller Asignado</h3>
+                    <div class="info-item">
+                        <span class="info-label">Nombre del Taller</span>
+                        <span class="info-value" id="taller-nombre">-</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Dirección</span>
+                        <span class="info-value" id="taller-direccion"><i class="fas fa-map-marker-alt"></i> -</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Teléfono de Contacto</span>
+                        <span class="info-value" id="taller-telefono"><i class="fas fa-phone"></i> -</span>
+                    </div>
+                    <div class="info-item" id="mecanico-item" style="display:none;">
+                        <span class="info-label">Mecánico Asignado</span>
+                        <span class="info-value" id="mecanico-nombre"><i class="fas fa-user-cog"></i> -</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="description-box">
+                <h3><i class="fas fa-clipboard-list"></i> Motivo de la Cita / Falla Reportada</h3>
+                <div class="description-text" id="cita-motivo"></div>
+            </div>
+
+            <!-- Botón de Chat (Visible en todos los estados donde haya taller) -->
+            <div class="chat-btn-container" id="chat-access-container">
+                <button type="button" class="chat-btn" id="openChatBtn">
+                    <i class="fas fa-comments"></i>
+                    Chat con el Taller <span id="chatBadge" class="badge"
+                        style="display:none; background:red; color:white; border-radius:50%; padding:2px 6px; font-size:12px; margin-left:5px;">0</span>
+                </button>
+            </div>
+
+            <div class="actions-container" id="actions-container">
+                <!-- Los botones dinámicos aparecerán aquí según el estado -->
+            </div>
+        </div>
+    </main>
+
+    <!-- MODAL DE COTIZACIÓN -->
+    <div class="modal-overlay" id="quoteModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-file-invoice-dollar"></i> Cotización del Servicio</h2>
+                <button class="close-modal-btn" id="closeQuoteModal"><i class="fas fa-times"></i></button>
+            </div>
+
+            <p>El taller ha evaluado tu vehículo y ha generado la siguiente cotización para la reparación:</p>
+
+            <div class="quote-description" id="quoteDescription">
+                <!-- Se llenará mediante JS -->
+            </div>
+
+            <!-- Contenedor para Evidencia -->
+            <div id="quoteEvidenceContainer" style="display: none; margin-top: 15px; text-align: center; background: #222; padding: 15px; border-radius: 8px; border: 1px dashed #444;">
+                <h4 style="color: #f39c12; margin-bottom: 10px; font-size: 1.1em;"><i class="fas fa-camera"></i> Evidencia del Diagnóstico</h4>
+                <img id="quoteEvidenceImg" src="" alt="Evidencia" style="max-width: 100%; max-height: 250px; border-radius: 6px; box-shadow: 0 4px 8px rgba(0,0,0,0.5); cursor: pointer;">
+                <p style="color: #999; font-size: 0.8em; margin-top: 8px;"><i class="fas fa-search-plus"></i> Clic en la imagen para ampliar</p>
+            </div>
+
+            <div style="text-align: right; margin-top: 10px; color: #888;">
+                Fecha: <span id="quoteDate"></span>
+            </div>
+
+            <div class="quote-total" id="quoteTotal">
+                $0.00 MXN
+            </div>
+
+            <!-- Botones de Acción Iniciales -->
+            <div class="actions-container" id="quoteInitialActions">
+                <button class="btn btn-danger" id="btnRejectQuote">Rechazar Cotización</button>
+                <button class="btn btn-primary" id="btnAcceptQuote">Aceptar e Iniciar Servicio</button>
+            </div>
+
+            <!-- Métodos de Pago (Se muestran al aceptar) -->
+            <div class="payment-methods" id="paymentMethodsSection">
+                <h3 style="border-bottom: 1px solid #444; padding-bottom: 10px; margin-bottom: 15px;">Selecciona tu
+                    método de pago</h3>
+
+                <!-- PayPal -->
+                <div id="paypal-button-container"></div>
+
+                <!-- Mercado Pago -->
+                <button class="btn-mp" id="btnMercadoPago">
+                    <i class="fas fa-handshake"></i> Pagar con Mercado Pago
+                </button>
+
+                <!-- Botón Cancelar Pago -->
+                <div style="text-align: center; margin-top: 20px;">
+                    <button class="btn btn-secondary" id="btnCancelPayment">Volver a opciones</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE PAGO PARA LIBERAR -->
+    <div class="modal-overlay" id="releasePaymentModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-money-bill-wave"></i> Confirmar y Pagar Servicio</h2>
+                <button class="close-modal-btn" id="closeReleasePaymentModal"><i class="fas fa-times"></i></button>
+            </div>
+
+            <p>Para liberar su vehículo, por favor confirme la entrega realizando el pago restante o ingresando el
+                código proporcionado por el taller en caso de pago en efectivo.</p>
+
+            <div class="quote-total" id="releaseTotal">
+                $0.00 MXN
+            </div>
+
+            <!-- Opciones Iniciales: Código Efectivo vs Online -->
+            <div class="actions-container" id="releaseInitialActions"
+                style="display: flex; flex-direction: column; gap: 15px;">
+                <button class="btn btn-success" id="btnShowCashCode" style="width: 100%;"><i
+                        class="fas fa-ticket-alt"></i> Tengo un código de pago (Efectivo)</button>
+                <div style="text-align: center; color: #888;">-- O paga en línea ahora --</div>
+                <div id="release-paypal-container"></div>
+                <button class="btn-mp" id="btnReleaseMercadoPago"><i class="fas fa-handshake"></i> Pagar con Mercado
+                    Pago</button>
+            </div>
+
+            <!-- Ingreso de Código Efectivo -->
+            <div id="cashCodeSection" style="display: none; margin-top: 20px;">
+                <label style="display: block; margin-bottom: 10px; color: #ddd;">Ingrese el código alfanumérico impreso
+                    en su ticket:</label>
+                <input type="text" id="cashCodeInput" placeholder="Ej. A1B2C3"
+                    style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #444; background: #222; color: #fff; font-size: 1.2em; text-align: center; text-transform: uppercase;">
+                <div style="display: flex; gap: 10px; margin-top: 15px;">
+                    <button class="btn btn-secondary" id="btnCancelCashCode" style="flex: 1;">Cancelar</button>
+                    <button class="btn btn-primary" id="btnSubmitCashCode" style="flex: 1;">Validar Código</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE CHAT -->
+    <div class="chat-modal-overlay" id="chatModal">
+        <div class="chat-modal-content">
+            <div class="chat-header">
+                <h3 id="chatTallerNombre"><i class="fas fa-tools"></i> Taller Automotriz</h3>
+                <button class="close-modal-btn" id="closeChatBtn" style="color:white;"><i
+                        class="fas fa-times"></i></button>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                <div style="text-align:center; color:#888; font-style:italic;">Cargando mensajes...</div>
+            </div>
+
+            <!-- Previsualización de Imagen -->
+            <div class="chat-image-preview-container" id="chatImagePreviewContainer">
+                <img id="chatImagePreview" class="chat-image-preview" src="" alt="Vista previa">
+                <div class="chat-image-preview-info" id="chatImagePreviewName">nombre_archivo.jpg</div>
+                <button class="chat-image-remove-btn" id="chatRemoveImageBtn" title="Quitar imagen">
+                    <i class="fas fa-times-circle"></i>
+                </button>
+            </div>
+
+            <div class="chat-input-area">
+                <div class="chat-input-wrapper">
+                    <!-- Textarea auto-ajustable -->
+                    <textarea class="chat-input" id="chatInputMessage" placeholder="Escribe tu mensaje..."
+                        rows="1"></textarea>
+
+                    <!-- Input file oculto -->
+                    <input type="file" id="chat-file-input" accept="image/png, image/jpeg, image/jpg, image/webp">
+
+                    <!-- Botón para adjuntar imagen -->
+                    <button class="chat-attach-btn" id="chatAttachBtn" title="Adjuntar imagen">
+                        <i class="fas fa-paperclip"></i>
+                    </button>
+                </div>
+                <button class="chat-send-btn" id="chatSendBtn" title="Enviar mensaje">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- LIGHTBOX PARA IMÁGENES -->
+    <div class="lightbox-overlay" id="lightboxOverlay">
+        <button class="lightbox-close" id="lightboxClose">&times;</button>
+        <img id="lightboxImage" class="lightbox-image" src="" alt="Imagen ampliada">
+    </div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Verificar autenticación
+            if (sessionStorage.getItem('isLoggedIn') !== 'true') {
+                window.location.href = '../../login_cliente.html';
+                return;
+            }
+
+            // Obtener ID de la URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const idCita = urlParams.get('id');
+
+            if (!idCita) {
+                alert('ID de cita no proporcionado.');
+                window.location.href = 'mis_citas.html';
+                return;
+            }
+
+            const loadingContainer = document.getElementById('loading-container');
+            const contentContainer = document.getElementById('content-container');
+            let isQuoteAccepted = false; // Bandera para saber si ya dimos clic en Aceptar
+            let citaDataActual = null; // Guardar datos de la cita globalmente
+
+            // Elementos del Chat
+            const modalChat = document.getElementById('chatModal');
+            const openChatBtn = document.getElementById('openChatBtn');
+            const closeChatBtn = document.getElementById('closeChatBtn');
+            const chatMessages = document.getElementById('chatMessages');
+            const chatInput = document.getElementById('chatInputMessage');
+            const chatSendBtn = document.getElementById('chatSendBtn');
+            const chatTallerNombre = document.getElementById('chatTallerNombre');
+            const chatBadge = document.getElementById('chatBadge');
+
+            // Nuevos elementos para imágenes en el chat
+            const fileInput = document.getElementById('chat-file-input');
+            const attachBtn = document.getElementById('chatAttachBtn');
+            const imagePreviewContainer = document.getElementById('chatImagePreviewContainer');
+            const imagePreviewElement = document.getElementById('chatImagePreview');
+            const imagePreviewName = document.getElementById('chatImagePreviewName');
+            const removeImageBtn = document.getElementById('chatRemoveImageBtn');
+
+            // Lightbox
+            const lightboxOverlay = document.getElementById('lightboxOverlay');
+            const lightboxImage = document.getElementById('lightboxImage');
+            const lightboxClose = document.getElementById('lightboxClose');
+
+            let chatInterval;
+            let currentImageBase64 = null; // Variable para almacenar la imagen actual seleccionada
+
+            // Función para obtener headers con autenticación
+            const getAuthHeaders = (contentType = 'application/json') => {
+                const headers = {
+                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                };
+                if (contentType) {
+                    headers['Content-Type'] = contentType;
+                }
+                return headers;
+            };
+
+            // Obtener detalles de la cita
+            try {
+                const response = await fetch(API_URL + `/api/citas/${idCita}`, {
+                    headers: getAuthHeaders(),
+                    credentials: 'include'
+                });
+
+                if (response.status === 401 || response.status === 403) {
+                    alert('No autorizado o sesión expirada.');
+                    window.location.href = '../../login_cliente.html';
+                    return;
+                }
+                if (!response.ok) throw new Error('Cita no encontrada');
+
+                const cita = await response.json();
+                citaDataActual = cita;
+
+                // Llenar vista
+                document.getElementById('vehiculo-nombre').textContent = cita.vehiculoMarca || cita.marca || 'Vehículo desconocido';
+                document.getElementById('cita-placas').textContent = cita.vehiculoPlaca || cita.placa || 'N/A';
+                document.getElementById('cita-id').textContent = cita.idCita;
+
+                const fechaFormat = new Date(cita.fechaHora).toLocaleString('es-ES', {
+                    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
+                    hour: '2-digit', minute: '2-digit'
+                });
+                document.getElementById('cita-fecha').innerHTML = `<i class="fas fa-calendar-alt"></i> ${fechaFormat}`;
+
+                document.getElementById('taller-nombre').textContent = cita.tallerNombre;
+                document.getElementById('taller-direccion').innerHTML = `<i class="fas fa-map-marker-alt"></i> ${cita.tallerDireccion}`;
+                document.getElementById('taller-telefono').innerHTML = `<i class="fas fa-phone"></i> ${cita.tallerTelefono}`;
+
+                if (cita.mecanicoNombre) {
+                    const mecItem = document.getElementById('mecanico-item');
+                    const mecNombre = document.getElementById('mecanico-nombre');
+                    if (mecItem && mecNombre) {
+                        mecItem.style.display = 'flex';
+                        mecNombre.innerHTML = `<i class="fas fa-user-cog"></i> ${cita.mecanicoNombre}`;
+                    }
+                }
+
+                document.getElementById('cita-motivo').textContent = cita.motivo || cita.servicio || cita.motivoDetalle || 'Sin motivo disponible';
+
+                // Configurar Chat Nombre
+                chatTallerNombre.innerHTML = `<i class="fas fa-tools"></i> ${cita.tallerNombre}`;
+
+                // Estado
+                const badge = document.getElementById('estado-badge');
+                const estadoClass = cita.estado.replace(/\s+/g, '-');
+                badge.className = `status-badge status-${estadoClass}`;
+                badge.textContent = cita.estado;
+
+                // Acciones dinámicas
+                const actionsContainer = document.getElementById('actions-container');
+                actionsContainer.innerHTML = ''; // Limpiar
+
+                if (cita.estado === 'Pendiente' || cita.estado === 'Pendiente de Cotización') {
+                    // Botón para cancelar
+                    actionsContainer.innerHTML = `
+                        <button class="btn btn-danger" id="btnCancelCita">
+                            <i class="fas fa-times-circle"></i> Cancelar Cita
+                        </button>
+                    `;
+                    document.getElementById('btnCancelCita').addEventListener('click', cancelarCita);
+                }
+                else if (cita.estado === 'Cotizado') {
+                    // Botón Ver Cotización
+                    actionsContainer.innerHTML = `
+                        <button class="btn btn-primary" id="btnViewQuote">
+                            <i class="fas fa-file-invoice-dollar"></i> Ver y Aceptar Cotización
+                        </button>
+                    `;
+                    document.getElementById('btnViewQuote').addEventListener('click', () => {
+                        openQuoteModal(idCita, cita.idMecanico);
+                    });
+                }
+                else if (cita.estado === 'Completado') {
+                    document.getElementById('ticket-action').style.display = 'block';
+
+                    // Si el ticket se unificó correctamente, la ruta para descargarlo sería por idCita
+                    // Como ahora el ticket se genera por el ID de compra, la lógica original era:
+                    // `/api/tickets/cita/${idCita}/pdf` pero si se asocia al ticket, hay que cambiarlo
+                    // De momento, redirigimos a la confirmación de la cita si tenemos cómo saber el id del ticket
+                    // o podemos ir a historial
+                    document.getElementById('btnDownloadTicket').onclick = () => {
+                        window.location.href = 'historial_cliente.html';
+                    };
+                }
+                else if (cita.estado === 'Esperando Confirmacion Cliente') {
+                    actionsContainer.innerHTML = `
+                        <button class="btn btn-success" id="btnPayToRelease" style="background-color: #2ecc71; color: white;">
+                            <i class="fas fa-check-circle"></i> Pagar para Liberar
+                        </button>
+                    `;
+                    document.getElementById('btnPayToRelease').addEventListener('click', () => {
+                        openReleasePaymentModal(idCita);
+                    });
+                }
+
+                // Mostrar contenido
+                loadingContainer.style.display = 'none';
+                contentContainer.style.display = 'block';
+
+                // Iniciar contador de mensajes no leídos
+                checkUnreadMessages(idCita);
+                setInterval(() => checkUnreadMessages(idCita), 5000);
+
+            } catch (error) {
+                loadingContainer.innerHTML = `
+                    <div style="text-align: center; color: #e74c3c; padding: 40px;">
+                        <i class="fas fa-exclamation-triangle fa-3x" style="margin-bottom: 15px;"></i>
+                        <h2>Error al cargar la cita</h2>
+                        <p>${error.message}</p>
+                        <a href="mis_citas.html" class="btn btn-secondary" style="margin-top:20px;">Volver a Mis Citas</a>
+                    </div>
+                `;
+            }
+
+            // ==========================================
+            // Lógica de Cotización y Pagos
+            // ==========================================
+            const modal = document.getElementById('quoteModal');
+            let quoteData = null;
+
+            async function openQuoteModal(idCita, idMecanico) {
+                try {
+                    const quoteRes = await fetch(API_URL + `/api/citas/${idCita}/cotizacion`, {
+                        headers: getAuthHeaders(),
+                        credentials: 'include'
+                    });
+                    if (!quoteRes.ok) throw new Error('Error al obtener la cotización');
+
+                    quoteData = await quoteRes.json();
+
+                    document.getElementById('quoteDescription').textContent = quoteData.diagnostico || quoteData.descripcion || 'Sin descripción';
+                    document.getElementById('quoteTotal').textContent = `$${parseFloat(quoteData.totalAprobado || quoteData.costoTotal || 0).toFixed(2)} MXN`;
+                    document.getElementById('quoteDate').textContent = new Date(quoteData.fechaCotizacion || quoteData.fecha_vencimiento || new Date()).toLocaleDateString('es-ES');
+
+                    // Mostrar Evidencia Fotográfica si existe
+                    const evidenceContainer = document.getElementById('quoteEvidenceContainer');
+                    const evidenceImg = document.getElementById('quoteEvidenceImg');
+                    if (quoteData.evidenciaBase64) {
+                        evidenceImg.src = quoteData.evidenciaBase64;
+                        evidenceContainer.style.display = 'block';
+                        
+                        // Utilizamos el Lightbox existente
+                        evidenceImg.onclick = () => {
+                            document.getElementById('lightboxImage').src = quoteData.evidenciaBase64;
+                            document.getElementById('lightboxOverlay').classList.add('show');
+                        };
+                    } else {
+                        evidenceContainer.style.display = 'none';
+                    }
+
+                    // Resetear estado del modal
+                    document.getElementById('quoteInitialActions').style.display = 'flex';
+                    document.getElementById('paymentMethodsSection').classList.remove('active');
+                    isQuoteAccepted = false;
+
+                    const paypalContainer = document.getElementById('paypal-button-container');
+                    paypalContainer.innerHTML = '';
+
+                    modal.classList.add('active');
+                } catch (err) {
+                    alert('No se pudo cargar la cotización: ' + err.message);
+                }
+            }
+
+            document.getElementById('closeQuoteModal').addEventListener('click', () => {
+                modal.classList.remove('active');
+            });
+
+            // Al rechazar la cotización
+            document.getElementById('btnRejectQuote').addEventListener('click', async () => {
+                if (!confirm('¿Estás seguro de rechazar esta cotización? La cita será cancelada.')) return;
+
+                try {
+                    const res = await fetch(API_URL + `/api/citas/${idCita}/rechazar-cotizacion`, {
+                        method: 'PUT',
+                        headers: getAuthHeaders(),
+                        credentials: 'include'
+                    });
+                    if (res.ok) {
+                        alert('Cotización rechazada. La cita ha sido cancelada.');
+                        window.location.reload();
+                    } else {
+                        throw new Error('No se pudo rechazar');
+                    }
+                } catch (e) {
+                    alert(e.message);
+                }
+            });
+
+            // Al aceptar la cotización -> Iniciar Proceso Directo
+            document.getElementById('btnAcceptQuote').addEventListener('click', async () => {
+                if (!quoteData) return;
+
+                if (!confirm('¿Estás seguro de aceptar la cotización? El mecánico comenzará el trabajo y la cita pasará a estar En Proceso.')) return;
+
+                try {
+                    const res = await fetch(API_URL + '/api/citas/' + idCita + '/aprobar-cotizacion', {
+                        method: 'PUT',
+                        headers: getAuthHeaders(),
+                        credentials: 'include'
+                    });
+                    if (res.ok) {
+                        alert('Cotización aprobada. El servicio ha comenzado y está En Proceso.');
+                        window.location.reload();
+                    } else {
+                        const err = await res.json();
+                        throw new Error(err.error || 'Error al aprobar cotización');
+                    }
+                } catch (e) {
+                    alert(e.message);
+                }
+            });
+
+            // Botón Volver a opciones en Modal
+            document.getElementById('btnCancelPayment').addEventListener('click', () => {
+                document.getElementById('quoteInitialActions').style.display = 'flex';
+                document.getElementById('paymentMethodsSection').classList.remove('active');
+            });
+
+            // =============== FLUJO MERCADO PAGO ===============
+            document.getElementById('btnMercadoPago').addEventListener('click', async () => {
+                if (!quoteData) return;
+                try {
+                    const mpConfigRes = await fetch(API_URL + '/api/mercadopago/public-key', {
+                        headers: getAuthHeaders(),
+                        credentials: 'include'
+                    });
+                    const mpConfig = await mpConfigRes.json();
+                    const mp = new MercadoPago(mpConfig.publicKey, { locale: 'es-MX' });
+
+                    const preferenceData = {
+                        title: `Servicio Automotriz - Cita ${idCita}`,
+                        quantity: 1,
+                        price: parseFloat(quoteData.costoTotal),
+                        idCita: idCita,
+                        idMecanico: citaDataActual?.idMecanico
+                    };
+
+                    const response = await fetch(API_URL + '/api/mercadopago/create-preference', {
+                        method: 'POST',
+                        headers: getAuthHeaders('application/json'),
+                        credentials: 'include',
+                        body: JSON.stringify(preferenceData)
+                    });
+
+                    const prefRes = await response.json();
+
+                    if (prefRes.id) {
+                        window.location.href = `https://www.mercadopago.com.mx/checkout/v1/redirect?pref_id=${prefRes.id}`;
+                    } else {
+                        throw new Error('No se recibió ID de preferencia');
+                    }
+                } catch (error) {
+                    console.error('Error MP:', error);
+                    alert('Ocurrió un error al procesar con Mercado Pago.');
+                }
+            });
+
+            // =============== FLUJO PAYPAL ===============
+            function renderPayPalButton(amount, description, citaId, mecanicoId) {
+                const container = document.getElementById('paypal-button-container');
+                container.innerHTML = '';
+
+                paypal.Buttons({
+                    createOrder: async function () {
+                        try {
+                            const res = await fetch(API_URL + '/api/paypal/create-order', {
+                                method: 'POST',
+                                headers: getAuthHeaders('application/json'),
+                                credentials: 'include',
+                                body: JSON.stringify({
+                                    amount: amount,
+                                    description: description,
+                                    idCita: citaId,
+                                    idMecanico: mecanicoId
+                                })
+                            });
+                            const orderAuth = await res.json();
+                            return orderAuth.id;
+                        } catch (err) {
+                            console.error('Error creando orden paypal:', err);
+                            alert('No se pudo iniciar PayPal');
+                        }
+                    },
+                    onApprove: async function (data) {
+                        try {
+                            const verifyRes = await fetch(API_URL + '/api/paypal/capture-order', {
+                                method: 'POST',
+                                headers: getAuthHeaders('application/json'),
+                                credentials: 'include',
+                                body: JSON.stringify({
+                                    orderID: data.orderID,
+                                    idCita: citaId,
+                                    idMecanico: mecanicoId
+                                })
+                            });
+                            const verifyData = await verifyRes.json();
+
+                            if (verifyData.success) {
+                                // Aquí se actualiza el estado localmente asumiendo éxito
+                                await fetch(API_URL + `/api/citas/${citaId}/aprobar-cotizacion`, {
+                                    method: 'PUT',
+                                    headers: getAuthHeaders(),
+                                    credentials: 'include'
+                                });
+                                // Redirigir al ticket de confirmación genérico indicando que es de cita
+                                window.location.href = `ticket_confirmacion.html?tipo=cita&id=${citaId}&ticket=${verifyData.ticketId || ''}`;
+                            } else {
+                                alert('El pago fue procesado, pero ocurrió un error en la verificación.');
+                            }
+                        } catch (err) {
+                            console.error('Error capturando orden:', err);
+                            alert('Error al verificar el pago con PayPal.');
+                        }
+                    },
+                    onError: function (err) {
+                        console.error('PayPal Error:', err);
+                        alert('Ocurrió un error con el procesador de PayPal.');
+                    }
+                }).render('#paypal-button-container');
+            }
+
+            // ==========================================
+            // Lógica de Pago para Liberar (Confirmación de Entrega)
+            // ==========================================
+            const releaseModal = document.getElementById('releasePaymentModal');
+            let releaseData = null;
+
+            async function openReleasePaymentModal(idCita) {
+                try {
+                    // Reutilizamos el endpoint de cotización para obtener el costo total
+                    const quoteRes = await fetch(API_URL + `/api/citas/${idCita}/cotizacion`, {
+                        headers: getAuthHeaders(),
+                        credentials: 'include'
+                    });
+                    if (!quoteRes.ok) throw new Error('Error al obtener la cotización');
+
+                    releaseData = await quoteRes.json();
+                    const releaseAmount = parseFloat(releaseData.totalAprobado || releaseData.costoTotal || 0);
+                    document.getElementById('releaseTotal').textContent = `$${releaseAmount.toFixed(2)} MXN`;
+
+                    // Resetear estado del modal
+                    document.getElementById('releaseInitialActions').style.display = 'flex';
+                    document.getElementById('cashCodeSection').style.display = 'none';
+                    document.getElementById('cashCodeInput').value = '';
+
+                    const paypalContainer = document.getElementById('release-paypal-container');
+                    paypalContainer.innerHTML = '';
+                    renderReleasePayPalButton(releaseAmount, `Pago Final de Cita ${idCita}`, idCita, citaDataActual?.idMecanico);
+
+                    releaseModal.classList.add('active');
+                } catch (err) {
+                    alert('No se pudo cargar la información de pago: ' + err.message);
+                }
+            }
+
+            if (document.getElementById('closeReleasePaymentModal')) {
+                document.getElementById('closeReleasePaymentModal').addEventListener('click', () => {
+                    releaseModal.classList.remove('active');
+                });
+            }
+
+            if (document.getElementById('btnShowCashCode')) {
+                document.getElementById('btnShowCashCode').addEventListener('click', () => {
+                    document.getElementById('releaseInitialActions').style.display = 'none';
+                    document.getElementById('cashCodeSection').style.display = 'block';
+                });
+            }
+
+            if (document.getElementById('btnCancelCashCode')) {
+                document.getElementById('btnCancelCashCode').addEventListener('click', () => {
+                    document.getElementById('cashCodeSection').style.display = 'none';
+                    document.getElementById('releaseInitialActions').style.display = 'flex';
+                });
+            }
+
+            if (document.getElementById('btnSubmitCashCode')) {
+                document.getElementById('btnSubmitCashCode').addEventListener('click', async () => {
+                    const code = document.getElementById('cashCodeInput').value.trim().toUpperCase();
+                    if (!code) return alert('Ingrese el código de pago');
+
+                    try {
+                        const res = await fetch(API_URL + '/api/citas/' + idCita + '/confirmar-entrega-codigo', {
+                            method: 'PUT',
+                            headers: getAuthHeaders(),
+                            credentials: 'include',
+                            body: JSON.stringify({ codigo: code })
+                        });
+                        const data = await res.json();
+
+                        if (res.ok) {
+                            alert('¡Entrega confirmada con éxito! Su vehículo ha sido liberado.');
+                            window.location.reload();
+                        } else {
+                            throw new Error(data.error || 'Error al validar el código');
+                        }
+                    } catch (e) {
+                        alert(e.message);
+                    }
+                });
+            }
+
+            if (document.getElementById('btnReleaseMercadoPago')) {
+                document.getElementById('btnReleaseMercadoPago').addEventListener('click', async () => {
+                    if (!releaseData || !citaDataActual) return;
+                    try {
+                        const mpConfigRes = await fetch(API_URL + '/api/mercadopago/public-key', {
+                            headers: getAuthHeaders(),
+                            credentials: 'include'
+                        });
+                        const mpConfig = await mpConfigRes.json();
+                        const mp = new MercadoPago(mpConfig.publicKey, { locale: 'es-MX' });
+
+                        const preferenceData = {
+                            title: `Pago Libre Servicio Automotriz - Cita ${idCita}`,
+                            quantity: 1,
+                            price: parseFloat(releaseData.totalAprobado || releaseData.costoTotal || 0),
+                            idCita: idCita,
+                            idMecanico: citaDataActual.idMecanico,
+                            tipo: 'liberacion' // Indicador de que es pago de liberación
+                        };
+
+                        const response = await fetch(API_URL + '/api/mercadopago/create-preference', {
+                            method: 'POST',
+                            headers: getAuthHeaders('application/json'),
+                            credentials: 'include',
+                            body: JSON.stringify(preferenceData)
+                        });
+
+                        const prefRes = await response.json();
+
+                        if (prefRes.id) {
+                            window.location.href = `https://www.mercadopago.com.mx/checkout/v1/redirect?pref_id=${prefRes.id}`;
+                        } else {
+                            throw new Error('No se recibió ID de preferencia');
+                        }
+                    } catch (error) {
+                        console.error('Error MP:', error);
+                        alert('Ocurrió un error al procesar con Mercado Pago.');
+                    }
+                });
+            }
+
+            function renderReleasePayPalButton(amount, description, citaId, mecanicoId) {
+                const container = document.getElementById('release-paypal-container');
+                container.innerHTML = '';
+                if (!window.paypal) return;
+
+                paypal.Buttons({
+                    createOrder: async function () {
+                        try {
+                            const res = await fetch(API_URL + '/api/paypal/create-order', {
+                                method: 'POST',
+                                headers: getAuthHeaders('application/json'),
+                                credentials: 'include',
+                                body: JSON.stringify({
+                                    amount: amount,
+                                    description: description,
+                                    idCita: citaId,
+                                    idMecanico: mecanicoId
+                                })
+                            });
+                            const orderAuth = await res.json();
+                            return orderAuth.id;
+                        } catch (err) {
+                            console.error('Error creando orden paypal:', err);
+                            alert('No se pudo iniciar PayPal');
+                        }
+                    },
+                    onApprove: async function (data) {
+                        try {
+                            const verifyRes = await fetch(API_URL + '/api/paypal/capture-order', {
+                                method: 'POST',
+                                headers: getAuthHeaders('application/json'),
+                                credentials: 'include',
+                                body: JSON.stringify({
+                                    orderID: data.orderID,
+                                    idCita: citaId,
+                                    idMecanico: mecanicoId
+                                })
+                            });
+                            const verifyData = await verifyRes.json();
+
+                            if (verifyData.success) {
+                                // Aquí se libera el vehículo (pago online)
+                                await fetch(API_URL + `/api/citas/${citaId}/confirmar-entrega-online`, {
+                                    method: 'PUT',
+                                    headers: getAuthHeaders(),
+                                    credentials: 'include'
+                                });
+                                alert('¡Pago procesado con éxito! Vehículo liberado.');
+                                window.location.reload();
+                            } else {
+                                alert('El pago fue procesado, pero ocurrió un error en la verificación.');
+                            }
+                        } catch (err) {
+                            console.error('Error capturando orden:', err);
+                            alert('Error al verificar el pago con PayPal.');
+                        }
+                    },
+                    onError: function (err) {
+                        console.error('PayPal Error:', err);
+                        alert('Ocurrió un error con el procesador de PayPal.');
+                    }
+                }).render('#release-paypal-container');
+            }
+
+
+            // ==========================================
+            // LÓGICA DEL CHAT
+            // ==========================================
+
+            // Textarea auto-resize
+            chatInput.addEventListener('input', function () {
+                this.style.height = 'auto';
+                this.style.height = (this.scrollHeight) + 'px';
+                if (this.value === '') {
+                    this.style.height = '45px';
+                }
+            });
+
+            // Botón de adjuntar imagen abre el input file
+            attachBtn.addEventListener('click', () => {
+                fileInput.click();
+            });
+
+            // Click en la previsualización del chat para abrir lightbox
+            imagePreviewElement.addEventListener('click', () => {
+                if (currentImageBase64) {
+                    openLightbox(currentImageBase64);
+                }
+            });
+
+            // Manejar selección de archivo
+            fileInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+
+                // Validar tipo
+                if (!file.type.match('image.*')) {
+                    alert('Por favor, selecciona solo imágenes (JPEG, PNG, WEBP).');
+                    resetFileInput();
+                    return;
+                }
+
+                // Validar tamaño (máx 5MB)
+                if (file.size > 5 * 1024 * 1024) {
+                    alert('La imagen es demasiado grande. Selecciona una menor a 5MB.');
+                    resetFileInput();
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    currentImageBase64 = event.target.result;
+                    imagePreviewElement.src = currentImageBase64;
+                    imagePreviewName.textContent = file.name;
+                    imagePreviewContainer.classList.add('active');
+                    chatInput.focus();
+                };
+                reader.readAsDataURL(file);
+            });
+
+            // Botón para quitar la imagen adjuntada
+            removeImageBtn.addEventListener('click', resetFileInput);
+
+            function resetFileInput() {
+                fileInput.value = '';
+                currentImageBase64 = null;
+                imagePreviewContainer.classList.remove('active');
+                imagePreviewElement.src = '';
+            }
+
+            openChatBtn.addEventListener('click', () => {
+                modalChat.classList.add('active');
+                loadChatMessages(idCita);
+                // Iniciar polling al abrir
+                if (!chatInterval) {
+                    chatInterval = setInterval(() => loadChatMessages(idCita), 3000);
+                }
+                // Ocultar badge
+                chatBadge.style.display = 'none';
+                chatBadge.textContent = '0';
+
+                setTimeout(() => chatInput.focus(), 100);
+            });
+
+            closeChatBtn.addEventListener('click', () => {
+                modalChat.classList.remove('active');
+                if (chatInterval) {
+                    clearInterval(chatInterval);
+                    chatInterval = null;
+                }
+            });
+
+            // Enviar mensaje con ENTER (y shift+enter para nueva línea)
+            chatInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendMessageWrapper();
+                }
+            });
+
+            chatSendBtn.addEventListener('click', sendMessageWrapper);
+
+            function sendMessageWrapper() {
+                const text = chatInput.value.trim();
+
+                if (currentImageBase64) {
+                    // Si hay imagen, enviarla
+                    sendChatMessage(idCita, currentImageBase64, 'imagen', fileInput.files[0]?.name);
+
+                    // Si además hay texto, enviarlo justo después
+                    if (text) {
+                        setTimeout(() => {
+                            sendChatMessage(idCita, text, 'texto');
+                        }, 500);
+                    }
+
+                    // Limpiar imagen y texto
+                    resetFileInput();
+                    chatInput.value = '';
+                    chatInput.style.height = '45px';
+                } else if (text) {
+                    // Solo texto
+                    sendChatMessage(idCita, text, 'texto');
+                    chatInput.value = '';
+                    chatInput.style.height = '45px';
+                }
+            }
+
+            async function checkUnreadMessages(idCitaParam) {
+                if (modalChat.classList.contains('active')) return; // No contar si está abierto
+
+                try {
+                    const res = await fetch(API_URL + `/api/chat/${idCitaParam}/no-leidos`, {
+                        headers: getAuthHeaders(),
+                        credentials: 'include'
+                    });
+                    if (res.ok) {
+                        const data = await res.json();
+                        if (data.noLeidos > 0) {
+                            chatBadge.textContent = data.noLeidos;
+                            chatBadge.style.display = 'inline-block';
+                        } else {
+                            chatBadge.style.display = 'none';
+                        }
+                    }
+                } catch (e) { console.error('Error contando no leídos:', e); }
+            }
+
+            async function loadChatMessages(idCitaParam) {
+                try {
+                    const res = await fetch(API_URL + `/api/chat/${idCitaParam}`, {
+                        headers: getAuthHeaders(),
+                        credentials: 'include'
+                    });
+                    if (res.ok) {
+                        const mensajes = await res.json();
+                        renderMessages(mensajes);
+                    }
+                } catch (e) {
+                    console.error('Error cargando mensajes:', e);
+                }
+            }
+
+            async function sendChatMessage(idCitaParam, contenidoParam, tipoParams = 'texto', nombreArchivo = null) {
+
+                const bodyObj = {
+                    contenido: contenidoParam,
+                    tipoContenido: tipoParams
+                };
+
+                if (nombreArchivo) {
+                    bodyObj.nombreArchivo = nombreArchivo;
+                }
+
+                // Mostrar temporalmente en la UI (Optimistic UI)
+                // Obtenemos el nombre del paciente/cliente del sessionStorage:
+                const myUserName = sessionStorage.getItem('userName') || 'Yo';
+
+                appendMessageToUI({
+                    remitenteTipo: 'cliente',
+                    tipoContenido: tipoParams,
+                    contenido: contenidoParam,
+                    fechaEnvio: new Date().toISOString(),
+                    remitenteNombre: myUserName
+                }, true); // El true indica que se desplace hacia abajo
+
+                try {
+                    // Deshabilitar botón temporalmente para imágenes grandes
+                    if (tipoParams === 'imagen') {
+                        chatSendBtn.disabled = true;
+                        chatSendBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+                    }
+
+                    const res = await fetch(API_URL + `/api/chat/${idCitaParam}`, {
+                        method: 'POST',
+                        headers: getAuthHeaders('application/json'),
+                        credentials: 'include',
+                        body: JSON.stringify(bodyObj)
+                    });
+
+                    if (!res.ok) {
+                        const err = await res.json();
+                        throw new Error(err.error || 'Error al enviar');
+                    }
+
+                    // Al retornar se volverá a cargar por el polling normal
+                    loadChatMessages(idCitaParam);
+
+                } catch (e) {
+                    console.error(e);
+                    alert(`Error enviando mensaje: ${e.message}`);
+                    loadChatMessages(idCitaParam); // Recargar para limpiar el mensaje optimista si falló
+                } finally {
+                    chatSendBtn.disabled = false;
+                    chatSendBtn.innerHTML = '<i class="fas fa-paper-plane"></i>';
+                }
+            }
+
+            function renderMessages(mensajes) {
+                // Prevenir re-render innecesario si no hay cambios
+                // En un sistema real compararíamos el ID del último mensaje
+                chatMessages.innerHTML = '';
+
+                if (mensajes.length === 0) {
+                    chatMessages.innerHTML = '<div style="text-align:center; color:#888; margin-top:50px;">Aún no hay mensajes. ¡Envía un mensaje al taller!</div>';
+                    return;
+                }
+
+                mensajes.forEach(m => appendMessageToUI(m, false));
+
+                // Hacer scroll abajo suavemente
+                chatMessages.scrollTo({
+                    top: chatMessages.scrollHeight,
+                    behavior: 'smooth'
+                });
+            }
+
+            function appendMessageToUI(m, scrollToBottom = true) {
+                const isMine = m.remitenteTipo === 'cliente';
+                const div = document.createElement('div');
+                div.className = `chat-message ${isMine ? 'cliente' : 'mecanico'}`;
+
+                const hora = new Date(m.fechaEnvio).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+                let contentHTML = '';
+
+                if (m.tipoContenido === 'imagen') {
+                    contentHTML = `
+                        <img src="${m.contenido}" class="chat-message-image" alt="Imagen enviada" onclick="openLightbox('${m.contenido}')">
+                    `;
+                } else {
+                    // Escapar HTML básico para texto
+                    const safeContenido = m.contenido
+                        .replace(/&/g, "&amp;")
+                        .replace(/</g, "&lt;")
+                        .replace(/>/g, "&gt;")
+                        .replace(/"/g, "&quot;")
+                        .replace(/'/g, "&#039;")
+                        .replace(/\\n/g, "<br>");
+
+                    contentHTML = `<div style="line-height:1.4;">${safeContenido}</div>`;
+                }
+
+                div.innerHTML = `
+                    ${contentHTML}
+                    <span class="chat-time">${hora}</span>
+                `;
+                chatMessages.appendChild(div);
+
+                if (scrollToBottom) {
+                    chatMessages.scrollTo({
+                        top: chatMessages.scrollHeight,
+                        behavior: 'smooth'
+                    });
+                }
+            }
+
+            // ==========================================
+            // LÓGICA DE LIGHTBOX PARA IMÁGENES
+            // ==========================================
+            // Exponemos la función al entorno global para que funcione el onclick
+            window.openLightbox = function (src) {
+                lightboxImage.src = src;
+                lightboxOverlay.classList.add('active');
+            };
+
+            lightboxClose.addEventListener('click', () => {
+                lightboxOverlay.classList.remove('active');
+                setTimeout(() => { lightboxImage.src = ''; }, 300); // Limpiar src después de la transición
+            });
+
+            // Cerrar lightbox al hacer clic fuera de la imagen
+            lightboxOverlay.addEventListener('click', (e) => {
+                if (e.target === lightboxOverlay) {
+                    lightboxOverlay.classList.remove('active');
+                    setTimeout(() => { lightboxImage.src = ''; }, 300);
+                }
+            });
+
+            // Función de Cancelar
+            async function cancelarCita() {
+                if (!confirm('¿Estás seguro de cancelar tu cita? Esta acción no se puede deshacer.')) return;
+                try {
+                    const response = await fetch(API_URL + `/api/citas/${idCita}`, {
+                        method: 'DELETE',
+                        headers: getAuthHeaders(),
+                        credentials: 'include'
+                    });
+                    if (response.ok) {
+                        alert('Cita cancelada con éxito.');
+                        window.location.href = 'mis_citas.html';
+                    } else {
+                        const err = await response.json();
+                        alert('Error: ' + err.error);
+                    }
+                } catch (e) {
+                    alert('Ocurrió un error de conexión.');
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

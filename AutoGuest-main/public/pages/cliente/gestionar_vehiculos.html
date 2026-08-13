@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Vehículos - AutoGuest</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="../../style.css">
+    <style>
+        /* --- ESTILOS PARA LA CABECERA MEJORADA --- */
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 40px;
+            background-color: #2c2c2c;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .dashboard-header .logo {
+            width: 110px;
+            display: block;
+        }
+
+        .back-to-dashboard {
+            color: #c0c0c0;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.3s ease;
+        }
+
+        .back-to-dashboard:hover {
+            color: #f39c12;
+        }
+
+        .back-to-dashboard i {
+            font-size: 14px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-right .user-greeting {
+            font-size: 1.1em;
+            color: #c0c0c0;
+        }
+
+        .header-right .logout-btn {
+            background-color: transparent;
+            color: #f39c12;
+            border: 1px solid #f39c12;
+            padding: 10px 20px;
+            font-size: 14px;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .header-right .logout-btn:hover {
+            background-color: #f39c12;
+            color: #1a1a1a;
+        }
+
+        .page-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .page-header h1 {
+            font-size: 2.8em;
+            color: #ffffff;
+            margin-bottom: 10px;
+        }
+
+        .page-header p {
+            font-size: 1.1em;
+            color: #c0c0c0;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* === Sistema de Notificaciones Unificado === */
+        .notification-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .notification-trigger {
+            background: none;
+            border: none;
+            color: #f39c12;
+            font-size: 1.6em;
+            cursor: pointer;
+            padding: 8px;
+            position: relative;
+            transition: transform 0.2s;
+        }
+
+        .notification-trigger:hover {
+            transform: scale(1.1);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            background-color: #e74c3c;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 0.6em;
+            font-weight: bold;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            border: 2px solid #2c2c2c;
+        }
+
+        .notification-dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            width: 320px;
+            background-color: #2c2c2c;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid #444;
+            border-radius: 12px;
+            margin-top: 15px;
+            z-index: 1000;
+            overflow: hidden;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        .notification-dropdown.active {
+            display: block;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .notification-header {
+            padding: 12px 15px;
+            background-color: #333;
+            border-bottom: 1px solid #444;
+        }
+
+        .notification-header h3 {
+            margin: 0;
+            font-size: 1em;
+            color: #f39c12;
+            text-align: left;
+        }
+
+        .notification-list {
+            max-height: 350px;
+            overflow-y: auto;
+        }
+
+        .notification-item {
+            padding: 12px 15px;
+            border-bottom: 1px solid #3a3a3a;
+            display: flex;
+            gap: 12px;
+            cursor: pointer;
+            transition: background 0.2s;
+            text-align: left;
+        }
+
+        .notification-item:hover {
+            background-color: #3a3a3a;
+        }
+
+        .notification-item.unread {
+            background-color: rgba(243, 156, 18, 0.05);
+            border-left: 3px solid #f39c12;
+        }
+
+        .notification-icon {
+            font-size: 1.2em;
+            margin-top: 2px;
+        }
+
+        .notification-content {
+            flex: 1;
+        }
+
+        .notification-content strong {
+            display: block;
+            font-size: 0.9em;
+            color: #fff;
+            margin-bottom: 2px;
+        }
+
+        .notification-content p {
+            margin: 0;
+            font-size: 0.8em;
+            color: #aaa;
+            line-height: 1.3;
+        }
+
+        .notification-time {
+            display: block;
+            font-size: 0.7em;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .notification-empty {
+            padding: 30px 15px;
+            text-align: center;
+            color: #777;
+            font-style: italic;
+            font-size: 0.9em;
+        }
+
+        .text-danger { color: #e74c3c; }
+        .text-warning { color: #f1c40f; }
+        .text-success { color: #2ecc71; }
+        .text-info { color: #3498db; }
+        .text-primary { color: #f39c12; }
+
+        .vehicles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
+        }
+
+        .vehicle-card,
+        .add-vehicle-card {
+            background-color: #2c2c2c;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            border-left: 5px solid #f39c12;
+            transition: transform 0.3s ease;
+        }
+
+        .vehicle-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .vehicle-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .vehicle-card-header h3 {
+            font-size: 1.6em;
+            color: #ffffff;
+            margin: 0;
+        }
+
+        .vehicle-card-header .vehicle-icon {
+            font-size: 2.5em;
+            color: #f39c12;
+        }
+
+        .vehicle-details p {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1em;
+            color: #e0e0e0;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #3a3a3a;
+        }
+
+        .vehicle-details p:last-child {
+            border-bottom: none;
+        }
+
+        .vehicle-details p strong {
+            color: #a0a0a0;
+        }
+
+        .vehicle-actions {
+            margin-top: 25px;
+            display: flex;
+            gap: 15px;
+        }
+
+        .vehicle-actions .btn {
+            font-size: 14px;
+            padding: 10px 15px;
+            flex: 1;
+        }
+
+        .btn-danger {
+            background-color: #e74c3c;
+            color: white;
+            border: 1px solid #e74c3c;
+        }
+
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+
+        .add-vehicle-card {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            border: 2px dashed #555;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-left: 5px solid #555;
+            min-height: 290px;
+        }
+
+        .add-vehicle-card:hover {
+            border-color: #f39c12;
+            background-color: #333;
+        }
+
+        .add-vehicle-card .add-icon {
+            font-size: 3em;
+            color: #f39c12;
+            margin-bottom: 15px;
+        }
+
+        .add-vehicle-card h3 {
+            font-size: 1.5em;
+            color: #ffffff;
+            margin: 0;
+        }
+
+        /* Estilos para el Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            background-color: #2c2c2c;
+            padding: 40px;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            transform: scale(0.95);
+            animation: zoomIn 0.3s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes zoomIn {
+            from {
+                transform: scale(0.95);
+            }
+
+            to {
+                transform: scale(1);
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            font-size: 1.8em;
+            color: #ffffff;
+        }
+
+        .close-button {
+            background: none;
+            border: none;
+            color: #a0a0a0;
+            font-size: 28px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            line-height: 1;
+            padding: 0;
+        }
+
+        .close-button:hover {
+            color: #f39c12;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-header {
+                flex-direction: column;
+                gap: 15px;
+                align-items: stretch;
+            }
+
+            .header-left {
+                justify-content: space-between;
+            }
+
+            .back-to-dashboard span {
+                display: none;
+            }
+
+            .header-right {
+                justify-content: space-between;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header id="main-header"></header>
+
+    <main class="page-container">
+        <div class="page-header">
+            <h1>Mis Vehículos</h1>
+            <p>Aquí puedes ver, editar o añadir todos los vehículos asociados a tu cuenta.</p>
+        </div>
+
+        <div class="vehicles-grid" id="vehiclesGrid">
+            <!-- Tarjetas de vehículos se cargarán dinámicamente -->
+
+            <!-- Tarjeta para añadir un nuevo vehículo -->
+            <div class="add-vehicle-card" id="addVehicleBtn">
+                <i class="fas fa-plus add-icon"></i>
+                <h3>Añadir Nuevo Vehículo</h3>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal para añadir/editar vehículo -->
+    <div class="modal-overlay" id="addVehicleModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Añadir un Nuevo Vehículo</h2>
+                <button class="close-button" id="closeModalBtn">×</button>
+            </div>
+            <form id="addVehicleForm">
+                <div class="form-group">
+                    <label for="modal-brand">Marca</label>
+                    <input type="text" id="modal-brand" class="form-control" placeholder="Ej: Honda" required>
+                </div>
+                <div class="form-group">
+                    <label for="modal-model">Modelo</label>
+                    <input type="text" id="modal-model" class="form-control" placeholder="Ej: Civic" required>
+                </div>
+                <div class="form-group">
+                    <label for="modal-year">Año</label>
+                    <input type="number" id="modal-year" class="form-control" placeholder="Ej: 2023" min="1900"
+                        required>
+                </div>
+                <div class="form-group">
+                    <label for="modal-plate">Matrícula / Placa</label>
+                    <input type="text" id="modal-plate" class="form-control" placeholder="Ej: ABC-123"
+                        pattern="[A-Z]{3}-[0-9]{3}"
+                        title="Formato requerido: 3 letras mayúsculas, guión, 3 números (Ej: ABC-123)" maxlength="7"
+                        style="text-transform: uppercase;" required>
+                    <small style="color: #a0a0a0; font-size: 0.85em; margin-top: 5px; display: block;">
+                        Formato: 3 letras-3 números (Ej: ABC-123)
+                    </small>
+                </div>
+                <button type="submit" class="btn">Guardar Vehículo</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const API_URL = '';
+            // --- INICIO: Guardián de Autenticación y Personalización ---
+            if (sessionStorage.getItem('isLoggedIn') !== 'true') {
+                alert('Tu sesión ha expirado. Por favor, inicia sesión de nuevo.');
+                window.location.href = '../../login_cliente.html';
+                return;
+            }
+
+            const userName = sessionStorage.getItem('userName');
+            if (userName) {
+                let ug = document.querySelector('.header-right .user-greeting'); if (ug) { ug.textContent = `¡Hola, ${userName}!`; }
+            }
+
+            const logoutBtn = document.querySelector('.logout-btn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', async (e) => {
+                    e.preventDefault();
+                    try {
+                        const response = await fetch('/api/registro/logout', { method: 'POST' });
+                        if (response.ok) {
+                            sessionStorage.clear();
+                            window.location.href = '../../index.html';
+                        } else {
+                            alert('Error al cerrar sesión.');
+                        }
+                    } catch (error) {
+                        alert('Error de red al cerrar sesión.');
+                    }
+                });
+            }
+            // --- FIN: Guardián de Autenticación ---
+
+            const addVehicleBtn = document.getElementById('addVehicleBtn');
+            const addVehicleModal = document.getElementById('addVehicleModal');
+            const closeModalBtn = document.getElementById('closeModalBtn');
+            const addVehicleForm = document.getElementById('addVehicleForm');
+            const vehiclesGrid = document.getElementById('vehiclesGrid');
+
+            const anioMaximo = new Date().getFullYear() + 1;
+            document.getElementById('modal-year').max = anioMaximo;
+
+            let isEditing = false;
+            let currentVehicleId = null;
+
+            const openModal = (vehicle = null) => {
+                addVehicleModal.classList.add('active');
+                if (vehicle) {
+                    isEditing = true;
+                    currentVehicleId = vehicle.idVehiculo;
+                    document.querySelector('.modal-header h2').textContent = 'Editar Vehículo';
+                    document.querySelector('#addVehicleForm button').textContent = 'Actualizar Vehículo';
+
+                    document.getElementById('modal-brand').value = vehicle.marca;
+                    document.getElementById('modal-model').value = vehicle.modelo;
+                    document.getElementById('modal-year').value = vehicle.anio;
+                    document.getElementById('modal-plate').value = vehicle.placa;
+                } else {
+                    isEditing = false;
+                    currentVehicleId = null;
+                    document.querySelector('.modal-header h2').textContent = 'Añadir un Nuevo Vehículo';
+                    document.querySelector('#addVehicleForm button').textContent = 'Guardar Vehículo';
+                    addVehicleForm.reset();
+                }
+            };
+
+            const closeModal = () => {
+                addVehicleModal.classList.remove('active');
+                addVehicleForm.reset();
+                isEditing = false;
+                currentVehicleId = null;
+            };
+
+            // Event delegation para botones de editar y eliminar
+            vehiclesGrid.addEventListener('click', async (e) => {
+                const editBtn = e.target.closest('.edit-btn');
+                const deleteBtn = e.target.closest('.delete-btn');
+
+                if (editBtn) {
+                    const vehicleCard = editBtn.closest('.vehicle-card');
+                    if (vehicleCard) {
+                        const vehicleToEdit = {
+                            idVehiculo: vehicleCard.dataset.id,
+                            marca: vehicleCard.dataset.marca,
+                            modelo: vehicleCard.dataset.modelo,
+                            anio: vehicleCard.dataset.anio,
+                            placa: vehicleCard.dataset.placa
+                        };
+                        openModal(vehicleToEdit);
+                    }
+                } else if (deleteBtn) {
+                    const vehicleCard = deleteBtn.closest('.vehicle-card');
+                    if (vehicleCard) {
+                        const vehicleId = vehicleCard.dataset.id;
+                        const vehicleInfo = `${vehicleCard.dataset.marca} ${vehicleCard.dataset.modelo}`;
+                        
+                        if (!confirm(`¿Estás seguro de que quieres eliminar el ${vehicleInfo}?`)) {
+                            return;
+                        }
+                        try {
+                            const response = await fetch(`${API_URL}/api/vehiculos/${vehicleId}`, {
+                                method: 'DELETE',
+                                headers: {
+                                    'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                                    'Content-Type': 'application/json'
+                                },
+                                credentials: 'include'
+                            });
+
+                            if (response.ok) {
+                                vehicleCard.remove();
+                                alert(`${vehicleInfo} eliminado con éxito.`);
+                            } else {
+                                const error = await response.json();
+                                alert(`Error al eliminar: ${error.error || error.mensaje || 'Error desconocido'}`);
+                            }
+                        } catch (err) {
+                            alert('Error de red al intentar eliminar el vehículo.');
+                        }
+                    }
+                }
+            });
+
+            const renderVehicle = (vehicle) => {
+                // Verificar si ya existe la tarjeta para actualizarla
+                let vehicleCard = document.querySelector(`.vehicle-card[data-id="${vehicle.idVehiculo}"]`);
+
+                if (!vehicleCard) {
+                    vehicleCard = document.createElement('div');
+                    vehicleCard.classList.add('vehicle-card');
+                    vehiclesGrid.insertBefore(vehicleCard, addVehicleBtn);
+                }
+
+                // Actualizar siempre los data attributes (para crear y para editar)
+                vehicleCard.dataset.id = vehicle.idVehiculo;
+                vehicleCard.dataset.marca = vehicle.marca;
+                vehicleCard.dataset.modelo = vehicle.modelo;
+                vehicleCard.dataset.anio = vehicle.anio;
+                vehicleCard.dataset.placa = vehicle.placa;
+
+                vehicleCard.innerHTML = `
+                    <div class="vehicle-card-header">
+                        <h3>${vehicle.marca} ${vehicle.modelo}</h3>
+                        <i class="fas fa-car-side vehicle-icon"></i>
+                    </div>
+                    <div class="vehicle-details">
+                        <p><strong>Marca:</strong> <span>${vehicle.marca}</span></p>
+                        <p><strong>Modelo:</strong> <span>${vehicle.modelo}</span></p>
+                        <p><strong>Año:</strong> <span>${vehicle.anio}</span></p>
+                        <p><strong>Matrícula:</strong> <span>${vehicle.placa}</span></p>
+                    </div>
+                    <div class="vehicle-actions">
+                        <button class="btn btn-secondary edit-btn">Editar</button>
+                        <button class="btn btn-danger delete-btn">Eliminar</button>
+                    </div>
+                `;
+
+
+            };
+
+            const loadVehicles = async () => {
+                // Limpiar vehículos existentes (excepto el botón de añadir)
+                document.querySelectorAll('.vehicle-card').forEach(card => {
+                    card.remove();
+                });
+
+                try {
+                    const response = await fetch('/api/vehiculos', {
+                        headers: {
+                            'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                            'Content-Type': 'application/json'
+                        },
+                        credentials: 'include'
+                    });
+                    if (response.status === 401) {
+                        // Sesión expirada o no válida
+                        alert('Tu sesión ha expirado. Por favor, inicia sesión de nuevo.');
+                        sessionStorage.clear();
+                        window.location.href = '../../login_cliente.html';
+                        return;
+                    }
+                    if (!response.ok) {
+                        throw new Error('No se pudieron cargar los vehículos.');
+                    }
+                    const vehicles = await response.json();
+                    if (vehicles.length === 0) {
+                        console.log('No se encontraron vehículos para este usuario.');
+                    } else {
+                        vehicles.forEach(renderVehicle);
+                    }
+                } catch (error) {
+                    console.error('Error al cargar vehículos:', error);
+                    alert('Hubo un problema al cargar tus vehículos. Inténtalo de nuevo más tarde.');
+                }
+            };
+
+            addVehicleBtn.addEventListener('click', () => openModal());
+            closeModalBtn.addEventListener('click', closeModal);
+            addVehicleModal.addEventListener('click', (e) => {
+                if (e.target === addVehicleModal) closeModal();
+            });
+
+            addVehicleForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const vehicleData = {
+                    marca: document.getElementById('modal-brand').value.trim(),
+                    modelo: document.getElementById('modal-model').value.trim(),
+                    anio: document.getElementById('modal-year').value,
+                    placa: document.getElementById('modal-plate').value.trim()
+                };
+
+                try {
+                    let url = '/api/vehiculos';
+                    let method = 'POST';
+
+                    if (isEditing) {
+                        url = `/api/vehiculos/${currentVehicleId}`;
+                        method = 'PUT';
+                    }
+
+                    const response = await fetch(`${url}`, {
+                        method: method,
+                        headers: {
+                            'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                            'Content-Type': 'application/json'
+                        },
+                        credentials: 'include',
+                        body: JSON.stringify(vehicleData)
+                    });
+
+                    if (!response.ok) {
+                        const error = await response.json();
+                        throw new Error(error.mensaje || 'Error al guardar el vehículo.');
+                    }
+
+                    const result = await response.json();
+                    // Tanto en creación como en edición el backend devuelve { vehiculo: {...} }
+                    const savedVehicle = result.vehiculo;
+
+                    renderVehicle(savedVehicle);
+                    closeModal();
+                    
+                    if (isEditing) {
+                        alert(`✓ Vehículo "${savedVehicle.marca} ${savedVehicle.modelo}" actualizado exitosamente.`);
+                    } else {
+                        alert(`✓ ¡Vehículo "${savedVehicle.marca} ${savedVehicle.modelo}" registrado exitosamente!`);
+                    }
+
+                } catch (error) {
+                    console.error('Error al guardar vehículo:', error);
+                    alert(error.message);
+                }
+            });
+
+            // Carga inicial de vehículos desde el backend
+            loadVehicles();
+        });
+    </script>
+
+    <script src="../../js/notifications.js"></script>
+    <script src="../../js/global_nav.js"></script>
+</body>
+
+</html>

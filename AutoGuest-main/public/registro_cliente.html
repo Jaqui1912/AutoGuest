@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crea tu Cuenta - AutoGuest</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <!-- Ruta CSS: Correcta -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Identity Services SDK -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+
+<body>
+
+    <div class="form-page-wrapper">
+        <!-- ===== COLUMNA DE LA IMAGEN (IZQUIERDA) ===== -->
+        <div class="form-image-column">
+            <div class="logo-link">
+                <!-- Ruta de la imagen del logo: CORRECTA desde la raíz -->
+                <a href="home.html">
+                    <img src="imagenes/Logo_Autoguest.png" alt="Logo de AutoGuest">
+                </a>
+            </div>
+            <div class="image-text">
+                <h2>Tu viaje, sin interrupciones.</h2>
+                <p>Desde encontrar un lugar seguro hasta el mantenimiento de tu vehículo, todo está a tu alcance.</p>
+            </div>
+        </div>
+
+        <!-- ===== COLUMNA DEL FORMULARIO (DERECHA) ===== -->
+        <div class="form-content-column">
+            <div class="form-container">
+                <h1>Crea tu Cuenta</h1>
+                <p>Accede a un mundo de servicios para tu auto.</p>
+
+                <form id="registroForm">
+                    <div class="form-group">
+                        <label for="full-name">Nombre Completo</label>
+                        <input type="text" id="full-name" class="form-control" placeholder="Ej: Ana García" required
+                            pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$" title="El nombre solo debe contener letras y espacios">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" class="form-control" placeholder="tu@email.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Teléfono</label>
+                        <input type="tel" id="phone" class="form-control" placeholder="Ej: 5551234567" required
+                            maxlength="10" pattern="\d{10}"
+                            title="El teléfono debe tener exactamente 10 dígitos numéricos">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Crear Contraseña</label>
+                        <input type="password" id="password" class="form-control" placeholder="Mínimo 8 caracteres"
+                            required>
+                    </div>
+                    <button type="submit" class="btn">Registrarme</button>
+                </form>
+
+                <!-- Flujo de Google al final -->
+                <div class="google-auth-bottom">
+                    <div class="or-separator">O regístrate con</div>
+                    <div id="google_btn_official"></div>
+                </div>
+
+                <div class="extra-link">
+                    <p>¿Ya tienes una cuenta? <a href="login_cliente.html">Inicia Sesión</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <p>© 2025 AutoGuest. Todos los derechos reservados.</p>
+            <div class="social-links">
+                <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('registroForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            // Capture all values
+            const nombre = document.getElementById('full-name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const telefono = document.getElementById('phone').value;
+
+            // --- VALIDACIONES FRONTEND ---
+            const nombreRegex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
+            if (!nombreRegex.test(nombre)) {
+                alert('El nombre solo puede contener letras y espacios.');
+                return;
+            }
+
+            const telefonoRegex = /^\d{10}$/;
+            if (!telefonoRegex.test(telefono)) {
+                alert('El teléfono debe tener exactamente 10 dígitos numéricos.');
+                return;
+            }
+
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert('Por favor, ingresa un correo electrónico válido.');
+                return;
+            }
+            // -----------------------------
+
+            try {
+                const response = await fetch('http://localhost:3000/api/registro/cliente', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    // Include telefono in the payload
+                    body: JSON.stringify({ nombre, email, password, telefono })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert('¡Registro exitoso! Redirigiendo al login...');
+                    window.location.href = 'login_cliente.html';
+                } else {
+                    alert('Error: ' + data.mensaje);
+                }
+
+            } catch (error) {
+                console.error('Error:', error);
+                alert('No se pudo conectar con el servidor.');
+            }
+        });
+
+        window.onload = function () {
+            google.accounts.id.initialize({
+                client_id: "677789842914-bvfkfbvojts8ajcs975crbhj51pl1utl.apps.googleusercontent.com", // Reemplazar en .env
+                callback: handleCredentialResponse
+            });
+
+            // Renderizado oficial del botón
+            google.accounts.id.renderButton(
+                document.getElementById("google_btn_official"),
+                {
+                    theme: "outline",
+                    size: "large",
+                    width: document.querySelector('.form-container').offsetWidth - 100,
+                    text: "signup_with",
+                    shape: "rectangular"
+                }
+            );
+        };
+
+        async function handleCredentialResponse(response) {
+            console.log("Google Data:", response); // Debug
+
+            try {
+                const res = await fetch('/api/registro/google', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        token: response.credential,
+                        role: 'cliente'
+                    })
+                });
+
+                const data = await res.json();
+                if (res.ok) {
+                    alert('¡Registro con Google exitoso!');
+                    window.location.href = data.redirectTo || 'pages/cliente/dashboard_cliente.html';
+                } else {
+                    console.error('Backend Error:', data);
+                    alert('Error del servidor: ' + (data.mensaje || 'Error desconocido'));
+                }
+            } catch (error) {
+                console.error('Fetch Error:', error);
+                alert('Error de conexión: No se pudo conectar con el servidor backend.');
+            }
+        }
+    </script>
+
+
+    <script src="http://localhost:3000/js/global_nav.js"></script>
+</body>
+
+</html>

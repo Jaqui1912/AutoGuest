@@ -1,0 +1,352 @@
+[
+  {
+    "numero_serie": "VIN01",
+    "marca": "Toyota",
+    "modelo": "Corolla",
+    "placa": "PUE-001",
+    "fecha_registro": "2025-12-02T12:03:58.000Z"
+  },
+  {
+    "numero_serie": "VIN02",
+    "marca": "Nissan",
+    "modelo": "Versa",
+    "placa": "PUE-002",
+    "fecha_registro": "2025-12-02T12:03:58.000Z"
+  },
+  {
+    "numero_serie": "VIN03",
+    "marca": "Honda",
+    "modelo": "Civic",
+    "placa": "PUE-003",
+    "fecha_registro": "2025-12-02T12:03:58.000Z"
+  },
+  {
+    "numero_serie": "VIN04",
+    "marca": "Ford",
+    "modelo": "Fiesta",
+    "placa": "PUE-004",
+    "fecha_registro": "2025-12-02T12:03:58.000Z"
+  },
+  {
+    "numero_serie": "VIN05",
+    "marca": "Chevrolet",
+    "modelo": "Aveo",
+    "placa": "PUE-005",
+    "fecha_registro": "2025-12-02T12:03:58.000Z"
+  },
+  {
+    "numero_serie": "VIN06",
+    "marca": "Mazda",
+    "modelo": "3",
+    "placa": "PUE-006",
+    "fecha_registro": "2025-12-02T12:03:58.000Z"
+  },
+  {
+    "numero_serie": "VIN07",
+    "marca": "Volkswagen",
+    "modelo": "Jetta",
+    "placa": "PUE-007",
+    "fecha_registro": "2025-12-02T12:03:58.000Z"
+  },
+  {
+    "numero_serie": "VIN08",
+    "marca": "Hyundai",
+    "modelo": "Elantra",
+    "placa": "PUE-008",
+    "fecha_registro": "2025-12-02T12:03:58.000Z"
+  },
+  {
+    "numero_serie": "VIN09",
+    "marca": "Kia",
+    "modelo": "Rio",
+    "placa": "PUE-009",
+    "fecha_registro": "2025-12-02T12:03:58.000Z"
+  },
+  {
+    "numero_serie": "VIN10",
+    "marca": "BMW",
+    "modelo": "Serie 3",
+    "placa": "PUE-010",
+    "fecha_registro": "2025-12-02T12:03:58.000Z"
+  },
+  {
+    "numero_serie": "VIN11",
+    "marca": "Toyota",
+    "modelo": "Yaris",
+    "placa": "PUE-011",
+    "fecha_registro": "2025-12-02T12:03:58.000Z"
+  },
+  {
+    "numero_serie": "VIN12",
+    "marca": "Nissan",
+    "modelo": "Sentra",
+    "placa": "PUE-012",
+    "fecha_registro": "2025-12-02T12:03:58.000Z"
+  },
+  {
+    "numero_serie": "VIN13",
+    "marca": "Honda",
+    "modelo": "Accord",
+    "placa": "PUE-013",
+    "fecha_registro": "2025-12-02T12:03:58.000Z"
+  },
+  {
+    "numero_serie": "VIN14",
+    "marca": "Ford",
+    "modelo": "Focus",
+    "placa": "PUE-014",
+    "fecha_registro": "2025-12-02T12:03:58.000Z"
+  },
+  {
+    "numero_serie": "VIN15",
+    "marca": "Chevrolet",
+    "modelo": "Spark",
+    "placa": "PUE-015",
+    "fecha_registro": "2025-12-02T12:03:58.000Z"
+  },
+  {
+    "numero_serie": "VIN16",
+    "marca": "Mazda",
+    "modelo": "CX-5",
+    "placa": "PUE-016",
+    "fecha_registro": "2025-12-02T12:03:58.000Z"
+  },
+  {
+    "numero_serie": "VIN17",
+    "marca": "Volkswagen",
+    "modelo": "Golf",
+    "placa": "PUE-017",
+    "fecha_registro": "2025-12-02T12:03:58.000Z"
+  },
+  {
+    "numero_serie": "VIN18",
+    "marca": "Hyundai",
+    "modelo": "Tucson",
+    "placa": "PUE-018",
+    "fecha_registro": "2025-12-02T12:03:58.000Z"
+  },
+  {
+    "numero_serie": "VIN19",
+    "marca": "Kia",
+    "modelo": "Forte",
+    "placa": "PUE-019",
+    "fecha_registro": "2025-12-02T12:03:58.000Z"
+  },
+  {
+    "numero_serie": "VIN20",
+    "marca": "Audi",
+    "modelo": "A4",
+    "placa": "PUE-020",
+    "fecha_registro": "2025-12-02T12:03:58.000Z"
+  },
+  {
+    "numero_serie": "VIN21",
+    "marca": "Toyota",
+    "modelo": "Prius",
+    "placa": "PUE-021",
+    "fecha_registro": "2025-12-02T12:03:58.000Z"
+  },
+  {
+    "numero_serie": "VIN22",
+    "marca": "Nissan",
+    "modelo": "March",
+    "placa": "PUE-022",
+    "fecha_registro": "2025-12-02T12:03:58.000Z"
+  },
+  {
+    "numero_serie": "VIN23",
+    "marca": "Honda",
+    "modelo": "CR-V",
+    "placa": "PUE-023",
+    "fecha_registro": "2025-12-02T12:03:58.000Z"
+  },
+  {
+    "numero_serie": "VIN24",
+    "marca": "Ford",
+    "modelo": "Mustang",
+    "placa": "PUE-024",
+    "fecha_registro": "2025-12-02T12:03:58.000Z"
+  },
+  {
+    "numero_serie": "VIN25",
+    "marca": "Chevrolet",
+    "modelo": "Camaro",
+    "placa": "PUE-025",
+    "fecha_registro": "2025-12-02T12:03:58.000Z"
+  },
+  {
+    "numero_serie": "VIN26",
+    "marca": "Mazda",
+    "modelo": "MX-5",
+    "placa": "PUE-026",
+    "fecha_registro": "2025-12-02T12:03:58.000Z"
+  },
+  {
+    "numero_serie": "VIN27",
+    "marca": "Volkswagen",
+    "modelo": "Polo",
+    "placa": "PUE-027",
+    "fecha_registro": "2025-12-02T12:03:58.000Z"
+  },
+  {
+    "numero_serie": "VIN28",
+    "marca": "Hyundai",
+    "modelo": "Creta",
+    "placa": "PUE-028",
+    "fecha_registro": "2025-12-02T12:03:58.000Z"
+  },
+  {
+    "numero_serie": "VIN29",
+    "marca": "Kia",
+    "modelo": "Soul",
+    "placa": "PUE-029",
+    "fecha_registro": "2025-12-02T12:03:58.000Z"
+  },
+  {
+    "numero_serie": "VIN30",
+    "marca": "Mercedes",
+    "modelo": "Clase C",
+    "placa": "PUE-030",
+    "fecha_registro": "2025-12-02T12:03:58.000Z"
+  },
+  {
+    "numero_serie": "VIN31",
+    "marca": "Toyota",
+    "modelo": "Hilux",
+    "placa": "PUE-031",
+    "fecha_registro": "2025-12-02T12:03:58.000Z"
+  },
+  {
+    "numero_serie": "VIN32",
+    "marca": "Nissan",
+    "modelo": "Frontier",
+    "placa": "PUE-032",
+    "fecha_registro": "2025-12-02T12:03:58.000Z"
+  },
+  {
+    "numero_serie": "VIN33",
+    "marca": "Honda",
+    "modelo": "HR-V",
+    "placa": "PUE-033",
+    "fecha_registro": "2025-12-02T12:03:58.000Z"
+  },
+  {
+    "numero_serie": "VIN34",
+    "marca": "Ford",
+    "modelo": "Ranger",
+    "placa": "PUE-034",
+    "fecha_registro": "2025-12-02T12:03:58.000Z"
+  },
+  {
+    "numero_serie": "VIN35",
+    "marca": "Chevrolet",
+    "modelo": "Colorado",
+    "placa": "PUE-035",
+    "fecha_registro": "2025-12-02T12:03:58.000Z"
+  },
+  {
+    "numero_serie": "VIN36",
+    "marca": "Mazda",
+    "modelo": "CX-3",
+    "placa": "PUE-036",
+    "fecha_registro": "2025-12-02T12:03:58.000Z"
+  },
+  {
+    "numero_serie": "VIN37",
+    "marca": "Volkswagen",
+    "modelo": "Vento",
+    "placa": "PUE-037",
+    "fecha_registro": "2025-12-02T12:03:58.000Z"
+  },
+  {
+    "numero_serie": "VIN38",
+    "marca": "Hyundai",
+    "modelo": "Sonata",
+    "placa": "PUE-038",
+    "fecha_registro": "2025-12-02T12:03:58.000Z"
+  },
+  {
+    "numero_serie": "VIN39",
+    "marca": "Kia",
+    "modelo": "Seltos",
+    "placa": "PUE-039",
+    "fecha_registro": "2025-12-02T12:03:58.000Z"
+  },
+  {
+    "numero_serie": "VIN40",
+    "marca": "Jeep",
+    "modelo": "Wrangler",
+    "placa": "PUE-040",
+    "fecha_registro": "2025-12-02T12:03:58.000Z"
+  },
+  {
+    "numero_serie": "VIN41",
+    "marca": "Toyota",
+    "modelo": "Rav4",
+    "placa": "PUE-041",
+    "fecha_registro": "2025-12-02T12:03:58.000Z"
+  },
+  {
+    "numero_serie": "VIN42",
+    "marca": "Nissan",
+    "modelo": "Kicks",
+    "placa": "PUE-042",
+    "fecha_registro": "2025-12-02T12:03:58.000Z"
+  },
+  {
+    "numero_serie": "VIN43",
+    "marca": "Honda",
+    "modelo": "Fit",
+    "placa": "PUE-043",
+    "fecha_registro": "2025-12-02T12:03:58.000Z"
+  },
+  {
+    "numero_serie": "VIN44",
+    "marca": "Ford",
+    "modelo": "Explorer",
+    "placa": "PUE-044",
+    "fecha_registro": "2025-12-02T12:03:58.000Z"
+  },
+  {
+    "numero_serie": "VIN45",
+    "marca": "Chevrolet",
+    "modelo": "Trax",
+    "placa": "PUE-045",
+    "fecha_registro": "2025-12-02T12:03:58.000Z"
+  },
+  {
+    "numero_serie": "VIN46",
+    "marca": "Mazda",
+    "modelo": "CX-9",
+    "placa": "PUE-046",
+    "fecha_registro": "2025-12-02T12:03:58.000Z"
+  },
+  {
+    "numero_serie": "VIN47",
+    "marca": "Volkswagen",
+    "modelo": "Virtus",
+    "placa": "PUE-047",
+    "fecha_registro": "2025-12-02T12:03:58.000Z"
+  },
+  {
+    "numero_serie": "VIN48",
+    "marca": "Hyundai",
+    "modelo": "Grand i10",
+    "placa": "PUE-048",
+    "fecha_registro": "2025-12-02T12:03:58.000Z"
+  },
+  {
+    "numero_serie": "VIN49",
+    "marca": "Kia",
+    "modelo": "Sportage",
+    "placa": "PUE-049",
+    "fecha_registro": "2025-12-02T12:03:58.000Z"
+  },
+  {
+    "numero_serie": "VIN50",
+    "marca": "Tesla",
+    "modelo": "Model 3",
+    "placa": "PUE-050",
+    "fecha_registro": "2025-12-02T12:03:58.000Z"
+  }
+]

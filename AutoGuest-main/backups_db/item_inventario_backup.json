@@ -1,0 +1,380 @@
+[
+  {
+    "id": 1,
+    "id_producto": "anticongelante-concentrado",
+    "nombre": "Anticongelante Concentrado (Verde)",
+    "descripcion": "Galón (3.78 L). Evita la corrosión y oxidación. Para todas las marcas.",
+    "precio": "48.00",
+    "stock": 100,
+    "imagen": "img/anticongelante-concentrado.jpg"
+  },
+  {
+    "id": 2,
+    "id_producto": "agua-bateria",
+    "nombre": "Agua para Batería",
+    "descripcion": "500 ml.",
+    "precio": "13.00",
+    "stock": 100,
+    "imagen": "img/agua-bateria.jpg"
+  },
+  {
+    "id": 3,
+    "id_producto": "limpia-parabrisas",
+    "nombre": "Limpiaparabrisas",
+    "descripcion": "Galón. Elimina grasa, diésel, insectos y más.",
+    "precio": "38.00",
+    "stock": 100,
+    "imagen": "img/limpia-parabrisas.jpg"
+  },
+  {
+    "id": 4,
+    "id_producto": "anticongelante-rosado-org",
+    "nombre": "Anticongelante Rosado",
+    "descripcion": "Galón (3.78 L). Para modelos recientes.",
+    "precio": "48.00",
+    "stock": 100,
+    "imagen": "img/anticongelante-rosado.jpg"
+  },
+  {
+    "id": 5,
+    "id_producto": "anticongelante-economico",
+    "nombre": "Anticongelante Económico",
+    "descripcion": "5 litros. Listo para usar.",
+    "precio": "28.00",
+    "stock": 100,
+    "imagen": "img/anticongelante-verde.jpg"
+  },
+  {
+    "id": 6,
+    "id_producto": "anticongelante-amarillo-org",
+    "nombre": "Anticongelante Listo (Amarillo)",
+    "descripcion": "Galón (3.78 L).",
+    "precio": "38.00",
+    "stock": 100,
+    "imagen": "img/anticongelante-amarillo.jpg"
+  },
+  {
+    "id": 7,
+    "id_producto": "cera-liquida",
+    "nombre": "Cera Líquida",
+    "descripcion": "1/4 de litro (250 ml).",
+    "precio": "55.00",
+    "stock": 100,
+    "imagen": "img/cera-liquida.jpg"
+  },
+  {
+    "id": 8,
+    "id_producto": "armorall-vinil-piel",
+    "nombre": "Armorall Vinil y Piel",
+    "descripcion": "Medio litro (500 ml).",
+    "precio": "20.00",
+    "stock": 100,
+    "imagen": "img/almorol.jpg"
+  },
+  {
+    "id": 9,
+    "id_producto": "abrillantador-llantas",
+    "nombre": "Abrillantador de Llantas",
+    "descripcion": "Medio litro (500 ml).",
+    "precio": "20.00",
+    "stock": 100,
+    "imagen": "img/abillantador-llantas.jpg"
+  },
+  {
+    "id": 10,
+    "id_producto": "shampoo-espuma",
+    "nombre": "Shampoo Espuma Activa",
+    "descripcion": "Medio litro (500 ml).",
+    "precio": "16.00",
+    "stock": 100,
+    "imagen": "img/shampu-espumaactiva.jpg"
+  },
+  {
+    "id": 11,
+    "id_producto": "bardahl-antifreeze-premium",
+    "nombre": "Anticongelante Premium Bardahl",
+    "descripcion": "Formulación avanzada. Para una protección superior contra el sobrecalentamiento.",
+    "precio": "145.00",
+    "stock": 100,
+    "imagen": "img/AMG7.jpg"
+  },
+  {
+    "id": 12,
+    "id_producto": "bardahl-refrigerante-rojo",
+    "nombre": "Refrigerante Bardahl (Rojo)",
+    "descripcion": "Galón. Listo para usar. Ideal para vehículos modernos.",
+    "precio": "130.00",
+    "stock": 100,
+    "imagen": "img/AMG9.jpg"
+  },
+  {
+    "id": 13,
+    "id_producto": "aditivo-rx80-rymax",
+    "nombre": "Aditivo para Combustible RX-80",
+    "descripcion": "Limpiador de inyectores y sistema de combustible.",
+    "precio": "85.00",
+    "stock": 100,
+    "imagen": "img/AMG15.jpg"
+  },
+  {
+    "id": 14,
+    "id_producto": "anticongelante-eti-amarillo",
+    "nombre": "Anticongelante Listo (ETI Amarillo)",
+    "descripcion": "Protección contra corrosión y herrumbre.",
+    "precio": "35.00",
+    "stock": 100,
+    "imagen": "img/AMG13.jpg"
+  },
+  {
+    "id": 15,
+    "id_producto": "refrigerante-concentrado-rojo",
+    "nombre": "Refrigerante Concentrado (Rojo)",
+    "descripcion": "Para diluir. Alto rendimiento y durabilidad.",
+    "precio": "52.00",
+    "stock": 100,
+    "imagen": "img/AMG4.jpg"
+  },
+  {
+    "id": 16,
+    "id_producto": "bardahl-super-oil-10w30",
+    "nombre": "Aceite Bardahl Super Oil 10W-30",
+    "descripcion": "Aceite multigrado para motor. Medio litro.",
+    "precio": "65.00",
+    "stock": 100,
+    "imagen": "img/AMG23.jpg"
+  },
+  {
+    "id": 17,
+    "id_producto": "bardahl-super-oil-20w50",
+    "nombre": "Aceite Bardahl Super Oil 20W-50",
+    "descripcion": "Aceite multigrado de alto rendimiento. Medio litro.",
+    "precio": "65.00",
+    "stock": 100,
+    "imagen": "img/AMG2.jpg"
+  },
+  {
+    "id": 18,
+    "id_producto": "aceite-motor-amarillo",
+    "nombre": "Aceite para Motor (Amarillo)",
+    "descripcion": "Lubricación y protección en condiciones extremas. Medio litro.",
+    "precio": "45.00",
+    "stock": 100,
+    "imagen": "img/AMG34.jpg"
+  },
+  {
+    "id": 19,
+    "id_producto": "bardahl-aceite-engranajes",
+    "nombre": "Aceite para Engranajes (Bardahl)",
+    "descripcion": "Protección de caja y transmisión. Cuarto de litro.",
+    "precio": "58.00",
+    "stock": 100,
+    "imagen": "img/AMG14.jpg"
+  },
+  {
+    "id": 20,
+    "id_producto": "bardahl-moto-4t-20w50",
+    "nombre": "Aceite para Moto 4T 20W-50 Bardahl",
+    "descripcion": "Especialmente diseñado para motocicletas de 4 tiempos. Medio litro.",
+    "precio": "75.00",
+    "stock": 100,
+    "imagen": "img/AMG8.jpg"
+  },
+  {
+    "id": 21,
+    "id_producto": "bardahl-moto-4t-10w30",
+    "nombre": "Aceite para Moto 4T 10W-30 Bardahl",
+    "descripcion": "Para motores de motocicletas modernos que requieren baja viscosidad.",
+    "precio": "80.00",
+    "stock": 100,
+    "imagen": "img/AMG3.jpg"
+  },
+  {
+    "id": 22,
+    "id_producto": "motorcraft-20w50",
+    "nombre": "Aceite Motorcraft 20W-50",
+    "descripcion": "Aceite multigrado. Recomendado para vehículos Ford y otros.",
+    "precio": "115.00",
+    "stock": 100,
+    "imagen": "img/AMG27.jpg"
+  },
+  {
+    "id": 23,
+    "id_producto": "anticongelante-naranja",
+    "nombre": "Anticongelante Listo (Naranja)",
+    "descripcion": "Galón. Formulación orgánica de larga duración. Para todas las marcas.",
+    "precio": "42.00",
+    "stock": 100,
+    "imagen": "img/AMG31.jpg"
+  },
+  {
+    "id": 24,
+    "id_producto": "bardahl-high-performance-25w60",
+    "nombre": "Bardahl High Performance SAE 25W-60",
+    "descripcion": "Aceite multigrado para motores de alto kilometraje.",
+    "precio": "125.00",
+    "stock": 100,
+    "imagen": "img/AMG6.jpg"
+  },
+  {
+    "id": 25,
+    "id_producto": "aceite-sintetico-5w30",
+    "nombre": "Aceite Sintético 5W-30",
+    "descripcion": "Protección superior y mejor economía de combustible. Medio litro.",
+    "precio": "140.00",
+    "stock": 100,
+    "imagen": "img/AMG30.jpg"
+  },
+  {
+    "id": 26,
+    "id_producto": "aditivo-limpiador-inyectores",
+    "nombre": "Aditivo Limpiador de Inyectores",
+    "descripcion": "Limpia y protege el sistema de inyección de combustible.",
+    "precio": "75.00",
+    "stock": 100,
+    "imagen": "img/AMG20.jpg"
+  },
+  {
+    "id": 27,
+    "id_producto": "aditivo-octane-booster",
+    "nombre": "Aditivo Octane Booster",
+    "descripcion": "Mejora el octanaje y el rendimiento del motor. Para gasolina.",
+    "precio": "85.00",
+    "stock": 100,
+    "imagen": "img/AMG19.jpg"
+  },
+  {
+    "id": 28,
+    "id_producto": "limpiador-frenos-aerosol",
+    "nombre": "Limpiador de Frenos en Aerosol",
+    "descripcion": "Fórmula de secado rápido. Remueve grasa, aceite y líquido de frenos.",
+    "precio": "95.00",
+    "stock": 100,
+    "imagen": "img/AMG312.jpg"
+  },
+  {
+    "id": 29,
+    "id_producto": "aditivo-diesel",
+    "nombre": "Aditivo para Diesel",
+    "descripcion": "Mejora el rendimiento, lubrica y limpia inyectores en motores diésel.",
+    "precio": "88.00",
+    "stock": 100,
+    "imagen": "img/AMG22.jpg"
+  },
+  {
+    "id": 30,
+    "id_producto": "aceite-multigrado-eti-15w40",
+    "nombre": "Aceite Multigrado 15W-40 (ETI)",
+    "descripcion": "Galón. Para servicio pesado. Excelente protección contra el desgaste.",
+    "precio": "380.00",
+    "stock": 100,
+    "imagen": "img/AMG29.jpg"
+  },
+  {
+    "id": 31,
+    "id_producto": "anticongelante-concentrado-rojo",
+    "nombre": "Anticongelante Concentrado (Rojo)",
+    "descripcion": "Botella. Máxima protección contra el punto de ebullición y congelación.",
+    "precio": "45.00",
+    "stock": 100,
+    "imagen": "img/AMG11.jpg"
+  },
+  {
+    "id": 32,
+    "id_producto": "aditivo-aceite-motor",
+    "nombre": "Aditivo para Aceite de Motor",
+    "descripcion": "Refuerza la protección del aceite, reduce la fricción y el desgaste.",
+    "precio": "95.00",
+    "stock": 100,
+    "imagen": "img/AMG5.jpg"
+  },
+  {
+    "id": 33,
+    "id_producto": "piston-aceite-15w40",
+    "nombre": "Pist-On Aceite Multigrado 15W-40",
+    "descripcion": "Aceite de motor de calidad premium. Ideal para camiones y flotillas.",
+    "precio": "90.00",
+    "stock": 100,
+    "imagen": "img/AMG1.jpg"
+  },
+  {
+    "id": 34,
+    "id_producto": "piston-aceite-20w50",
+    "nombre": "Pist-On Aceite Multigrado 20W-50",
+    "descripcion": "Aceite de alta viscosidad para proteger motores en altas temperaturas.",
+    "precio": "85.00",
+    "stock": 100,
+    "imagen": "img/AMG17.jpg"
+  },
+  {
+    "id": 35,
+    "id_producto": "refrigerante-rosado-concentrado",
+    "nombre": "Refrigerante Concentrado (Rosado)",
+    "descripcion": "Ideal para vehículos que requieren tecnología de ácido orgánico (OAT).",
+    "precio": "55.00",
+    "stock": 100,
+    "imagen": "img/AMG33.jpg"
+  },
+  {
+    "id": 36,
+    "id_producto": "anticongelante-listo-amarillo-final",
+    "nombre": "Anticongelante Listo (Amarillo)",
+    "descripcion": "Formulación anticongelante y anticorrosiva de alto desempeño.",
+    "precio": "38.00",
+    "stock": 100,
+    "imagen": "img/AMG12.jpg"
+  },
+  {
+    "id": 37,
+    "id_producto": "anticongelante-listo-rosado-final",
+    "nombre": "Anticongelante Listo (Rosado)",
+    "descripcion": "Tecnología de última generación. Protege de -18°C a 126°C.",
+    "precio": "42.00",
+    "stock": 100,
+    "imagen": "img/AMG26.jpg"
+  },
+  {
+    "id": 38,
+    "id_producto": "lth-100mil-25w50",
+    "nombre": "LTH 100 000 Plus Aceite 25W-50",
+    "descripcion": "Aceite multigrado para motores con más de 100,000 km. Con fórmula sellante. 946 ml.",
+    "precio": "110.00",
+    "stock": 100,
+    "imagen": "img/AMG16.jpg"
+  },
+  {
+    "id": 39,
+    "id_producto": "lth-tm-sae140",
+    "nombre": "LTH Fluido Transmisión Manual SAE 140",
+    "descripcion": "Para transmisiones manuales y diferenciales API GL-1. 946 ml.",
+    "precio": "95.00",
+    "stock": 100,
+    "imagen": "img/AMG24.jpg"
+  },
+  {
+    "id": 40,
+    "id_producto": "lth-tm-sae250",
+    "nombre": "LTH Fluido Transmisión Manual SAE 250",
+    "descripcion": "Para transmisiones manuales y diferenciales API GL-1. Mayor viscosidad. 946 ml.",
+    "precio": "105.00",
+    "stock": 100,
+    "imagen": "img/AMG25.jpg"
+  },
+  {
+    "id": 41,
+    "id_producto": "lth-tm-80w90",
+    "nombre": "LTH Aceite Transmisión Manual 80W-90",
+    "descripcion": "Para transmisiones y diferenciales API GL-5. 946 ml.",
+    "precio": "120.00",
+    "stock": 100,
+    "imagen": "img/AMG32.jpg"
+  },
+  {
+    "id": 42,
+    "id_producto": "rm-aceite-moto-2t",
+    "nombre": "RM Lubricantes Aceite Motores 2T",
+    "descripcion": "Para motocicletas y motores pequeños de dos tiempos. 700 ml.",
+    "precio": "68.00",
+    "stock": 100,
+    "imagen": "img/aceitemotod2T.jpg"
+  }
+]

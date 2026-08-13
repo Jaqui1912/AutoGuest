@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acceso de Taller - AutoGuest</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="form-page-wrapper">
+        <div class="form-image-column">
+            <div class="logo-link">
+                <a href="home.html">
+                    <img src="imagenes/Logo_Autoguest.png" alt="Logo de AutoGuest">
+                </a>
+            </div>
+            <div class="image-text">
+                <h2>Tu negocio te espera.</h2>
+                <p>Accede a tu panel de control para gestionar citas, comunicarte con clientes y potenciar tu taller.</p>
+            </div>
+        </div>
+
+        <div class="form-content-column">
+            <div class="form-container">
+                <h1>Portal del Taller</h1>
+                <p>Accede a tu panel de control de servicios.</p>
+                
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="email">Email del Taller</label>
+                        <input type="email" id="email" class="form-control" placeholder="contacto@taller.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Contraseña</label>
+                        <input type="password" id="password" class="form-control" placeholder="Contraseña" required>
+                    </div>
+                    <button type="submit" class="btn">Acceder al Panel</button>
+                </form>
+                
+                <div class="extra-link">
+                    <p>¿Quieres unirte? <a href="registro_taller.html">Registra tu taller</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                // 1. Petición al servidor
+                const response = await fetch('/api/registro/login-taller', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    // 2. Guardar sesión si es exitoso
+                    sessionStorage.setItem('isLoggedIn', 'true');
+                    sessionStorage.setItem('userRole', 'taller');
+                    if (data.userName) {
+                        sessionStorage.setItem('userName', data.userName);
+                        localStorage.setItem('userName', data.userName);
+                    }
+                    if (data.tallerName) {
+                        sessionStorage.setItem('tallerName', data.tallerName);
+                        localStorage.setItem('tallerName', data.tallerName);
+                    }
+                    if (data.token) {
+                        sessionStorage.setItem('token', data.token);
+                        localStorage.setItem('token', data.token);
+                    }
+                    if (data.tallerId) {
+                        sessionStorage.setItem('tallerId', data.tallerId);
+                        localStorage.setItem('tallerId', data.tallerId);
+                    }
+                    if (data.userId) {
+                        sessionStorage.setItem('userId', data.userId);
+                        localStorage.setItem('userId', data.userId);
+                    }
+                    sessionStorage.setItem('userRole', 'taller');
+                    localStorage.setItem('userRole', 'taller');
+                    
+                    alert('¡Bienvenido! Accediendo al panel...');
+                    
+                    // 3. Redirigir (Asegúrate que portal_taller.html está en public/)
+                    window.location.href = 'portal_taller.html'; 
+                } else {
+                    // 4. Mostrar error si falla
+                    alert('Error: ' + (data.mensaje || 'Credenciales incorrectas'));
+                }
+
+            } catch (error) {
+                console.error('Error de conexión:', error);
+                alert('No se pudo conectar con el servidor. Verifica que node server.js esté corriendo.');
+            }
+        });
+    </script>
+    <script src="http://localhost:3000/js/global_nav.js"></script>
+</body>
+</html>
